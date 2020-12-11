@@ -1,0 +1,95 @@
+#include "UHH2/HOTVRStudies/include/HOTVRStudiesHists.h"
+#include "UHH2/core/include/Event.h"
+
+#include "fastjet/PseudoJet.hh"
+#include "fastjet/contrib/HOTVR.hh"
+
+#include "TH1F.h"
+#include "TH2F.h"
+#include <iostream>
+
+using namespace std;
+using namespace uhh2;
+using namespace fastjet;
+using namespace contrib;
+
+HOTVRStudiesHists::HOTVRStudiesHists(Context & ctx, const string & dirname): Hists(ctx, dirname){
+  // book all histograms here
+
+  //GENERAL HISTS
+  // hist_jets_pt = book<TH1F>("p_{T}_jets", "HOTVR jets p_{T} [GeV]", 100, 0, 1800);
+  // hist_jets_mass = book<TH1F>("mass_jets", "HOTVR jets mass [GeV]", 100, 0, 400);
+  // hist_jets_eta = book<TH1F>("eta_jets", "HOTVR jets #eta", 100, -6, 6);
+  // hist_jets_phi = book<TH1F>("phi_jets", "HOTVR jets #phi", 20, -4, 4);
+  // hist_jets_energy = book<TH1F>("energy_jets", "HOTVR jets energy [GeV]", 100, 0, 2200);
+
+  // //SPLITTED MASS HISTS
+   hist_jets_mass_lowpT_N2 = book<TH1F>("mass_lowpT_N2_jets", "HOTVR jets mass [GeV]", 100, 0, 350);
+   hist_jets_mass_lowpT_N3 = book<TH1F>("mass_lowpT_N3_jets", "HOTVR jets mass [GeV]", 100, 0, 350);
+   hist_jets_mass_highpT_N2 = book<TH1F>("mass_highpT_N2_jets", "HOTVR jets mass [GeV]", 100, 0, 350);
+   hist_jets_mass_highpT_N3 = book<TH1F>("mass_highpT_N3_jets","HOTVR jets mass [GeV]", 100, 0, 350);
+
+   // //fractional leading subjet transverse momentum
+   hist_jets_fpt_lowpT_N2 = book<TH1F>("fpt_lowpT_N2_jets", "HOTVR jets f_p_T [GeV]", 100, 0, 1);
+   hist_jets_fpt_lowpT_N3 = book<TH1F>("fpt_lowpT_N3_jets", "HOTVR jets f_p_T [GeV]", 100, 0, 1);
+   hist_jets_fpt_highpT_N2 = book<TH1F>("fpt_highpT_N2_jets", "HOTVR jets f_p_T [GeV]", 100, 0, 1);
+   hist_jets_fpt_highpT_N3 = book<TH1F>("fpt_highpT_N3_jets","HOTVR jets f_p_T [GeV]", 100, 0, 1);
+
+   //mmin
+   hist_jets_mmin_lowpT = book<TH1F>("mmin_lowpT_jets", "HOTVR jets m_{min} [GeV]", 200, 0, 140);
+   hist_jets_mmin_highpT = book<TH1F>("mmin_highpT_jets", "HOTVR jets m_{min} [GeV]", 200, 0, 140);
+
+  // initialise handle
+  h_HOTVRjets = ctx.get_handle<vector<fastjet::PseudoJet>>("HOTVRjets");
+}
+
+
+void HOTVRStudiesHists::fill(const Event & event){
+  //get clustered jets from handled 
+  const auto &hotvr_jets = event.get(h_HOTVRjets);
+ 
+  // fill the histograms.
+  for (unsigned int i=0; i<hotvr_jets.size(); ++i){ 
+     int nsubjets = hotvr_jets[i].user_info<HOTVRinfo>().nsubjets();
+     double pt = hotvr_jets[i].pt();
+
+     vector<fastjet::PseudoJet> subjets = sorted_by_pt(hotvr_jets[i].user_info<HOTVRinfo>().subjets());
+     double ptfraction = hotvr_jets[i].user_info<HOTVRinfo>().ptfraction(0);
+     int mmin = hotvr_jets[i].user_info<HOTVRinfo>().mmin();
+
+     //// general hists
+    //  hist_jets_pt->Fill(hotvr_jets[i].pt());
+    //  hist_jets_mass->Fill(hotvr_jets[i].m());
+    //  hist_jets_eta->Fill(hotvr_jets[i].eta());
+    //  hist_jets_phi->Fill(hotvr_jets[i].phi_std());
+    //  hist_jets_energy->Fill(hotvr_jets[i].E());
+
+
+// //SPLITTED MASS HISTS fractional leading subjet transverse momentum and mmin
+     if(200 < pt && pt < 400){
+       if(nsubjets >= 2){
+	 hist_jets_mass_lowpT_N2 ->Fill(hotvr_jets[i].m()); //jet mass
+	 hist_jets_fpt_lowpT_N2 ->Fill(ptfraction); //ptfraction
+       }
+       if(nsubjets >= 3){
+	 hist_jets_mass_lowpT_N3 ->Fill(hotvr_jets[i].m());
+	 hist_jets_fpt_lowpT_N3 ->Fill(ptfraction);
+	 hist_jets_mmin_lowpT ->Fill(mmin); //minimum pairwise mass
+       }
+     }
+     else if(600 < pt && pt < 800){
+       if(nsubjets >= 2){
+	 hist_jets_mass_highpT_N2 ->Fill(hotvr_jets[i].m());
+	 hist_jets_fpt_highpT_N2 ->Fill(ptfraction);
+       }
+       if(nsubjets >= 3){
+	 hist_jets_mass_highpT_N3 ->Fill(hotvr_jets[i].m());
+	 hist_jets_fpt_highpT_N3 ->Fill(ptfraction);
+	 hist_jets_mmin_highpT ->Fill(mmin);
+       }
+     }
+  }
+  
+}
+
+HOTVRStudiesHists::~HOTVRStudiesHists(){}

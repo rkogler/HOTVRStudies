@@ -1,0 +1,41 @@
+#pragma once
+
+#include "UHH2/core/include/Hists.h"
+#include "UHH2/core/include/Event.h"
+
+
+#include "fastjet/PseudoJet.hh"
+
+#include <iostream>
+
+using namespace std;
+using namespace uhh2;
+using namespace fastjet;
+
+/**  \brief Example class for booking and filling histograms
+ * 
+ * NOTE: This class uses the 'hist' method to retrieve histograms.
+ * This requires a string lookup and is therefore slow if you have
+ * many histograms. Therefore, it is recommended to use histogram
+ * pointers as member data instead, like in 'common/include/ElectronHists.h'.
+ */
+class HOTVRStudiesHists: public uhh2::Hists {
+public:
+    // use the same constructor arguments as Hists for forwarding:
+    HOTVRStudiesHists(uhh2::Context & ctx, const std::string & dirname);
+
+    virtual void fill(const uhh2::Event & ev) override;
+    virtual ~HOTVRStudiesHists();
+
+ private:
+    
+    TH1F *hist_jets_pt, *hist_jets_mass, *hist_jets_eta, *hist_jets_phi, *hist_jets_energy; // Definition of hists for generel studies
+    TH1F *hist_jets_mass_lowpT_N2,  *hist_jets_mass_lowpT_N3,   *hist_jets_mass_highpT_N2, *hist_jets_mass_highpT_N3; // masses of subjets in different pt regions
+    TH1F *hist_jets_fpt_lowpT_N2,  *hist_jets_fpt_lowpT_N3,   *hist_jets_fpt_highpT_N2, *hist_jets_fpt_highpT_N3; // masses of subjets in different pt regions
+
+
+ protected:
+
+    uhh2::Event::Handle<vector<fastjet::PseudoJet>> h_HOTVRjets;
+};
+
