@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/test">
+	  <!ENTITY b_Cacheable     "False">
+	  <!ENTITY NEVT            "-1">
+
+	  ]>
+ <!--
+	     <ConfigParse NEventsBreak="0" FileSplit="14" AutoResubmit="5"/>
+	     <ConfigSGE RAM ="4" DISK ="3" Mail="anna.albrecht@desy.de" Notification="as" Workdir="workdir_HOTVRStudies_test"/>
+	     -->
+
+
+
+<!-- OutputLevel controls which messages are printed; set to VERBOSE or DEBUG for more verbosity, to WARNING or ERROR for less -->
+<JobConfiguration JobName="ExampleCycleJob" OutputLevel="INFO">
+    <Library Name="libSUHH2HOTVRStudies"/>
+    <Package Name="SUHH2HOTVRStudies.par" />
+
+   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="1" >
+
+              <!-- TTbar test -->
+
+	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_5" Cacheable="&b_Cacheable;">
+		<In FileName="/nfs/dust/cms/user/albrecha/ntuples/ttbar/ntuples/ttbar_pythia8_flat_nnpdf23_5.root" Lumi="0.0"/>
+		<InputTree Name="AnalysisTree" />
+	      </InputData>
+
+				<!-- QCD test -->
+
+			<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod1_f10" Cacheable="&b_Cacheable;">
+			<In FileName="/nfs/dust/cms/user/albrecha/ntuples/qcd/ntuples/qcd_pythia8_flat_nnpdf23_prod1_f10.root" Lumi="0.0"/>
+			<InputTree Name="AnalysisTree" />
+			</InputData>
+
+
+        <UserConfig>
+
+	    <Item Name="GenParticleCollection" Value="GenParticles" />
+			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr_30_0.05_1.config"/>
+ 		<!--	<Item Name="csvfile_ttbar" Value="/nfs/dust/cms/user/albrecha/uhh2_102X/CMSSW_10_2_10/src/UHH2/HOTVRStudies/Files_for_Finley/ttbar_constituents.csv" />
+			<Item Name="csvfile_qcd" Value="/nfs/dust/cms/user/albrecha/uhh2_102X/CMSSW_10_2_10/src/UHH2/HOTVRStudies/Files_for_Finley/qcd_constituents.csv" />
+-->
+    <!-- the class name of the AnalysisModule subclasses to run: -->
+            <Item Name="AnalysisModule" Value="HOTVRStudiesModule" />
+
+            <!-- tell AnalysisModuleRunner NOT to use the MC event weight from SFrame; rather let
+                 MCLumiWeight (called via CommonModules) calculate the MC event weight. The MC
+                 event weight assigned by MCLumiWeight is InputData.Lumi / Cycle.TargetLumi. -->
+            <Item Name="use_sframe_weight" Value="false" />
+
+        </UserConfig>
+    </Cycle>
+</JobConfiguration>

@@ -1,0 +1,82 @@
+ ( INFO  )  SCycleController   : Initializing
+ ( INFO  )  SCycleController   : Deleting all analysis cycle algorithms from memory
+ ( INFO  )  SCycleController   : Reading xml file: 'ttbar_pythia8_flat_nnpdf23_s2_94.xml'
+ ( INFO  )  SCycleController   : Created cycle 'uhh2::AnalysisModuleRunner'
+ ( INFO  )  SCycleBaseExec     : Initializing from configuration
+ ( INFO  )  SCycleBaseExec     : Reading SInputData: MC - ttbar_pythia8_flat_nnpdf23_s2
+ ( INFO  )  SCycleConfig       : ===========================================================
+ ( INFO  )  SCycleConfig       :                     Cycle configuration
+ ( INFO  )  SCycleConfig       :   - Running mode: LOCAL
+ ( INFO  )  SCycleConfig       :   - Target luminosity: 1
+ ( INFO  )  SCycleConfig       :   - Output directory: /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/_0_0.05_1_mu30//workdir_HOTVRStudies/
+ ( INFO  )  SCycleConfig       :   - Post-fix: _93
+ ( INFO  )  SInputData         :  ---------------------------------------------------------
+ ( INFO  )  SInputData         :  Type               : MC
+ ( INFO  )  SInputData         :  Version            : ttbar_pythia8_flat_nnpdf23_s2
+ ( INFO  )  SInputData         :  Total luminosity   : 1pb-1
+ ( INFO  )  SInputData         :  NEventsMax         : -1
+ ( INFO  )  SInputData         :  NEventsSkip        : 0
+ ( INFO  )  SInputData         :  Cacheable          : No
+ ( INFO  )  SInputData         :  Skip validation    : No
+ ( INFO  )  SInputData         :  Skip file lookup   : No
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/albrecha/ntuples/ttbar/ntuples/ttbar_pythia8_flat_nnpdf23_s2_398.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/albrecha/ntuples/ttbar/ntuples/ttbar_pythia8_flat_nnpdf23_s2_399.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Tree               : 'AnalysisTree' (name) | 'Flat input tree' (type)
+ ( INFO  )  SInputData         :  ---------------------------------------------------------
+ ( INFO  )  SCycleConfig       : ===========================================================
+ ( INFO  )  SCycleController   : Job 'ExampleCycleJob' configured
+ ( INFO  )  SCycleController   : Time needed for initialisation:   0.52 s
+ ( INFO  )  SCycleController   : Entering ExecuteAllCycles()
+ ( INFO  )  SInputData         : Input type "MC" version "ttbar_pythia8_flat_nnpdf23_s2" : 20000 events
+ ( INFO  )  SCycleController   : Executing Cycle #0 ('uhh2::AnalysisModuleRunner') locally
+ ( INFO  )  SCycleController   : Processing input data type: MC version: ttbar_pythia8_flat_nnpdf23_s2
+ ( INFO  )  SCycleBaseExec     : Initialised InputData "MC" (Version:ttbar_pythia8_flat_nnpdf23_s2) on worker node
+Hello World from HOTVRStudiesModule!
+ ( INFO  )  SCycleBaseExec     : Opening /nfs/dust/cms/user/albrecha/ntuples/ttbar/ntuples/ttbar_pythia8_flat_nnpdf23_s2_398.root
+#------------------------------------------------------------------------------
+#                                 HOTVR 1.0.0                                  
+#                      T. Lapsien, R. Kogler, J. Haller                        
+#                                arXiv:1606.04961                              
+#                                                                              
+# The Heavy Object Tagger with Variable R.                                     
+#                                                                              
+# If you use this package, please cite the following papers:                   
+#                                                                              
+# - Tobias Lapsien, Roman Kogler, Johannes Haller,                             
+#   "A new tagger for hadronically decaying heavy particles at the LHC",     
+#   arXiv:1606.04961                                                           
+#                                                                              
+# - David Krohn, Jesse Thaler, Lian-Tao Wang, "Jets with Variable R",        
+#   JHEP 06, 059 (2009) [arXiv:0903.0392 [hep-ph]]                             
+#                                                                              
+# - Martin Stoll, "Vetoed jet clustering: The mass-jump algorithm",          
+#   JHEP 04, 111 (2015) [arXiv:1410.4637 [hep-ph]]                             
+#                                                                              
+# The HOTVR algorithm is provided without warranty under the terms of the      
+# GNU GPLv2. See COPYING file for details.                                     
+#------------------------------------------------------------------------------
+ ( INFO  )  SCycleBaseExec     : Processing entry: 999 (999 / 20000 events processed so far, ~ 2.5 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1999 (1999 / 20000 events processed so far, ~ 2.2 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2999 (2999 / 20000 events processed so far, ~ 2.1 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3999 (3999 / 20000 events processed so far, ~ 1.9 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4999 (4999 / 20000 events processed so far, ~ 1.9 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5999 (5999 / 20000 events processed so far, ~ 1.8 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6999 (6999 / 20000 events processed so far, ~ 1.6 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7999 (7999 / 20000 events processed so far, ~ 1.5 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8999 (8999 / 20000 events processed so far, ~ 1.4 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9999 (9999 / 20000 events processed so far, ~ 1.2 minutes left)
+ ( INFO  )  SCycleBaseExec     : Opening /nfs/dust/cms/user/albrecha/ntuples/ttbar/ntuples/ttbar_pythia8_flat_nnpdf23_s2_399.root
+ ( INFO  )  SCycleBaseExec     : Processing entry: 999 (10999 / 20000 events processed so far, ~ 1.1 minutes left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1999 (11999 / 20000 events processed so far, ~ 59 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2999 (12999 / 20000 events processed so far, ~ 52 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3999 (13999 / 20000 events processed so far, ~ 44 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4999 (14999 / 20000 events processed so far, ~ 37 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5999 (15999 / 20000 events processed so far, ~ 30 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6999 (16999 / 20000 events processed so far, ~ 22 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7999 (17999 / 20000 events processed so far, ~ 15 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8999 (18999 / 20000 events processed so far, ~ 7.3 seconds left)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9999 (19999 / 20000 events processed so far, ~ 0 seconds left)
+ ( INFO  )  SCycleBaseExec     : Terminated InputData "MC" (Version:ttbar_pythia8_flat_nnpdf23_s2) on worker node
+ ( INFO  )  SCycleController   : Writing output of "uhh2::AnalysisModuleRunner" to: /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/_0_0.05_1_mu30//workdir_HOTVRStudies/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23_s2_93.root
+ ( INFO  )  SCycleController   : Overall cycle statistics:
+ ( INFO  )  SCycleController   :      20000 Events - Real time 148.17 s  -   135 Hz | CPU time 135.35 s  -   148 Hz
