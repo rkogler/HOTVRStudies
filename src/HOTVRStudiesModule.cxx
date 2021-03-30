@@ -127,7 +127,7 @@ private:
   // std::unique_ptr<SoftClusterHists> hist_soft_cluster_800;
   // std::unique_ptr<SoftClusterHists> hist_soft_cluster_1000;
 
-  // std::unique_ptr<VRJetsHists> hist_vr_jets;
+   std::unique_ptr<VRJetsHists> hist_vr_jets;
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents;
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents_200;
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents_400;
@@ -146,7 +146,7 @@ private:
   Event::Handle<vector<TopJet>> h_matched_jets;
   Event::Handle<vector<TopJet>> h_matched_parton_jets;
   Event::Handle<vector<pair<TopJet, TopJet>>> h_matched_pairs; //contains pair of matched jets
-// denominator for the ROC curves first: ttbar, second:qcd
+    // denominator for the ROC curves first: ttbar, second:qcd
 
 // for performance study
   std::unique_ptr<AnalysisModule> cl_topjet_hotvr;
@@ -165,12 +165,13 @@ private:
   Clustering* clustering;
   TopTagger* toptagger;
 
-// for the csv files for Finley
+// for the csv files for ML studies
   string m_csvfile_ttbar;
   string m_csvfile_qcd;
   Makefiles* makefiles;
 
 // initialize vectors of jets
+// ... containing pseudojets
   vector<fastjet::PseudoJet> pseudojets;
   vector<fastjet::PseudoJet> hotvr_jets;
   vector<vector<fastjet::PseudoJet>> hotvr_jets_constituents;
@@ -180,7 +181,7 @@ private:
   vector<fastjet::PseudoJet> vr_jets_ISD;
   vector<fastjet::PseudoJet> parton_pseudojets;
   vector<fastjet::PseudoJet> parton_jets;
-
+// ... containing UHH2(top)jets (in order to save the tau32 values)
   vector<TopJet> _top_hotvr_jets;
   vector<TopJet> _top_vr_jets;
   vector<TopJet> _top_parton_jets;
@@ -206,11 +207,11 @@ private:
 */
 
 HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
-  cout << "Hello World from HOTVRStudiesModule!" << endl;
+  cout << "Starting HOTVRStudiesModule!" << endl;
 // get info from xml
   m_clustering = ctx.get("Clustering");
-//  m_csvfile_ttbar = ctx.get("csvfile_ttbar");
-//  m_csvfile_qcd = ctx.get("csvfile_qcd");
+  m_csvfile_ttbar = ctx.get("csvfile_ttbar");
+  m_csvfile_qcd = ctx.get("csvfile_qcd");
 // check for the dataset version (ttbar or QCD)
   dataset_version = ctx.get("dataset_version");
   isTTbar = dataset_version.find("ttbar") == 0;
@@ -222,7 +223,7 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   h_matched_parton_jets = ctx.get_handle<vector<TopJet>>("matched_parton_jets");
   h_matched_pairs = ctx.get_handle<vector<pair<TopJet, TopJet>>>("matched_pairs");
 
-// 3. Set up Hists classes:
+// Set up Hists classes:
   hist_hotvr_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets", is_qcd));
   hist_hotvr_jets_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_200", is_qcd));
   hist_hotvr_jets_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_400", is_qcd));
@@ -308,7 +309,7 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   // hist_soft_cluster_800.reset(new SoftClusterHists(ctx, "SoftClusterHists_soft_cluster_800"));
   // hist_soft_cluster_1000.reset(new SoftClusterHists(ctx, "SoftClusterHists_soft_cluster_1000"));
 
-  // hist_vr_jets.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets", is_qcd));
+   hist_vr_jets.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets", is_qcd));
   // hist_hotvr_jet_constituents.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets", is_qcd));
   // hist_hotvr_jet_constituents_200.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets_200", is_qcd));
   // hist_hotvr_jet_constituents_400.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets_400", is_qcd));
@@ -364,9 +365,9 @@ bool HOTVRStudiesModule::process(Event & event) {
   matching->set_partons(genparticles);
   parton_pseudojets = matching->get_partons();
 
-//CLUSTERING -> clusters hotvr jets or vr jets plus grooming
+//CLUSTERING -> clusters jets depending on the algorithm that is chosen
   clustering = new Clustering(m_clustering);
-  clustering->cluster_jets(pseudojets); // cluster the pseudojets, you can define in Clustering.cxx which clustering to use
+  clustering->cluster_jets(pseudojets); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
   hotvr_jets = clustering->get_hotvr_jets();
   hotvr_jets_constituents = clustering->get_hotvr_jet_constituents();
   // get the rejected subjets
@@ -410,27 +411,40 @@ bool HOTVRStudiesModule::process(Event & event) {
   vr_jets_constituents = clustering->get_vr_jet_constituents(); // vector<vector<PseudoJet>>
   vr_jets_SD = clustering->get_vr_jets_SD();
   vr_jets_ISD = clustering->get_vr_jets_ISD();
-  // get the clustered parton jets
+  // cluster and get the clustered parton jets (AK10 jets)
   clustering->cluster_parton_jets(parton_pseudojets, isTTbar);
   parton_jets = clustering->get_parton_jets();
   //get the topjets from the Clustering
   _top_hotvr_jets=clustering->get_top_hotvr_jets();
   _top_parton_jets=clustering->get_top_parton_jets();
 
-// files for Finley
-  // implement some matching of these vr jets
-  // std::vector<fastjet::PseudoJet> matched_vr_jets;
-  // matching->run_matching(vr_jets, vr_jets_constituents, parton_jets);
-  // matched_vr_jets = matching->get_matched_pseudojets();
-  // vector<pair<PseudoJet, vector<PseudoJet>>> matched_vr_jets_and_constituents = matching->get_matched_jets_and_constituents();
-  // for (size_t j = 0; j < matched_vr_jets_and_constituents.size(); j++) {
-  //   auto jet = matched_vr_jets_and_constituents[j].first;
-  //   auto jet_constituents = matched_vr_jets_and_constituents[j].second;
-  //   hist_vr_jets->fill_pseudojet(event, jet);
-  //   hist_vr_jets->fill_pseudojet_constituents(jet_constituents);
-  // }
-  //class that makes the .csv file
-//  makefiles = new Makefiles(m_csvfile_ttbar, m_csvfile_qcd, matched_vr_jets_and_constituents, is_qcd);
+// ---------------------------begin---ML files-------------------------------------------
+// part to create files for machine learning studies (produce files
+//... that contain the vr jet constituents)
+  std::vector<fastjet::PseudoJet> matched_vr_jets;
+  matching->run_matching(vr_jets, vr_jets_constituents, parton_jets); // match the clustered jets to parton level jets
+  matched_vr_jets = matching->get_matched_pseudojets();
+  vector<pair<PseudoJet, vector<PseudoJet>>> matched_vr_jets_and_constituents = matching->get_matched_jets_and_constituents();
+  for (size_t j = 0; j < matched_vr_jets_and_constituents.size(); j++) { // loop over jets to fill hists
+    auto jet = matched_vr_jets_and_constituents[j].first;
+    auto jet_constituents = matched_vr_jets_and_constituents[j].second;
+    hist_vr_jets->fill_pseudojet(event, jet);
+    hist_vr_jets->fill_pseudojet_constituents(jet_constituents);
+  }
+  //class that makes the .csv file containing infos about jet constituents
+  makefiles = new Makefiles(m_csvfile_ttbar, m_csvfile_qcd, matched_vr_jets_and_constituents, is_qcd);
+//... that contain the hotvr jet constituents)
+  matching->run_matching(hotvr_jets, hotvr_jets_constituents, parton_jets); // match the clustered jets to parton level jets
+  vector<pair<PseudoJet, vector<PseudoJet>>> matched_hotvr_jets_and_constituents = matching->get_matched_jets_and_constituents();
+  for (size_t j = 0; j < matched_hotvr_jets_and_constituents.size(); j++) { // loop over jets to fill hists
+    auto jet = matched_hotvr_jets_and_constituents[j].first;
+    auto jet_constituents = matched_hotvr_jets_and_constituents[j].second;
+  //  hist_vr_jets->fill_pseudojet(event, jet);
+  //  hist_vr_jets->fill_pseudojet_constituents(jet_constituents);
+  }
+  //class that makes the .csv file containing infos about jet constituents
+  makefiles = new Makefiles(m_csvfile_ttbar, m_csvfile_qcd, matched_hotvr_jets_and_constituents, is_qcd);
+// --------------------------end--ML files--------------------------------------------
 
 // fill hists with infos about the jet constituents
   // for (size_t j = 0; j < hotvr_jets.size(); j++) {
@@ -481,7 +495,7 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
   }
 } // end loop over hotvr jets
 
-//fill hists with VR jets -> for finleys study
+// Hists for VR ISD jets
     // for(uint j=0; j<vr_jets_ISD.size(); ++j){
     //   PseudoJet jet = vr_jets_ISD[j];
     //   hist_vr_jets_ISD->fill_pseudojet(event, jet);
@@ -491,6 +505,7 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
     //   if(jet.pt()>800 && jet.pt()<1000)  hist_vr_jets_ISD_800->fill_pseudojet(event, jet);
     //   if(jet.pt()>1000 && jet.pt()<1200)  hist_vr_jets_ISD_1000->fill_pseudojet(event, jet);
     // }
+// ------MATCHING--------
 //run_matching: loop over the parton jets and match them to the hotvr jets
   vector<TopJet> matched_jets;
   vector<TopJet> matched_parton_jets;
@@ -532,7 +547,7 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
     // if(parton_jet.pt()>800 && parton_jet.pt()<1000)  hist_matched_jets_fpt_800->fill_topjet(event, matched_jet);
     // if(parton_jet.pt()>1000 && parton_jet.pt()<1200)  hist_matched_jets_fpt_1000->fill_topjet(event, matched_jet);
     // }
-// apply Top Tag
+// --------apply Top Tag-----------------
     if(toptagger->Is_tagged("sd", matched_jets[j])){
       matched_jets_tagged.push_back(matched_jet);
       matched_pair_tagged.push_back(matched_pair[j]);

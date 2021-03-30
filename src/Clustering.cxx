@@ -20,42 +20,27 @@ Clustering::Clustering(std::string clustering)
         if(line=="theta") _theta=get_value(value);
         if(line=="rmin") _min_r=get_value(value);
         if(line=="rmax") _max_r=get_value(value);
-        if(line=="ptmin") _ptmin=get_value(value);
-        if(line=="clustering") _clustering_algorithmus=value;
-        if(line=="pt_cut") _pt_cut=get_value(value);
+        if(line=="ptmin") _ptmin=get_value(value); // min pt for VR clustering
+        if(line=="clustering") _clustering_algorithmus=value; // clustering method (CA, kt or Anti-kt)
+        if(line=="pt_cut") _pt_cut=get_value(value); // min pt of subjets (HOTVR clustering)
         if(line=="z_cut") _z_cut=get_value(value);
         if(line=="beta") _beta=get_value(value);
         if(line=="pt_threshold") _pt_threshold=get_value(value);
-        if(line=="theta_SD") _theta_SD=get_value(value);
       }
       myfile.close();
     }
     else  std::cout<<"file not found"<<std::endl;
-    //show_settings();
-
-  // // parameters for HOTVR (optimized for top-tagging)
-//   mu = (30.0);     // massjump threshold
-//   theta = (0.7);       // massjump parameter
-//   max_r = (1.5);       // maximum allowed distance R
-//   min_r = (0.1);     // minimum allowed distance R
-//   rho = (600);       // cone shrinking parameter
-//   pt_cut = (0); // minimum pT of subjets
-//   ptmin = (100.);        // minimum pT of large jets
-//   // parameters for SoftDrop
-//   z_cut = 0.05;
-//   beta = 0.0;
-//   pt_threshold = 30;
-// // for ISD
-//   theta_SD = 0.0;
+  //  if(_settings_not_shown){show_settings();}
 
 }
 // cluster all
 void Clustering::cluster_jets(vector<PseudoJet> pseudojets)
 {
-  // cluster_HOTVR_jets(pseudojets);
-  cluster_HOTVR_SD_jets(pseudojets);
-  //cluster_VR_SD_jets(pseudojets);
-  //cluster_VR_ISD_jets(pseudojets);
+  if(_clustering_algorithmus=="HOTVR" || _clustering_algorithmus=="HOTVR_MJ"){cluster_HOTVR_jets(pseudojets);}
+  else if(_clustering_algorithmus=="HOTVR_SD" || _clustering_algorithmus=="hotvr_sd"){cluster_HOTVR_SD_jets(pseudojets);}
+  else if(_clustering_algorithmus=="VR" || _clustering_algorithmus=="VR_SD"){cluster_VR_SD_jets(pseudojets);}
+  else if(_clustering_algorithmus=="VR_ISD"){cluster_VR_ISD_jets(pseudojets);}
+  else{std::cout << "clustering mode not found" << '\n';}
 }
 // HOTVR including mass jump Clustering
 void Clustering::cluster_HOTVR_jets(vector<PseudoJet> pseudojets)
@@ -117,11 +102,6 @@ ClusterSequence _clust_seq(pseudojets, jet_def);
   // save the jet constituents
     auto jet_constituents = _hotvr_jets[i].constituents();
     _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
-  //  std::cout << "n constituents " << jet_constituents.size() << '\n';
-//for (size_t k = 0; k < jet_constituents.size(); k++) {
-//  std::cout << "mass constituents " << jet_constituents[k].m() << '\n';
-//}
-
  }// end loop over hotvr jets
 }
 
@@ -133,12 +113,12 @@ void Clustering::cluster_VR_SD_jets(vector<PseudoJet> pseudojets)
   ClusterSequence _clust_seq_VR(pseudojets, jet_def_VR);
   SoftDrop _sd(_beta, _z_cut);
 
-  _vr_jets=sorted_by_pt(_clust_seq_VR.inclusive_jets(_pt_threshold)); //VR Clustering
+  _vr_jets=sorted_by_pt(_clust_seq_VR.inclusive_jets(_ptmin)); //VR Clustering
   for(unsigned i=0; i<_vr_jets.size(); i++) //groom jets with SoftDrop
   {
     _vr_jet_constituents.push_back(_vr_jets[i].constituents());
     _top_vr_jets.push_back(convert_jet(_vr_jets[i]));
-    _vr_jets_SD.push_back(_sd(_vr_jets[i]));
+  //  _vr_jets_SD.push_back(_sd(_vr_jets[i]));
   }
 }
 
@@ -148,7 +128,7 @@ void Clustering::cluster_VR_ISD_jets(vector<PseudoJet> pseudojets)
   VariableRPlugin VR_plugin(_rho, _min_r, _max_r, VariableRPlugin::CALIKE);
   JetDefinition jet_def_VR(&VR_plugin);
   ClusterSequence _clust_seq_VR(pseudojets, jet_def_VR);
-  _vr_jets=sorted_by_pt(_clust_seq_VR.inclusive_jets(_pt_threshold)); //VR Clustering
+  _vr_jets=sorted_by_pt(_clust_seq_VR.inclusive_jets(_ptmin)); //VR Clustering
 
   //double R_VR = ? how do we get the variable radius from the VR plugin? instead of min_r
   double R=1;
@@ -243,17 +223,26 @@ double Clustering::get_value(std::string word){
 void Clustering::show_settings(){
   std::cout<<"-----Clustering------"<<std::endl;
   std::cout<<"Algorithmus: "<<_clustering_algorithmus<<std::endl;
-  std::cout<<"Minimum Jet pT: "<<_ptmin<<"GeV"<<std::endl;
-  if(_clustering_algorithmus=="hotvr" || _clustering_algorithmus=="variableR") std::cout<<"rho: "<<_rho<<"GeV"<<std::endl;
-  if(_clustering_algorithmus=="hotvr" || _clustering_algorithmus=="variableR") std::cout<<"minimum radius: "<<_min_r<<std::endl;
-  if(_clustering_algorithmus=="hotvr" || _clustering_algorithmus=="variableR") std::cout<<"maximum radius: "<<_max_r<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"mu: "<<_mu<<"GeV"<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"theta: "<<_theta<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"z_cut: "<<_z_cut<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"beta: "<<_beta<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"pt_threshold: "<<_pt_threshold <<"GeV"<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"pt_cut for subjets: "<<_pt_threshold <<"GeV"<<std::endl;
-  if(_clustering_algorithmus=="hotvr") std::cout<<"theta for SD: "<<_theta_SD<<std::endl;
+
+  if(_clustering_algorithmus=="hotvr" || _clustering_algorithmus=="variableR" || _clustering_algorithmus=="hotvr_sd")
+  {std::cout<<"rho: "<<_rho<<"GeV"<<std::endl;
+  std::cout<<"minimum radius: "<<_min_r<<std::endl;
+  std::cout<<"maximum radius: "<<_max_r<<std::endl;}
+
+  if(_clustering_algorithmus=="hotvr")
+  {std::cout<<"mu: "<<_mu<<"GeV"<<std::endl;
+  std::cout<<"theta: "<<_theta<<std::endl;
+  std::cout<<"pt_threshold: "<<_pt_threshold <<"GeV"<<std::endl;
+  std::cout<<"pt_cut for subjets: "<<_pt_cut <<"GeV"<<std::endl;}
+
+  if(_clustering_algorithmus=="hotvr_sd")
+  {std::cout<<"z_cut: "<<_z_cut<<std::endl;
+  std::cout<<"beta: "<<_beta<<std::endl;
+  std::cout<<"mu: "<<_mu<<"GeV"<<std::endl;}
+
+  if(_clustering_algorithmus=="variableR")
+  {std::cout<<"Minimum Jet pT: "<<_ptmin<<"GeV"<<std::endl;}
 
   std::cout<<"---------------------"<<std::endl;
+  _settings_not_shown = false;
 }

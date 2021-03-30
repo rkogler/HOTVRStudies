@@ -123,11 +123,11 @@ gPad->SetBottomMargin(0.2);
 hist_ttbar_SD->SetTitle("");
 
 hist_ttbar_SD->Scale(1/hist_ttbar_SD->Integral());
-hist_ttbar_SD->SetLineColor(kRed);
+hist_ttbar_SD->SetLineColor(kGreen+2);
 hist_ttbar_SD->SetLineWidth(2);
 hist_ttbar_SD->Draw("H");
 hist_QCD_SD->Scale(1/hist_QCD_SD->Integral());
-hist_QCD_SD->SetLineColor(kRed);
+hist_QCD_SD->SetLineColor(kGreen+2);
 hist_QCD_SD->SetLineStyle(kDotted);
 hist_QCD_SD->SetLineWidth(2);
 hist_QCD_SD->Draw("H same");
@@ -153,21 +153,21 @@ hist_QCD->Draw("H same");
 }
 
 hist_ttbar_SD2->Scale(1/hist_ttbar_SD2->Integral());
-hist_ttbar_SD2->SetLineColor(kGreen+2);
+hist_ttbar_SD2->SetLineColor(kAzure+7);
 hist_ttbar_SD2->SetLineWidth(2);
 hist_ttbar_SD2->Draw("H same");
 hist_QCD_SD2->Scale(1/hist_QCD_SD2->Integral());
-hist_QCD_SD2->SetLineColor(kGreen+2);
+hist_QCD_SD2->SetLineColor(kAzure+7);
 hist_QCD_SD2->SetLineStyle(kDotted);
 hist_QCD_SD2->SetLineWidth(2);
 hist_QCD_SD2->Draw("H same");
 
 hist_ttbar_SD3->Scale(1/hist_ttbar_SD3->Integral());
-hist_ttbar_SD3->SetLineColor(kAzure+2);
+hist_ttbar_SD3->SetLineColor(kRed);
 hist_ttbar_SD3->SetLineWidth(2);
 hist_ttbar_SD3->Draw("H same");
 hist_QCD_SD3->Scale(1/hist_QCD_SD3->Integral());
-hist_QCD_SD3->SetLineColor(kAzure+2);
+hist_QCD_SD3->SetLineColor(kRed);
 hist_QCD_SD3->SetLineStyle(kDotted);
 hist_QCD_SD3->SetLineWidth(2);
 hist_QCD_SD3->Draw("H same");

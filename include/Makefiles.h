@@ -8,7 +8,8 @@
 
 /**
 * This class can produce .csv files containing informations about the jets.
-*
+* Input: files, vector of pairs containing jets with the corresponding constituents
+* 
 */
 
 class Makefiles{

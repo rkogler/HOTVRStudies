@@ -18,6 +18,7 @@
 */
 class Clustering{
 private:
+  bool _settings_not_shown=true;
 
   double _mu, _theta, _max_r, _min_r, _rho, _pt_cut, _ptmin;
   double _mu_SD, _theta_SD;
