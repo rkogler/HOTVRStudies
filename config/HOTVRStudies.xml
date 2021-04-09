@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
-	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML">
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput">
 	  <!ENTITY b_Cacheable     "False">
-	  <!ENTITY NEVT            "200000">
+	  <!ENTITY NEVT            "-1">
 
           <!--QCD files-->
 	  <!ENTITY QCD_flat_prod1 SYSTEM "/nfs/dust/cms/user/albrecha/ntuples/qcd_pythia8_flat_nnpdf23_prod1_f.xml">
@@ -47,7 +47,6 @@
 		&QCD_flat_prod2;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
-				<!--
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod3" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod3;
 		<InputTree Name="AnalysisTree" />
@@ -80,13 +79,14 @@
 		&QCD_flat_prod10;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
--->
+
 
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
-	<!--      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_s1" Cacheable="&b_Cacheable;">
+
+	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_s1" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23_s1;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
@@ -100,13 +100,14 @@
 		&ttbar_pythia8_nnpdf23;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
--->
 
         <UserConfig>
 			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr.config" />
 	    <Item Name="GenParticleCollection" Value="GenParticles" />
+	<!--
 			<Item Name="csvfile_ttbar" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/ttbar_constituents_HOTVR_SD_26_03.csv" />
 			<Item Name="csvfile_qcd" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/qcd_constituents_HOTVR_SD_26_03.csv" />
+		-->
 
       <!-- the class name of the AnalysisModule subclasses to run: -->
       <Item Name="AnalysisModule" Value="HOTVRStudiesModule" />

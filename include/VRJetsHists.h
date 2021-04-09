@@ -25,7 +25,7 @@ public:
     // use the same constructor arguments as Hists for forwarding:
     VRJetsHists(uhh2::Context & ctx, const std::string & dirname, bool is_qcd);
     virtual void fill(const uhh2::Event & ev) override;
-    virtual void fill_pseudojet(const uhh2::Event & ev, const fastjet::PseudoJet & jet);
+    virtual void fill_pseudojet(const fastjet::PseudoJet & jet);
     virtual void fill_pseudojet_constituents(const std::vector<fastjet::PseudoJet> & jets);
 
     virtual ~VRJetsHists();

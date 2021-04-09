@@ -165,11 +165,6 @@ private:
   Clustering* clustering;
   TopTagger* toptagger;
 
-// for the csv files for ML studies
-  string m_csvfile_ttbar;
-  string m_csvfile_qcd;
-  Makefiles* makefiles;
-
 // initialize vectors of jets
 // ... containing pseudojets
   vector<fastjet::PseudoJet> pseudojets;
@@ -210,8 +205,6 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   cout << "Starting HOTVRStudiesModule!" << endl;
 // get info from xml
   m_clustering = ctx.get("Clustering");
-  m_csvfile_ttbar = ctx.get("csvfile_ttbar");
-  m_csvfile_qcd = ctx.get("csvfile_qcd");
 // check for the dataset version (ttbar or QCD)
   dataset_version = ctx.get("dataset_version");
   isTTbar = dataset_version.find("ttbar") == 0;
@@ -370,10 +363,7 @@ bool HOTVRStudiesModule::process(Event & event) {
   clustering->cluster_jets(pseudojets); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
   hotvr_jets = clustering->get_hotvr_jets();
   hotvr_jets_constituents = clustering->get_hotvr_jet_constituents();
-  // get the rejected subjets
-  _rejected_subjets = clustering->get_rejected_subjets();
-  _rejected_cluster = clustering->get_rejected_cluster();
-  _soft_cluster = clustering->get_soft_cluster();
+
   // fill hists with the number of rejected subjets and clusters
   // hist_rejected_subjets->fill_n_rejected_subjets(event, _rejected_subjets);
   // hist_rejected_cluster->fill_n_cluster(event, _rejected_cluster);
@@ -417,34 +407,6 @@ bool HOTVRStudiesModule::process(Event & event) {
   //get the topjets from the Clustering
   _top_hotvr_jets=clustering->get_top_hotvr_jets();
   _top_parton_jets=clustering->get_top_parton_jets();
-
-// ---------------------------begin---ML files-------------------------------------------
-// part to create files for machine learning studies (produce files
-//... that contain the vr jet constituents)
-  std::vector<fastjet::PseudoJet> matched_vr_jets;
-  matching->run_matching(vr_jets, vr_jets_constituents, parton_jets); // match the clustered jets to parton level jets
-  matched_vr_jets = matching->get_matched_pseudojets();
-  vector<pair<PseudoJet, vector<PseudoJet>>> matched_vr_jets_and_constituents = matching->get_matched_jets_and_constituents();
-  for (size_t j = 0; j < matched_vr_jets_and_constituents.size(); j++) { // loop over jets to fill hists
-    auto jet = matched_vr_jets_and_constituents[j].first;
-    auto jet_constituents = matched_vr_jets_and_constituents[j].second;
-    hist_vr_jets->fill_pseudojet(event, jet);
-    hist_vr_jets->fill_pseudojet_constituents(jet_constituents);
-  }
-  //class that makes the .csv file containing infos about jet constituents
-  makefiles = new Makefiles(m_csvfile_ttbar, m_csvfile_qcd, matched_vr_jets_and_constituents, is_qcd);
-//... that contain the hotvr jet constituents)
-  matching->run_matching(hotvr_jets, hotvr_jets_constituents, parton_jets); // match the clustered jets to parton level jets
-  vector<pair<PseudoJet, vector<PseudoJet>>> matched_hotvr_jets_and_constituents = matching->get_matched_jets_and_constituents();
-  for (size_t j = 0; j < matched_hotvr_jets_and_constituents.size(); j++) { // loop over jets to fill hists
-    auto jet = matched_hotvr_jets_and_constituents[j].first;
-    auto jet_constituents = matched_hotvr_jets_and_constituents[j].second;
-  //  hist_vr_jets->fill_pseudojet(event, jet);
-  //  hist_vr_jets->fill_pseudojet_constituents(jet_constituents);
-  }
-  //class that makes the .csv file containing infos about jet constituents
-  makefiles = new Makefiles(m_csvfile_ttbar, m_csvfile_qcd, matched_hotvr_jets_and_constituents, is_qcd);
-// --------------------------end--ML files--------------------------------------------
 
 // fill hists with infos about the jet constituents
   // for (size_t j = 0; j < hotvr_jets.size(); j++) {
@@ -601,6 +563,8 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
     }
   }
 
+  // delete clustering infos
+  clustering->Reset();
 // decide whether or not to keep the current event in the output:
   return true;
 }

@@ -3,7 +3,7 @@
 
 	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/test">
 	  <!ENTITY b_Cacheable     "False">
-	  <!ENTITY NEVT            "-1">
+	  <!ENTITY NEVT            "1">
 
 	  ]>
  <!--
@@ -28,22 +28,20 @@
 	      </InputData>
 
 				<!-- QCD test -->
-
+<!--
 			<InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod1_f10" Cacheable="&b_Cacheable;">
 			<In FileName="/nfs/dust/cms/user/albrecha/ntuples/qcd/ntuples/qcd_pythia8_flat_nnpdf23_prod1_f10.root" Lumi="0.0"/>
 			<InputTree Name="AnalysisTree" />
 			</InputData>
-
+-->
 
         <UserConfig>
 
 	    <Item Name="GenParticleCollection" Value="GenParticles" />
-			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr_30_0.05_1.config"/>
- 		<!--	<Item Name="csvfile_ttbar" Value="/nfs/dust/cms/user/albrecha/uhh2_102X/CMSSW_10_2_10/src/UHH2/HOTVRStudies/Files_for_Finley/ttbar_constituents.csv" />
-			<Item Name="csvfile_qcd" Value="/nfs/dust/cms/user/albrecha/uhh2_102X/CMSSW_10_2_10/src/UHH2/HOTVRStudies/Files_for_Finley/qcd_constituents.csv" />
--->
+			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr.config"/>
+
     <!-- the class name of the AnalysisModule subclasses to run: -->
-            <Item Name="AnalysisModule" Value="HOTVRStudiesModule" />
+            <Item Name="AnalysisModule" Value="JetDisplayModule" />
 
             <!-- tell AnalysisModuleRunner NOT to use the MC event weight from SFrame; rather let
                  MCLumiWeight (called via CommonModules) calculate the MC event weight. The MC

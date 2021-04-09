@@ -24,7 +24,7 @@ hist_mass_sum_constituents = book<TH1F>("mass sum constituents", "mass sum const
 
 void VRJetsHists::fill(const Event & event){}
 
-void VRJetsHists::fill_pseudojet(const Event & event, const fastjet::PseudoJet & jet){
+void VRJetsHists::fill_pseudojet(const fastjet::PseudoJet & jet){
   if (b_is_qcd) {processed_events_qcd->Fill(0);}
   else{processed_events_ttbar->Fill(0);}
 

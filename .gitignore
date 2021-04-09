@@ -1,0 +1,17 @@
+# Put temporary objects in 'obj', (test) binaries in 'bin',
+# and other stuff (such as test root files) in tmp.
+*/obj
+*/bin
+*/tmp
+pydump*.py
+**/python/__init__.py
+*.pyc
+*.root
+*.d
+*.so
+*.pcm
+*~
+*.local
+*.pdf
+*.png
+*.json
