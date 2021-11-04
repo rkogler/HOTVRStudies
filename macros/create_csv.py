@@ -3,11 +3,13 @@ from ROOT import TFile,TTree
 
 nevents_max = 300000
 
-csv_qcd = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/qcd_constituents_HOTVR_SD_08_04.csv"
+csv_qcd = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/qcd_constituents_VR_08_04.csv"
 
-csv_ttbar = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/ttbar_constituents_HOTVR_SD_08_04.csv"
+csv_ttbar = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/ttbar_constituents_VR_08_04.csv"
 
 fFile = TFile("/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ")
+#fFile = TFile("/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/HOTVR_ML/uhh2.AnalysisModuleRunner.MC.QCD_flat_prod1.root", "READ")
+
 fTree = fFile.Get("AnalysisTree")
 
 ievent = 0

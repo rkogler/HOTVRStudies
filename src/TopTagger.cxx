@@ -39,3 +39,32 @@ bool TopTagger::Is_SD_tagged(TopJet &jet)
   if(mjet>140 && mjet<220 && nsubjets>2 && mmin>50 && ptfraction<0.8) tagged=true;
   return tagged;
 }
+//--------same for pseudojets-------------
+bool TopTagger::Is_tagged(string tagger, PseudoJet &jet)
+{
+  if(tagger=="HOTVR"||tagger=="hotvr") return Is_HOTVR_tagged(jet);
+  else if(tagger=="SD"||tagger=="Soft Drop" ||tagger=="softdrop" || tagger=="sd") return Is_SD_tagged(jet);
+  else return false;
+}
+
+bool TopTagger::Is_HOTVR_tagged(PseudoJet &jet)
+{
+  double mjet=jet.m();
+  int nsubjets=jet.user_info<HOTVRinfo>().nsubjets();
+  double ptfraction=jet.user_info<HOTVRinfo>().ptfraction(0);
+  double mmin=jet.user_info<HOTVRinfo>().mmin();
+  bool tagged=false;
+  if(mjet>140 && mjet<220 && nsubjets>2 && mmin>50 && ptfraction<0.8) tagged=true;
+  return tagged;
+}
+
+bool TopTagger::Is_SD_tagged(PseudoJet &jet)
+{ // TODO : choose tagging parameters for HOTVR SD
+  double mjet=jet.m();
+  int nsubjets=jet.user_info<HOTVRinfo>().nsubjets();
+  double ptfraction=jet.user_info<HOTVRinfo>().ptfraction(0);
+  double mmin=jet.user_info<HOTVRinfo>().mmin();
+  bool tagged=false;
+  if(mjet>140 && mjet<220 && nsubjets>2 && mmin>50 && ptfraction<0.8) tagged=true;
+  return tagged;
+}

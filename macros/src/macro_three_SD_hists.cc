@@ -191,10 +191,6 @@ hist_QCD_SD3->Draw("H same");
     hist_ttbar_SD->GetXaxis()->SetRangeUser(120,250);
 
   }
-  // else if(k==1&&j<3){ // mass low
-  //   hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.08);
-  //   hist_ttbar_SD->GetXaxis()->SetRangeUser(40,140);
-  // }
   else if(k==2){ // mmin
     hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.3);
     hist_ttbar_SD->GetXaxis()->SetRangeUser(40,130);

@@ -8,6 +8,9 @@
 #include "UHH2/common/include/ElectronHists.h"
 #include "UHH2/common/include/NSelections.h"
 #include "UHH2/common/include/TopJetIds.h"
+#include "UHH2/common/include/TTbarGen.h"
+#include "UHH2/common/include/PrintingModules.h"
+
 // include everything from the HOTVR Studies
 #include "UHH2/HOTVRStudies/include/Matching.h"
 #include "UHH2/HOTVRStudies/include/Clustering.h"
@@ -17,6 +20,7 @@
 #include "UHH2/HOTVRStudies/include/VRJetsHists.h"
 #include "UHH2/HOTVRStudies/include/SoftClusterHists.h"
 #include "UHH2/HOTVRStudies/include/Makefiles.h"
+#include "UHH2/HOTVRStudies/include/EfficiencyHists.h"
 // include from HOTVR for the performance hists
 #include "UHH2/HOTVR/include/HOTVRIds.h"
 // include from fastjet
@@ -128,6 +132,12 @@ private:
   // std::unique_ptr<SoftClusterHists> hist_soft_cluster_1000;
 
    std::unique_ptr<VRJetsHists> hist_vr_jets;
+   std::unique_ptr<VRJetsHists> hist_vr_jets_200;
+   std::unique_ptr<VRJetsHists> hist_vr_jets_400;
+   std::unique_ptr<VRJetsHists> hist_vr_jets_600;
+   std::unique_ptr<VRJetsHists> hist_vr_jets_800;
+   std::unique_ptr<VRJetsHists> hist_vr_jets_1000;
+
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents;
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents_200;
   // std::unique_ptr<VRJetsHists> hist_hotvr_jet_constituents_400;
@@ -158,6 +168,8 @@ private:
   std::vector<std::unique_ptr<Selection>> sel_hotvr, sel_softdrop;
   std::vector<std::unique_ptr<Hists>> hist_hotvr, hist_softdrop;
   int n_points = 100;
+  //----EfficiencyHists----
+  std::unique_ptr<EfficiencyHists> hist_eff_hotvr;
 
 // initialize classes
   string m_clustering;
@@ -191,6 +203,11 @@ private:
   bool is_mc, is_qcd;
 
   int nevent=0;
+
+  std::unique_ptr<uhh2::AnalysisModule> ttgenprod;
+
+  Event::Handle<TTbarGen> h_ttbargen;
+  bool debug = false;
 };
 
 /*
@@ -203,6 +220,7 @@ private:
 
 HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   cout << "Starting HOTVRStudiesModule!" << endl;
+  if(debug){cout << "HOTVRStudiesModule: Debugging mode :) " << '\n';}
 // get info from xml
   m_clustering = ctx.get("Clustering");
 // check for the dataset version (ttbar or QCD)
@@ -215,6 +233,13 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   h_matched_jets = ctx.get_handle<vector<TopJet>>("matched_jets");
   h_matched_parton_jets = ctx.get_handle<vector<TopJet>>("matched_parton_jets");
   h_matched_pairs = ctx.get_handle<vector<pair<TopJet, TopJet>>>("matched_pairs");
+
+  if (isTTbar) {
+    if(debug){std::cout << "HOTVRStudiesModule: Event is ttbar!" << '\n';}
+    const std::string ttbar_gen_label("ttbargen");
+    ttgenprod.reset(new TTbarGenProducer(ctx, ttbar_gen_label, true));
+    h_ttbargen=ctx.get_handle<TTbarGen>("ttbargen");
+  }
 
 // Set up Hists classes:
   hist_hotvr_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets", is_qcd));
@@ -303,6 +328,12 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   // hist_soft_cluster_1000.reset(new SoftClusterHists(ctx, "SoftClusterHists_soft_cluster_1000"));
 
    hist_vr_jets.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets", is_qcd));
+   hist_vr_jets_200.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets_200", is_qcd));
+   hist_vr_jets_400.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets_400", is_qcd));
+   hist_vr_jets_600.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets_600", is_qcd));
+   hist_vr_jets_800.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets_800", is_qcd));
+   hist_vr_jets_1000.reset(new VRJetsHists(ctx, "VRJetsHists_vr_jets_1000", is_qcd));
+
   // hist_hotvr_jet_constituents.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets", is_qcd));
   // hist_hotvr_jet_constituents_200.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets_200", is_qcd));
   // hist_hotvr_jet_constituents_400.reset(new VRJetsHists(ctx, "VRJetsHists_hotvr_jets_400", is_qcd));
@@ -321,7 +352,7 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   double top_pt_min = 0.0;
   double top_eta_max = 100000;
   TopJetId id_topjet =  PtEtaCut(top_pt_min, top_eta_max);
-  TopJetId id_hotvr = AndId<TopJet>(id_topjet, Tau32Groomed(0.56));  // definition of hotvr id
+  TopJetId id_hotvr = AndId<TopJet>(id_topjet, Tau32Groomed(0.47));  // definition of hotvr id (HOTVR SD WP 0.47)
 
   for (int i = 0; i < n_points; ++i) //loop over working points and create hists
   {
@@ -339,6 +370,10 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   }
 
   hist_hotvr_pre.reset(new TopTagPerformanceHists(ctx, "HOTVR_Pre", is_qcd, id_topjet, h_matched_pairs)); // reserve preselection hist
+
+  //efficiency hists -> give hotvr id
+  hist_eff_hotvr.reset(new EfficiencyHists(ctx, "HOTVR_Eff", is_qcd, id_hotvr, h_matched_pairs));
+
 }
 /*
 ██████  ██████   ██████   ██████ ███████ ███████ ███████
@@ -348,8 +383,18 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
 ██      ██   ██  ██████   ██████ ███████ ███████ ███████
 */
 bool HOTVRStudiesModule::process(Event & event) {
+  if(debug){std::cout << "Begin process..." << '\n';}
 // here define genparticles and read from event
   auto genparticles = event.genparticles;
+
+  if(isTTbar){
+    if (debug) {std::cout << "Event is ttbar!" << '\n';}
+    ttgenprod->process(event);
+    const auto & ttbargen = event.get(h_ttbargen);
+    if (!ttbargen.IsTopHadronicDecay() || !ttbargen.IsAntiTopHadronicDecay()) { // skip leptonic decays
+      return false;
+    }
+  }
 
 //MATCHING -> class to filter the stable particles from the genparticles and create a pseudojet from them
   matching = new Matching();
@@ -401,6 +446,17 @@ bool HOTVRStudiesModule::process(Event & event) {
   vr_jets_constituents = clustering->get_vr_jet_constituents(); // vector<vector<PseudoJet>>
   vr_jets_SD = clustering->get_vr_jets_SD();
   vr_jets_ISD = clustering->get_vr_jets_ISD();
+
+  for (size_t j = 0; j < vr_jets.size(); j++) { // fill hists for VR jets
+    hist_vr_jets->fill_pseudojet(vr_jets[j]);
+    if(vr_jets[j].pt()>200 && vr_jets[j].pt()<400)  hist_vr_jets_200->fill_pseudojet(vr_jets[j]);
+    if(vr_jets[j].pt()>400 && vr_jets[j].pt()<600)  hist_vr_jets_400->fill_pseudojet(vr_jets[j]);
+    if(vr_jets[j].pt()>600 && vr_jets[j].pt()<800)  hist_vr_jets_600->fill_pseudojet(vr_jets[j]);
+    if(vr_jets[j].pt()>800 && vr_jets[j].pt()<1000)  hist_vr_jets_800->fill_pseudojet(vr_jets[j]);
+    if(vr_jets[j].pt()>1000 && vr_jets[j].pt()<1200)  hist_vr_jets_1000->fill_pseudojet(
+      vr_jets[j]);
+  }
+
   // cluster and get the clustered parton jets (AK10 jets)
   clustering->cluster_parton_jets(parton_pseudojets, isTTbar);
   parton_jets = clustering->get_parton_jets();
@@ -422,6 +478,7 @@ bool HOTVRStudiesModule::process(Event & event) {
 //fill hists with hotvr jets and corresponding rejected subjets
   hist_hotvr_jets->fill_n_jets(event, _top_hotvr_jets);
   for(uint j=0; j<_top_hotvr_jets.size(); ++j){ // loop over hotvr jets
+    //std::cout << "Jet pt "<< _top_hotvr_jets[j].pt() << '\n';
     hist_hotvr_jets->fill_topjet(event, _top_hotvr_jets[j]);
     if(_top_hotvr_jets[j].pt()>200 && _top_hotvr_jets[j].pt()<400)  hist_hotvr_jets_200->fill_topjet(event, _top_hotvr_jets[j]);
     if(_top_hotvr_jets[j].pt()>400 && _top_hotvr_jets[j].pt()<600)  hist_hotvr_jets_400->fill_topjet(event, _top_hotvr_jets[j]);
@@ -555,6 +612,7 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
   //set the event handle for the denominator
   event.set(h_matched_pairs, matched_pair);
   hist_hotvr_pre->fill(event);   // fill hists before tau selection (all parton jets)
+  hist_eff_hotvr->fill(event);   // fill hists for efficiency plots
   //set the event handle for the numerator
   event.set(h_matched_pairs, matched_pair_tagged);
   for (int i = 0; i < n_points; ++i){ //loop over working points

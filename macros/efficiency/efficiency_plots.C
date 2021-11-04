@@ -127,6 +127,7 @@ void efficiency_plots()
   TLegend *leg = new TLegend(0.45,0.25,0.85,0.45);
   leg->SetTextSize(.03);
   leg->SetHeader("HOTVR TopTagger: #tau_{3/2}<0.47");
+
   leg->AddEntry(bkg_eff[0], "#alpha = 1, #rho = 600 GeV", "lep");
   leg->AddEntry(bkg_eff[1], "#alpha = 0.92, #rho = 180 GeV", "lep");
   leg->AddEntry(bkg_eff[2], "#alpha = 0.84, #rho = 190 GeV", "lep");
@@ -134,7 +135,7 @@ void efficiency_plots()
   leg->AddEntry(bkg_eff[4], "#alpha = 0.815, #rho = 210 GeV", "lep");
   leg->Draw();
 
-  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/2106/eff_plots/";
+  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/SD_with_Reff/eff_plots/";
   canvas->SaveAs(outdir + "bkg_eff.eps");
 
 }

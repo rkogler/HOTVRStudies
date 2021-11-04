@@ -34,31 +34,35 @@ int main(){
   TString jets[njets];
   jets[0]="hotvr_jets";
 
-uint nptmin = 1;
+uint nptmin = 6;
 TString ptmin[nptmin];
 ptmin[0]="";
-// ptmin[1]="_200";
-// ptmin[2]="_400";
-// ptmin[3]="_600";
-// ptmin[4]="_800";
-//ptmin[5]="_1000";
+ptmin[1]="_200";
+ptmin[2]="_400";
+ptmin[3]="_600";
+ptmin[4]="_800";
+ptmin[5]="_1000";
 
 uint nvariables = 1;
 TString variables[nvariables];
-variables[0]="p_{T}";
+//variables[0]="p_{T}";
+variables[0]="nsubjets";
+
 //variables[0]="mass";
 
 TString variablenames[nvariables];
 variablenames[0]="p_{T} [GeV]";
+variablenames[0]="Number of subjets";
+
 //variablenames[0]="m_{jet} [GeV]";
 
 TString ptbins[nptmin];
 ptbins[0]="";
-// ptbins[1]="200 < p_{T} [GeV] < 400";
-// ptbins[2]="400 < p_{T} [GeV] < 600";
-// ptbins[3]="600 < p_{T} [GeV] < 800";
-// ptbins[4]="800 < p_{T} [GeV] < 1000";
-//ptbins[5]=", 1000 < p_{T} [GeV] < 1200";
+ptbins[1]="200 < p_{T} [GeV] < 400";
+ptbins[2]="400 < p_{T} [GeV] < 600";
+ptbins[3]="600 < p_{T} [GeV] < 800";
+ptbins[4]="800 < p_{T} [GeV] < 1000";
+ptbins[5]=", 1000 < p_{T} [GeV] < 1200";
 
   for (size_t i = 0; i < njets; i++) { // loop over jets
     for (size_t j = 0; j < nptmin; j++) { // loop over pt bins
@@ -69,8 +73,11 @@ ptbins[0]="";
   // TH1F* hist_ttbar_SD2 = (TH1F*)files_ttbar2->Get("HOTVRStudiesHists/mass_jets_SD"+ptmin[j]);
   // TH1F* hist_QCD_SD2 = (TH1F*)files_QCD2->Get("HOTVRStudiesHists/mass_jets_SD"+ptmin[j]);
 
-  TH1F* hist_ttbar_SD2 = (TH1F*)files_ttbar2->Get("HOTVRStudiesHists/p_{T}_jets_SD"+ptmin[j]);
-  TH1F* hist_QCD_SD2 = (TH1F*)files_QCD2->Get("HOTVRStudiesHists/p_{T}_jets_SD"+ptmin[j]);
+  TH1F* hist_ttbar_SD2 = (TH1F*)files_ttbar2->Get("HOTVRStudiesHists/nsubjets_jets_SD"+ptmin[j]);
+  TH1F* hist_QCD_SD2 = (TH1F*)files_QCD2->Get("HOTVRStudiesHists/nsubjets_jets_SD"+ptmin[j]);
+
+  // TH1F* hist_ttbar_SD2 = (TH1F*)files_ttbar2->Get("HOTVRStudiesHists/p_{T}_jets_SD"+ptmin[j]);
+  // TH1F* hist_QCD_SD2 = (TH1F*)files_QCD2->Get("HOTVRStudiesHists/p_{T}_jets_SD"+ptmin[j]);
 
 // std::cout << "bins" << '\n';
 // for (size_t bin = 0; bin < 1800; bin++) {

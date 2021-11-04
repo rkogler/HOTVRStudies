@@ -305,28 +305,27 @@ _matched_pairs.clear();
   }
 }
 
-// run matching for pseudojets
+// run matching for pseudojets (match to parton level AK4 jets)
 void Matching::run_matching(std::vector<fastjet::PseudoJet> jets,std::vector<fastjet::PseudoJet> denominator_jets){
 _matched_pseudojets.clear();
 fastjet::PseudoJet matched_jet;
 double minDeltaR=1000;
   double deltaR;
 	for(uint j=0;j<denominator_jets.size();j++){
-		for(uint i=0;i<jets.size();i++){
+		for(uint i=0;i<jets.size();i++){ // get the closest jet
     	deltaR=jets[i].delta_R(denominator_jets[j]);
     	if(deltaR<minDeltaR) {
       	minDeltaR=deltaR;
       	matched_jet=jets[i];
     	}
  		}
-	//	if(!matched_jet.has_user_info<HOTVRinfo>()) matched_jet.set_user_info(new HOTVRinfo(matched_jet,matched_jet.constituents()));
-		// set the matching radius
+		// now set the matching radius
 		double rho = 600;
 		double pt = matched_jet.pt();
 		double matching_radius = rho/pt;
 		if(matching_radius<0.1){matching_radius=0.1;};
 		if(matching_radius>1.5){matching_radius=1.5;};
-		// check if the jet is close enough
+		// check if the jet is closer than the matching radius
 		if (IsMatched(matched_jet,matching_radius,denominator_jets[j]))
 			{
 			_matched_pseudojets.push_back(matched_jet);

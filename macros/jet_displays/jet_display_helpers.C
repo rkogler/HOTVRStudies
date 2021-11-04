@@ -6,7 +6,7 @@ TString gdir = "NoCutsHistosGen_mass/"; // use this for HOTVR display
 //TString gdir = "NoCutsHistos3Gen/";       // anti-kt jets
 
 void Smear(double &x, double dx);
-bool CheckContent(TH2F* h); 
+bool CheckContent(TH2F* h);
 
 
 std::vector< std::vector<TH2F*> > GetSubjets(TFile* file)
@@ -47,11 +47,11 @@ std::vector< std::vector<TH2F*> > GetSubjets(TFile* file)
           if (infostr == "subjetpT") continue;
           if (infostr == "subjetmass") continue;
 
-          if (subjets.size()<ijet+1){ 
+          if (subjets.size()<ijet+1){
             std::vector<TH2F*> vec;
             subjets.push_back(vec);
           }
-          if (CheckContent(h)){ 
+          if (CheckContent(h)){
             //cout << "adding subjet to jet " << ijet << endl;
             //RemovePartons(h, file);
             subjets[ijet].push_back(h);
@@ -99,7 +99,7 @@ std::vector<TH2F*> GetJets(TFile* file)
           jstr.ReplaceAll("pf", "");
           Int_t ijet = jstr.Atoi();
 
-          if (CheckContent(h)){ 
+          if (CheckContent(h)){
             //RemovePartons(h, file);
             jets.push_back(h);
           }
@@ -132,9 +132,9 @@ TGraph* GetParticles(TFile* file)
         Smear(x, pf->GetXaxis()->GetBinWidth(i));
         Smear(y, pf->GetYaxis()->GetBinWidth(i));
         parts->SetPoint(k++, x, y);
-      }  
+      }
     }
-  } 
+  }
   return parts;
 }
 
@@ -163,7 +163,7 @@ void Smear(double &x, double dx)
   if (is_new_event){
     delete gRandom;
     gRandom = new TRandom3(iseed);
-    is_new_event = false;  
+    is_new_event = false;
   }
   double f = gRandom->Rndm();
 
@@ -173,11 +173,13 @@ void Smear(double &x, double dx)
 
 TGraph* GetTopDecay(TFile* file)
 {
-  TH2F* decay = (TH2F*) file->Get(gdir + "/JetDisplay_decay");  
+  TH2F* decay = (TH2F*) file->Get(gdir + "/JetDisplay_decay");
   TGraph* g = new TGraph();
   int k = 0;
   for (int i=1; i<decay->GetNbinsX()+1; ++i){
+
     for (int j=1; j<decay->GetNbinsY()+1; ++j){
+
       if (decay->GetBinContent(i,j)>0){
         // smear the particle's position instead of using the bin center
         double x = decay->GetXaxis()->GetBinCenter(i);
@@ -185,25 +187,27 @@ TGraph* GetTopDecay(TFile* file)
         Smear(x, decay->GetXaxis()->GetBinWidth(i));
         Smear(y, decay->GetYaxis()->GetBinWidth(i));
         g->SetPoint(k++, x, y);
-      }  
+
+      }
     }
-  } 
+  }
   return g;
 }
 void DrawTopDecay(TFile* file)
 {
+
   TGraph* tdecay = GetTopDecay(file);
   tdecay->SetMarkerStyle(24);
   tdecay->SetMarkerSize(1.2);
   tdecay->SetMarkerColor(kRed+2);
   tdecay->SetLineWidth(2);
-  tdecay->DrawClone("Psame"); 
-  tdecay->SetMarkerSize(1.1);   
   tdecay->DrawClone("Psame");
-  tdecay->SetMarkerSize(1.0);   
-  tdecay->DrawClone("Psame");      
-  tdecay->SetMarkerSize(0.9);   
-  tdecay->DrawClone("Psame");        
+  tdecay->SetMarkerSize(1.1);
+  tdecay->DrawClone("Psame");
+  tdecay->SetMarkerSize(1.0);
+  tdecay->DrawClone("Psame");
+  tdecay->SetMarkerSize(0.9);
+  tdecay->DrawClone("Psame");
 }
 
 
@@ -214,31 +218,29 @@ void DrawStableParts(TFile* file)
   parts->SetMarkerSize(0.4);
   parts->SetMarkerColor(TColor::GetColor( "#666666" ));
   parts->Draw("Psame");
-} 
-
+}
+//rejected with SD
 TH2F* GetClustersRejected(TFile* file)
 {
-  TH2F* h = (TH2F*) file->Get(gdir + "/JetDisplay_beam");
+  TH2F* h = (TH2F*) file->Get(gdir + "/JetDisplay_radiation");
   for (int ib=1; ib<h->GetNbinsX()+1; ++ib){
     for (int jb=1; jb<h->GetNbinsY()+1; ++jb){
       if (h->GetBinContent(ib,jb)>0) h->SetBinContent(ib,jb,1);
     }
   }
-  return h;  
+  return h;
 }
 
-
+//hotvr jets with only one subjet
 TH2F* GetSubjetsRejected(TFile* file)
 {
-  //TH2F* h = (TH2F*) file->Get(gdir + "/JetDisplay_radiation");
-  // bug in filling: rejected subjets are called "beam" here  
   TH2F* h = (TH2F*) file->Get(gdir + "/JetDisplay_beam");
   for (int ib=1; ib<h->GetNbinsX()+1; ++ib){
     for (int jb=1; jb<h->GetNbinsY()+1; ++jb){
       if (h->GetBinContent(ib,jb)>0) h->SetBinContent(ib,jb,1);
     }
   }
-  return h;  
+  return h;
 }
 
 TH2F* GetSubjetsRejectedByPtsub(TFile* file)
@@ -250,16 +252,16 @@ TH2F* GetSubjetsRejectedByPtsub(TFile* file)
       if (h->GetBinContent(ib,jb)>0) h->SetBinContent(ib,jb,1);
     }
   }
-  return h;  
+  return h;
 }
 
 void RemovePartons(TH2* jh, TFile* file)
 {
-  // remove partons first (no idea why they are filled)  
-  TH2F* decay = (TH2F*) file->Get(gdir + "/JetDisplay_decay");  
+  // remove partons first (no idea why they are filled)
+  TH2F* decay = (TH2F*) file->Get(gdir + "/JetDisplay_decay");
   for (int i=1; i<decay->GetNbinsX()+1; ++i){
     for (int j=1; j<decay->GetNbinsY()+1; ++j){
-      if (decay->GetBinContent(i,j)>0){ 
+      if (decay->GetBinContent(i,j)>0){
         // check surrounding bins
         int k = 0;
         if (jh->GetBinContent(i+1,j)) ++k;
@@ -283,7 +285,7 @@ bool CheckContent(TH2F* h)
 
 void CreateContours(std::vector<TH2F*> jets)
 {
-    for (int j=0; j<jets.size(); ++j){         
+    for (int j=0; j<jets.size(); ++j){
       TH2F* h = jets[j];
       // loop over bins, create one area with constant height
       for (int ib=1; ib<h->GetNbinsX()+1; ++ib){
@@ -298,8 +300,8 @@ void DrawContour(TH2F* hist, int col)
 {
 
   // remove some trailing islands (bugs?)
-  //hist->SetBinContent( 1,16,0);    
-  //hist->SetBinContent( 8, 9,0);  
+  //hist->SetBinContent( 1,16,0);
+  //hist->SetBinContent( 8, 9,0);
   //hist->SetBinContent(12,11,0);
   //hist->SetBinContent(42, 8,0);
   //hist->SetBinContent(50,12,0);
@@ -312,11 +314,11 @@ void DrawContour(TH2F* hist, int col)
   h->SetContourLevel( 0, 0.5 );
 
   h->SetLineWidth( 1 );
-  h->SetFillColor( col );  
+  h->SetFillColor( col );
   h->SetLineColor( col );
   //h->Draw( "samecont3" );
   h->Draw( "samecont0" );
-  
+
 }
 
 std::vector< std::vector<int> > GetColours()
@@ -329,7 +331,7 @@ std::vector< std::vector<int> > GetColours()
   col1.push_back(TColor::GetColor( "#ffe0cc" ));
   col1.push_back(TColor::GetColor( "#fff0e6" ));
   for (int i=5; i<10; ++i) col1.push_back(TColor::GetColor( "#fff0e6" ));
- 
+
   // green hues
   std::vector<int> col2;
   col2.push_back(TColor::GetColor( "#79d279" ));
@@ -367,7 +369,7 @@ void FixHistForContour(TH2F* h)
     double df = 0.49;
 
     for (int i=1; i<h->GetNbinsX()+1; ++i)
-    {     
+    {
        Double_t v = h->GetBinContent(i,1);
        if (v >= 1.){
          h->SetBinContent(i, 1, df);
@@ -379,7 +381,7 @@ void FixHistForContour(TH2F* h)
     }
     // now the y-axis
     for (int i=1; i<h->GetNbinsY()+1; ++i)
-    {     
+    {
        Double_t v = h->GetBinContent(1,i);
        if (v >= 1.){
          h->SetBinContent(1, i, df);
@@ -388,9 +390,6 @@ void FixHistForContour(TH2F* h)
        if (v >= 1.){
          h->SetBinContent(h->GetNbinsX(), i, df);
        }
-    }    
+    }
 
 }
-
-
-

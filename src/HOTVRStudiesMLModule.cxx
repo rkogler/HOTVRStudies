@@ -39,6 +39,9 @@ public:
 private:
 //initialize hist classes
   std::unique_ptr<VRJetsHists> hist_jets;
+  std::unique_ptr<VRJetsHists> hist_jets_200;
+  std::unique_ptr<VRJetsHists> hist_jets_350;
+  std::unique_ptr<VRJetsHists> hist_jets_500;
 
 // initialize event handle
   Event::Handle<vector<vector<double>>> h_jet_info_px;
@@ -96,6 +99,9 @@ HOTVRStudiesMLModule::HOTVRStudiesMLModule(Context & ctx){
 
 // Set up Hists classes:
   hist_jets.reset(new VRJetsHists(ctx, "VRJetsHists_jets", is_qcd));
+  hist_jets_200.reset(new VRJetsHists(ctx, "VRJetsHists_jets_200", is_qcd));
+  hist_jets_350.reset(new VRJetsHists(ctx, "VRJetsHists_jets_350", is_qcd));
+  hist_jets_500.reset(new VRJetsHists(ctx, "VRJetsHists_jets_500", is_qcd));
 
 }
 /*
@@ -115,7 +121,6 @@ bool HOTVRStudiesMLModule::process(Event & event) {
   pseudojets = matching->get_stableParticles();
   matching->set_partons(genparticles);
   parton_pseudojets = matching->get_partons();
-
 //CLUSTERING -> clusters jets depending on the algorithm that is chosen
   clustering = new Clustering(m_clustering);
   clustering->cluster_jets(pseudojets); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
@@ -124,10 +129,8 @@ bool HOTVRStudiesMLModule::process(Event & event) {
   // cluster and get the clustered parton jets (AK10 jets)
   clustering->cluster_parton_jets(parton_pseudojets, isTTbar);
   parton_jets = clustering->get_parton_jets();
-
   matching->run_matching(jets, jets_constituents, parton_jets); // match the clustered jets to parton level jets
   vector<pair<PseudoJet, vector<PseudoJet>>> matched_jets_and_constituents = matching->get_matched_jets_and_constituents();
-
   vector<vector<double>> jets_constituents_px;
   vector<vector<double>> jets_constituents_py;
   vector<vector<double>> jets_constituents_pz;
@@ -137,12 +140,14 @@ bool HOTVRStudiesMLModule::process(Event & event) {
   vector<double> constituents_py;
   vector<double> constituents_pz;
   vector<double> constituents_m;
-
   for (size_t j = 0; j < matched_jets_and_constituents.size(); j++) { // loop over jets to fill hists
     auto jet = matched_jets_and_constituents[j].first;
     auto jet_constituents = matched_jets_and_constituents[j].second;
     hist_jets->fill_pseudojet(jet); // fill basic hists (no specific HOTVR info like subjets etc.)
-    hist_jets->fill_pseudojet_constituents(jet_constituents);
+    if(jet.pt()>200 && jet.pt()<350)  hist_jets_200->fill_pseudojet(jet);
+    if(jet.pt()>350 && jet.pt()<500)  hist_jets_350->fill_pseudojet(jet);
+    if(jet.pt()>500)  hist_jets_500->fill_pseudojet(jet);
+  //  hist_jets->fill_pseudojet_constituents(jet_constituents);
     for (size_t n = 0; n < jet_constituents.size(); n++) { // loop over constituents
         auto constituent = jet_constituents[n];
         constituents_px.push_back(constituent.px()); // save double in constituents vector
@@ -154,18 +159,16 @@ bool HOTVRStudiesMLModule::process(Event & event) {
     jets_constituents_py.push_back(constituents_py);
     jets_constituents_pz.push_back(constituents_pz);
     jets_constituents_m.push_back(constituents_m);
-
   constituents_px.clear();
   constituents_py.clear();
   constituents_pz.clear();
   constituents_m.clear();
   }
 //set the event handle
-  event.set(h_jet_info_px, jets_constituents_px);
-  event.set(h_jet_info_py, jets_constituents_py);
-  event.set(h_jet_info_pz, jets_constituents_pz);
-  event.set(h_jet_info_m, jets_constituents_m);
-
+  // event.set(h_jet_info_px, jets_constituents_px);
+  // event.set(h_jet_info_py, jets_constituents_py);
+  // event.set(h_jet_info_pz, jets_constituents_pz);
+  // event.set(h_jet_info_m, jets_constituents_m);
   // delete clustering infos
   clustering->Reset();
 // decide whether or not to keep the current event in the output:

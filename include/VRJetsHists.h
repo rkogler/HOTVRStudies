@@ -7,6 +7,7 @@
 
 #include "fastjet/contrib/HOTVR.hh"
 #include "fastjet/contrib/HOTVRinfo.hh"
+#include "fastjet/contrib/Nsubjettiness.hh"
 
 #include <iostream>
 
@@ -38,4 +39,5 @@ public:
     TH1F *hist_nconstituents;
     TH1F *hist_mass_constituents;
     TH1F *hist_mass_sum_constituents;
+    TH1F *hist_tau1, *hist_tau2, *hist_tau3, *hist_tau21, *hist_tau32;
 };

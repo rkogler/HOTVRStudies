@@ -7,7 +7,7 @@
 
 vector<char*> get_filenames(const char* ext)
 {
-  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt30_mu30";
+  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt0_mu40";
   char* dir = gSystem->ExpandPathName(inDir);
   void* dirp = gSystem->OpenDirectory(dir);
   const char* entry;
@@ -92,7 +92,7 @@ void toptag_performance()
       {
 	       double x_hotvr = b_ttbar_hotvr.at(i)->GetBinContent(bin) / N_ttbar_HOTVR;
 	       double y_hotvr = b_QCD_hotvr.at(i)->GetBinContent(bin) / N_QCD_HOTVR;
-        // std::cout << x_hotvr << y_hotvr << '\n';
+        // std::cout << "Point " <<i << ", signal: " << x_hotvr << ", bkg: "<<y_hotvr << '\n';
 	       HOTVR->SetPoint(i, x_hotvr, y_hotvr);
       }
 

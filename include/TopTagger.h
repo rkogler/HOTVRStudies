@@ -12,7 +12,12 @@ private:
   bool Is_HOTVR_tagged(TopJet &jet);
   bool Is_SD_tagged(TopJet &jet);
 
+  bool Is_HOTVR_tagged(fastjet::PseudoJet &jet);
+  bool Is_SD_tagged(fastjet::PseudoJet &jet);
+
 public:
   TopTagger();
   bool Is_tagged(std::string tagger, TopJet &jet);
+  bool Is_tagged(std::string tagger, fastjet::PseudoJet &jet);
+
 };
