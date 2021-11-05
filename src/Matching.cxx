@@ -264,7 +264,7 @@ void Matching::set_partons(vector<GenParticle>* genparticles)
 ██   ██ ██    ██ ██  ██ ██     ██  ██  ██ ██   ██    ██    ██      ██   ██ ██ ██  ██ ██ ██    ██
 ██   ██  ██████  ██   ████     ██      ██ ██   ██    ██     ██████ ██   ██ ██ ██   ████  ██████
 */
-// match the parton level jets containing a top to the closest partcle level jet
+// match the parton level jets containing a top to the closest particle level jet
 void Matching::run_matching(vector<TopJet> particle_jets, vector<TopJet> parton_jets)
 {
   // clear all used vectors
@@ -273,6 +273,7 @@ _matched_parton_jets.clear();
 _matched_pairs.clear();
 
 	std::vector<TopJet> jets = particle_jets;
+
 //loop over parton jets
 	for(uint j=0; j<parton_jets.size(); j++){
     if(jets.size()==0) continue; // skip empty jets
@@ -290,12 +291,14 @@ _matched_pairs.clear();
 	    }
 	  }
 		// set the matching radius
-		double rho = 600;
-		double pt = matched_jet.pt();
-		double matching_radius = rho/pt;
-		if(matching_radius<0.1){matching_radius=0.1;};
-		if(matching_radius>1.5){matching_radius=1.5;};
-	//	double matching_radius= matched_jet.max_distance();
+		// double rho = 600;
+		// double pt = matched_jet.pt();
+		// double matching_radius = rho/pt;
+
+		double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
+		// if(matching_radius<0.1){matching_radius=0.1;};
+		// if(matching_radius>1.5){matching_radius=1.5;};
+
 	//store the matched jets if it is close enough
 		if (IsMatched(matched_jet,matching_radius,parton_jets[j])){
       _matched_jets.push_back(matched_jet);
