@@ -22,8 +22,8 @@ public:
     // use the same constructor arguments as Hists for forwarding:
     HOTVRJetsHists(uhh2::Context & ctx, const std::string & dirname, bool is_qcd);
     virtual void fill(const uhh2::Event & ev) override;
-    virtual void fill_topjet(const uhh2::Event & ev, const TopJet & jet);
-    virtual void fill_n_jets(const uhh2::Event & ev, const std::vector<TopJet> & jets);
+    virtual void fill_topjet(const uhh2::Event & ev, TopJet & jet);
+    virtual void fill_n_jets(const uhh2::Event & ev, std::vector<TopJet> & jets);
 
     virtual ~HOTVRJetsHists();
 
@@ -38,7 +38,11 @@ public:
 
     TH1F *hist_matching_radius, *hist_max_distance_minus_matching_radius;
 
-    TH1F *hist_pt_subjet1, *hist_pt_subjet2, *hist_pt_subjet3, *hist_pt_subjet4, *hist_pt_subjet5; // pt of the subjets
+    TH1F *hist_pt_subjet[5];
+    TH1F *hist_const_subjet[5];
+    TH1F *hist_dR_subjet[5];
+
+  //  TH1F *hist_pt_subjet1, *hist_pt_subjet2, *hist_pt_subjet3, *hist_pt_subjet4, *hist_pt_subjet5; // pt of the subjets
 
     TH1F *hist_njets;
 };

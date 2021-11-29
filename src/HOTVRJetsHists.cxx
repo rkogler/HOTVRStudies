@@ -34,18 +34,36 @@ hist_tau32 = book<TH1F>("tau32", "tau32", 100, 0, 1);
 hist_matching_radius = book<TH1F>("matching_radius", "matching_radius", 100, 0, 2);
 hist_max_distance_minus_matching_radius = book<TH1F>("max_distance_minus_matching_radius", "max_distance minus matching_radius", 100, 0, 2);
 
-hist_pt_subjet1 = book<TH1F>("subjet1_p_{T}", "subjet1 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet2 = book<TH1F>("subjet2_p_{T}", "subjet2 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet3 = book<TH1F>("subjet3_p_{T}", "subjet3 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet4 = book<TH1F>("subjet4_p_{T}", "subjet4 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet5 = book<TH1F>("subjet5_p_{T}", "subjet5 p_{T} [GeV]", 200, 0, 1000);
+for (Int_t l = 0; l < 5; l++) {
+  hist_pt_subjet[l] = book<TH1F>(TString::Format("subjet%i_p_{T}",l), TString::Format("subjet%i p_{T} [GeV]",l), 200, 0, 1000);
+  hist_const_subjet[l] = book<TH1F>(TString::Format("subjet%i_const",l), TString::Format("subjet%i constituents",l), 200, 0, 1000);
+  hist_dR_subjet[l] = book<TH1F>(TString::Format("subjet%i_dR",l), TString::Format("subjet%i dR",l), 200, 0, 3);
+}
+
+// hist_pt_subjet1 = book<TH1F>("subjet1_p_{T}", "subjet1 p_{T} [GeV]", 200, 0, 1000);
+// hist_pt_subjet2 = book<TH1F>("subjet2_p_{T}", "subjet2 p_{T} [GeV]", 200, 0, 1000);
+// hist_pt_subjet3 = book<TH1F>("subjet3_p_{T}", "subjet3 p_{T} [GeV]", 200, 0, 1000);
+// hist_pt_subjet4 = book<TH1F>("subjet4_p_{T}", "subjet4 p_{T} [GeV]", 200, 0, 1000);
+// hist_pt_subjet5 = book<TH1F>("subjet5_p_{T}", "subjet5 p_{T} [GeV]", 200, 0, 1000);
+//
+// hist_const_subjet1 = book<TH1F>("subjet1_const", "subjet1 constituents", 200, 0, 1000);
+// hist_const_subjet2 = book<TH1F>("subjet2_const", "subjet2 constituents", 200, 0, 1000);
+// hist_const_subjet3 = book<TH1F>("subjet3_const", "subjet3 constituents", 200, 0, 1000);
+// hist_const_subjet4 = book<TH1F>("subjet4_const", "subjet4 constituents", 200, 0, 1000);
+// hist_const_subjet5 = book<TH1F>("subjet5_const", "subjet5 constituents", 200, 0, 1000);
+//
+// hist_dR_subjet1 = book<TH1F>("subjet1_dR", "subjet1 dR", 200, 0, 3);
+// hist_dR_subjet2 = book<TH1F>("subjet2_dR", "subjet2 dR", 200, 0, 3);
+// hist_dR_subjet3 = book<TH1F>("subjet3_dR", "subjet3 dR", 200, 0, 3);
+// hist_dR_subjet4 = book<TH1F>("subjet4_dR", "subjet4 dR", 200, 0, 3);
+// hist_dR_subjet5 = book<TH1F>("subjet5_dR", "subjet5 dR", 200, 0, 3);
 
 hist_njets = book<TH1F>("njets", "njets", 20, -0.5, 19.5);
 }
 
 void HOTVRJetsHists::fill(const Event & event){}
 
-void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
+void HOTVRJetsHists::fill_topjet(const Event & event, TopJet & jet){
   if (b_is_qcd) {processed_events_qcd->Fill(0);}
   else{processed_events_ttbar->Fill(0);}
 
@@ -85,15 +103,22 @@ void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
 
     // fill pt of subjets
     std::vector<Jet> subjets = jet.subjets();
-    if (subjets.size()>0) {hist_pt_subjet1->Fill(subjets[1].pt());}
-    if (subjets.size()>1) {hist_pt_subjet2->Fill(subjets[2].pt());}
-    if (subjets.size()>2) {hist_pt_subjet3->Fill(subjets[3].pt());}
-    if (subjets.size()>3) {hist_pt_subjet4->Fill(subjets[4].pt());}
-    if (subjets.size()>4) {hist_pt_subjet5->Fill(subjets[5].pt());}
+    for (size_t i = 0; i < 5; i++) {
+      if (subjets.size()>i) {
+        hist_pt_subjet[i]->Fill(subjets[i].pt());
+      //  hist_const_subjet[i]->Fill(subjets[i].constituents().size()); // TODO find a way to plot this
+        hist_dR_subjet[i]->Fill(deltaR(subjets[i],jet)); // distance between subjet and jet axis
+      }
+    }
+
+    // if (subjets.size()>1) {hist_pt_subjet2->Fill(subjets[2].pt());}
+    // if (subjets.size()>2) {hist_pt_subjet3->Fill(subjets[3].pt());}
+    // if (subjets.size()>3) {hist_pt_subjet4->Fill(subjets[4].pt());}
+    // if (subjets.size()>4) {hist_pt_subjet5->Fill(subjets[5].pt());}
 
 }
 
-void HOTVRJetsHists::fill_n_jets(const Event & event, const vector<TopJet> & jets){
+void HOTVRJetsHists::fill_n_jets(const Event & event, vector<TopJet>& jets){
   hist_njets->Fill(jets.size());
 }
 
