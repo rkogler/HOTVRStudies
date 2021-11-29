@@ -16,3 +16,8 @@ pydump*.py
 *.png
 *.json
 */workdir*
+*.eps
+obj/
+config/workdir*
+*.DS_Store*
+macros/jet_displays/plots/
