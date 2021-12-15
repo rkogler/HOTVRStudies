@@ -16,6 +16,8 @@ hist_pt = book<TH1F>("p_{T}", "p_{T} [GeV]", 200, 0, 2000);
 hist_pt_sum_subjets = book<TH1F>("sumsubjetsp_{T}", "sumsubjetsp_{T} [GeV]", 200, 0, 2000);
 
 hist_mass = book<TH1F>("mass", "mass [GeV]", 100, 0, 300);
+hist_mass_sum_subjets = book<TH1F>("sumsubjetsmass", "mass sum subjets [GeV]", 100, 0, 300);
+
 hist_eta = book<TH1F>("eta", "#eta", 100, -6, 6);
 hist_phi = book<TH1F>("phi", "#phi", 40, -4, 4);
 hist_energy = book<TH1F>("energy", "energy [GeV]", 100, 0, 2200);
@@ -34,29 +36,11 @@ hist_tau32 = book<TH1F>("tau32", "tau32", 100, 0, 1);
 hist_matching_radius = book<TH1F>("matching_radius", "matching_radius", 100, 0, 2);
 hist_max_distance_minus_matching_radius = book<TH1F>("max_distance_minus_matching_radius", "max_distance minus matching_radius", 100, 0, 2);
 
-for (Int_t l = 0; l < 5; l++) {
-  hist_pt_subjet[l] = book<TH1F>(TString::Format("subjet%i_p_{T}",l), TString::Format("subjet%i p_{T} [GeV]",l), 200, 0, 1000);
-  hist_const_subjet[l] = book<TH1F>(TString::Format("subjet%i_const",l), TString::Format("subjet%i constituents",l), 200, 0, 1000);
-  hist_dR_subjet[l] = book<TH1F>(TString::Format("subjet%i_dR",l), TString::Format("subjet%i dR",l), 200, 0, 3);
+for (Int_t l = 1; l < 6; l++) {
+  hist_pt_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_p_{T}",l), TString::Format("subjet%i p_{T} [GeV]",l), 200, 0, 2000);
+  hist_const_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_const",l), TString::Format("subjet%i constituents",l), 200, 0, 1000);
+  hist_dR_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_dR",l), TString::Format("subjet%i dR",l), 200, 0, 3);
 }
-
-// hist_pt_subjet1 = book<TH1F>("subjet1_p_{T}", "subjet1 p_{T} [GeV]", 200, 0, 1000);
-// hist_pt_subjet2 = book<TH1F>("subjet2_p_{T}", "subjet2 p_{T} [GeV]", 200, 0, 1000);
-// hist_pt_subjet3 = book<TH1F>("subjet3_p_{T}", "subjet3 p_{T} [GeV]", 200, 0, 1000);
-// hist_pt_subjet4 = book<TH1F>("subjet4_p_{T}", "subjet4 p_{T} [GeV]", 200, 0, 1000);
-// hist_pt_subjet5 = book<TH1F>("subjet5_p_{T}", "subjet5 p_{T} [GeV]", 200, 0, 1000);
-//
-// hist_const_subjet1 = book<TH1F>("subjet1_const", "subjet1 constituents", 200, 0, 1000);
-// hist_const_subjet2 = book<TH1F>("subjet2_const", "subjet2 constituents", 200, 0, 1000);
-// hist_const_subjet3 = book<TH1F>("subjet3_const", "subjet3 constituents", 200, 0, 1000);
-// hist_const_subjet4 = book<TH1F>("subjet4_const", "subjet4 constituents", 200, 0, 1000);
-// hist_const_subjet5 = book<TH1F>("subjet5_const", "subjet5 constituents", 200, 0, 1000);
-//
-// hist_dR_subjet1 = book<TH1F>("subjet1_dR", "subjet1 dR", 200, 0, 3);
-// hist_dR_subjet2 = book<TH1F>("subjet2_dR", "subjet2 dR", 200, 0, 3);
-// hist_dR_subjet3 = book<TH1F>("subjet3_dR", "subjet3 dR", 200, 0, 3);
-// hist_dR_subjet4 = book<TH1F>("subjet4_dR", "subjet4 dR", 200, 0, 3);
-// hist_dR_subjet5 = book<TH1F>("subjet5_dR", "subjet5 dR", 200, 0, 3);
 
 hist_njets = book<TH1F>("njets", "njets", 20, -0.5, 19.5);
 }
@@ -73,7 +57,8 @@ void HOTVRJetsHists::fill_topjet(const Event & event, TopJet & jet){
     for (const auto s : jet.subjets()) {
     subjet_sum += s.v4();
     }
-    hist_mass->Fill(subjet_sum.M());
+    hist_mass->Fill(jet.v4().M());
+    hist_mass_sum_subjets->Fill(subjet_sum.M());
     hist_pt_sum_subjets->Fill(subjet_sum.pt());
 
     hist_eta->Fill(jet.eta());
