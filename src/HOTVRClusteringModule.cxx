@@ -61,6 +61,13 @@ private:
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_800;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_1000;
 
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1_200;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1_400;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1_600;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1_800;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub1_1000;
+
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_fpt;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_fpt_200;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_fpt_400;
@@ -120,7 +127,7 @@ private:
   std::unique_ptr<uhh2::AnalysisModule> ttgenprod;
 
   Event::Handle<TTbarGen> h_ttbargen;
-  bool debug = true;
+  bool debug = false;
 };
 
 /*
@@ -169,6 +176,13 @@ HOTVRClusteringModule::HOTVRClusteringModule(Context & ctx){
   hist_hotvr_jets_Nsub3_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_600", is_qcd));
   hist_hotvr_jets_Nsub3_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_800", is_qcd));
   hist_hotvr_jets_Nsub3_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_1000", is_qcd));
+
+  hist_hotvr_jets_Nsub1.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1", is_qcd));
+  hist_hotvr_jets_Nsub1_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1_200", is_qcd));
+  hist_hotvr_jets_Nsub1_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1_400", is_qcd));
+  hist_hotvr_jets_Nsub1_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1_600", is_qcd));
+  hist_hotvr_jets_Nsub1_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1_800", is_qcd));
+  hist_hotvr_jets_Nsub1_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub1_1000", is_qcd));
 
   hist_hotvr_jets_fpt.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_fpt", is_qcd));
   hist_hotvr_jets_fpt_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_fpt_200", is_qcd));
@@ -250,6 +264,18 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
     if(_top_hotvr_jets[j].pt()>800 && _top_hotvr_jets[j].pt()<1000)  hist_hotvr_jets_Nsub3_800->fill_topjet(event, _top_hotvr_jets[j]);
     if(_top_hotvr_jets[j].pt()>1000 && _top_hotvr_jets[j].pt()<1200)  hist_hotvr_jets_Nsub3_1000->fill_topjet(event, _top_hotvr_jets[j]);
   }
+  // fill hists for jets with 1 subjet
+  if (_top_hotvr_jets[j].subjets().size()==1) {
+    if (_top_hotvr_jets[j].v4().M()>40) {
+      std::cout << "WARNING: HOTVRClusteringModule - nsubjets == 1 but mjet > 40 " << '\n';
+    }
+      hist_hotvr_jets_Nsub1->fill_topjet(event, _top_hotvr_jets[j]);
+      if(_top_hotvr_jets[j].pt()>200 && _top_hotvr_jets[j].pt()<400)  hist_hotvr_jets_Nsub1_200->fill_topjet(event, _top_hotvr_jets[j]);
+      if(_top_hotvr_jets[j].pt()>400 && _top_hotvr_jets[j].pt()<600)  hist_hotvr_jets_Nsub1_400->fill_topjet(event, _top_hotvr_jets[j]);
+      if(_top_hotvr_jets[j].pt()>600 && _top_hotvr_jets[j].pt()<800)  hist_hotvr_jets_Nsub1_600->fill_topjet(event, _top_hotvr_jets[j]);
+      if(_top_hotvr_jets[j].pt()>800 && _top_hotvr_jets[j].pt()<1000)  hist_hotvr_jets_Nsub1_800->fill_topjet(event, _top_hotvr_jets[j]);
+      if(_top_hotvr_jets[j].pt()>1000 && _top_hotvr_jets[j].pt()<1200)  hist_hotvr_jets_Nsub1_1000->fill_topjet(event, _top_hotvr_jets[j]);
+    }
 // fill hists after fpt cut
   if (_top_hotvr_jets[j].subjets().size()>2 && _top_hotvr_jets[j].hotvr_fpt1()<0.8) {
     hist_hotvr_jets_fpt->fill_topjet(event, _top_hotvr_jets[j]);

@@ -147,30 +147,31 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
   for (size_t j = 0; j < _soft_cluster.size(); j++) {
     _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));
   }
-  for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {   // loop over hotvr jets
 
-    std::cout << "---------We are in HOTVR SD clustering!-------------" << '\n';
-    cout << "Ran " << jet_def.description() << endl;
-    cout << "Area: " << area_def.description() << endl << endl;
-    // label the columns
-    printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
-    // print out the details for each jet
-    for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
-      printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
-       _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
-       _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
+  std::cout << "---------We are in HOTVR SD clustering!-------------" << '\n';
+  cout << "Ran " << jet_def.description() << endl;
+  cout << "Area: " << area_def.description() << endl << endl;
+  // label the columns
+  printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
+  // print out the details for each jet
+  for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
+    printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
+     _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
+     _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
+  }
+  for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {   // loop over hotvr jets
+    if (_hotvr_jets[i].pt()> 10) {
+      cout << "area of hotvr jet i: "<< i << endl;
+      cout << _hotvr_jets[i].has_area() << endl;
+    cout << _hotvr_jets[i].area() << endl;
+    cout << _clust_seq_area->area(_hotvr_jets[i]) << endl;
+
+    cout << "area of subjet 0: " << endl;
+    HOTVRinfo hi = _hotvr_jets.at(i).user_info<HOTVRinfo>();
+    std::vector<fastjet::PseudoJet> subjets;
+    subjets = hi.subjets();
+    cout << subjets[0].area() << endl;
     }
-    // if (_hotvr_jets[i].pt()> 10) {
-    //   cout << "area of hotvr jet i: "<< i << endl;
-    // cout << _hotvr_jets[i].area() << endl;
-    // cout << _clust_seq_area->area(_hotvr_jets[i]) << endl;
-    //
-    // cout << "area of subjet 0: " << endl;
-    // HOTVRinfo hi = _hotvr_jets.at(i).user_info<HOTVRinfo>();
-    // std::vector<fastjet::PseudoJet> subjets;
-    // subjets = hi.subjets();
-    // cout << subjets[0].area() << endl;
-    // }
 
 
     double R = 1.5;

@@ -7,7 +7,7 @@
 
 vector<char*> get_filenames(const char* ext)
 {
-  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/alphascan_2106";
+  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HISTS_alphascan";
   char* dir = gSystem->ExpandPathName(inDir);
   void* dirp = gSystem->OpenDirectory(dir);
   const char* entry;
@@ -136,7 +136,7 @@ for (Int_t j = 0; j < njets; j++) {
       // loop over alpha values
       for (Int_t k = 0; k < n_alpha; k++) {
         //cout << files_ttbar[k]->GetName() << endl;
-        hist_ttbar[k] = (TH1F*)files_ttbar[k]->Get("HOTVRJetsHists_"+jets[j]+ptmin[l]+ "/"+variables[m]);
+        hist_ttbar[k] = (TH1F*)files_qcd[k]->Get("HOTVRJetsHists_"+jets[j]+ptmin[l]+ "/"+variables[m]);
         hist_ttbar[k]->Scale(1/hist_ttbar[k]->Integral());
         hist_ttbar[k]->SetLineColor(2+k);
         hist_ttbar[k]->SetLineWidth(2);
@@ -176,8 +176,8 @@ for (Int_t j = 0; j < njets; j++) {
 
       TLegend *leg = new TLegend(0.25,0.6,0.85,0.85);
       leg->SetTextSize(.03);
-      //leg->SetHeader("QCD, "+jetnames[j]+ptbins[l]);
-      leg->SetHeader("t#bar{t}, "+jetnames[j]+ptbins[l]);
+      leg->SetHeader("QCD, "+jetnames[j]+ptbins[l]);
+      //leg->SetHeader("t#bar{t}, "+jetnames[j]+ptbins[l]);
       leg->AddEntry(hist_ttbar[0], "#alpha = 1, #rho = 600 GeV", "l");
       leg->AddEntry(hist_ttbar[1], "#alpha = 0.92, #rho = 180 GeV", "l");
       leg->AddEntry(hist_ttbar[2], "#alpha = 0.84, #rho = 190 GeV", "l");
@@ -185,7 +185,7 @@ for (Int_t j = 0; j < njets; j++) {
       leg->AddEntry(hist_ttbar[4], "#alpha = 0.815, #rho = 210 GeV", "l");
       leg->Draw();
 
-      TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/SD_with_Reff/ttbar_all_jets/ttbar_";
+      TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/SD_and_matching_with_Reff/QCD_all_jets/QCD_";
       canvas->SaveAs(outdir + jets[j] + ptmin[l]+ "_"+variables[m] +".pdf");
       // TODO store results.root with root hists
     } // end loop over variables

@@ -32,7 +32,7 @@ public:
     TH1F *processed_events_ttbar, *processed_events_qcd;
 
     TH1F *hist_pt, *hist_mass,  *hist_eta, *hist_phi, *hist_energy; // Definition of hists for generel studies
-    TH1F *hist_pt_sum_subjets; // sum subjets -> pt
+    TH1F *hist_pt_sum_subjets, *hist_mass_sum_subjets; // sum subjets -> pt and mass
     TH1F *hist_max_distance, *hist_mmin, *hist_fpt1, *hist_nsubjets; // HOTVR specific hists
     TH1F *hist_tau1, *hist_tau2, *hist_tau3, *hist_tau21, *hist_tau32; // N-subjettiness hist
 
@@ -41,8 +41,6 @@ public:
     TH1F *hist_pt_subjet[5];
     TH1F *hist_const_subjet[5];
     TH1F *hist_dR_subjet[5];
-
-  //  TH1F *hist_pt_subjet1, *hist_pt_subjet2, *hist_pt_subjet3, *hist_pt_subjet4, *hist_pt_subjet5; // pt of the subjets
 
     TH1F *hist_njets;
 };
