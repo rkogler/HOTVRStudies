@@ -1,3 +1,9 @@
+// macro to plot two different HOTVR SD configurations for ttbar and QCD in one plot
+// You need to change:
+// input directories, outdir, labels
+// run with
+// ./macro_two_SD_hists
+
 #include "TSystem.h"
 #include <vector>
 
@@ -7,21 +13,27 @@
 int main(){
   SetStyle();
 
-  TString root_in_ttbar = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt0_mu40/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ptt0_mu40.root";
-  TString root_in_QCD = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt0_mu40/uhh2.AnalysisModuleRunner.MC.QCD_flat_ptt0_mu40.root";
+  TString root_in_ttbar = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_jets_mu_condition/rho_600_alpha_1/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_all.root";
+  TString root_in_QCD = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_jets_mu_condition/rho_600_alpha_1/uhh2.AnalysisModuleRunner.MC.QCD_flat_all.root";
 
-  TString root_in_ttbar2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt30_mu0/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ptt30_mu0.root";
-  TString root_in_QCD2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt30_mu0/uhh2.AnalysisModuleRunner.MC.QCD_flat_ptt30_mu0.root";
+  TString root_in_ttbar2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_jets_mu_condition/rho_600_alpha_1_no_subjet_permutations/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root";
+  TString root_in_QCD2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_jets_mu_condition/rho_600_alpha_1_no_subjet_permutations/uhh2.AnalysisModuleRunner.MC.QCD_flat_prod1.root";
 
-  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/SD_comparison/ptt30_muscan/";
-  TString label = "#mu=40 GeV";
-  TString label2 = "#mu=0 GeV";
+  // TString root_in_ttbar2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt0_mu40/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ptt0_mu40.root";
+  // TString root_in_QCD2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt0_mu40/uhh2.AnalysisModuleRunner.MC.QCD_flat_ptt0_mu40.root";
 
-  TString SD_param = "HOTVR SD #beta=1, z_{cut}=0.05";
+  // TString root_in_ttbar2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt30_mu0/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ptt30_mu0.root";
+  // TString root_in_QCD2 = " /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_SD_final/ptt30_mu0/uhh2.AnalysisModuleRunner.MC.QCD_flat_ptt30_mu0.root";
+
+  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/mu_condition_test/";
+  TString label = "subjet permutations";
+  TString label2 = "pseudojets";
+
+  TString SD_param = "HOTVR SD #beta=1, z_{cut}=0.05, #mu=40 GeV";
 
 // my study
-  TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ROC_09_06_AK10.root", "READ");
-  TFile *input_QCD = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.QCD_flat_ROC_09_06_AK10.root", "READ");
+  // TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ROC_09_06_AK10.root", "READ");
+  // TFile *input_QCD = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.QCD_flat_ROC_09_06_AK10.root", "READ");
 
   TFile *files_ttbar = new TFile(root_in_ttbar, "READ");
   TFile *files_QCD = new TFile(root_in_QCD, "READ");
@@ -30,20 +42,20 @@ int main(){
   TFile *files_QCD2 = new TFile(root_in_QCD2, "READ");
 
     //parameter
-  uint njets = 1;
+  uint njets = 4;
   TString jets[njets];
   jets[0]="hotvr_jets";
-  // jets[1]="hotvr_jets_Nsub3";
-  // jets[2]="hotvr_jets_fpt";
-  // jets[3]="hotvr_jets_mass";
+   jets[1]="hotvr_jets_Nsub3";
+   jets[2]="hotvr_jets_fpt";
+   jets[3]="hotvr_jets_mass";
   // jets[1]="matched_jets";
   // jets[2]="tagged_jets";
 
   TString jetnames[njets];
   jetnames[0]="HOTVR jets";
-  // jetnames[1]="HOTVR jets, n_{subjets}>2";
-  // jetnames[2]="HOTVR jets, f_{p_{T}}>0.8";
-  // jetnames[3]="HOTVR jets mass";
+   jetnames[1]="HOTVR jets, n_{subjets}>2";
+   jetnames[2]="HOTVR jets, f_{p_{T}}>0.8";
+   jetnames[3]="HOTVR jets mass";
   // jetnames[4]="matched jets";
   // jetnames[5]="tagged jets";
 
@@ -57,7 +69,7 @@ ptmin[3]="_600";
 ptmin[4]="_800";
 ptmin[5]="_1000";
 
-uint nvariables = 12;
+uint nvariables = 17;
 TString variables[nvariables];
 variables[0]="p_{T}";
 variables[1]="mass";
@@ -69,8 +81,13 @@ variables[6]="subjet1_p_{T}";
 variables[7]="subjet2_p_{T}";
 variables[8]="subjet3_p_{T}";
 variables[9]="subjet4_p_{T}";
-variables[10]="subjet5_p_{T}";
+variables[10]="subjet0_p_{T}";
 variables[11]="sumsubjetsp_{T}";
+variables[12]="subjet1_dR";
+variables[13]="subjet2_dR";
+variables[14]="subjet3_dR";
+variables[15]="subjet4_dR";
+variables[16]="subjet0_dR";
 
 TString variablenames[nvariables];
 variablenames[0]="p_{T} [GeV]";
@@ -79,12 +96,17 @@ variablenames[2]="m_{min} [GeV]";
 variablenames[3]="f_{p_{T}}";
 variablenames[4]="n_{subjets}";
 variablenames[5]="#tau_{3,2}";
-variablenames[6]="subjet 1 p_{T} [GeV]";
-variablenames[7]="subjet 2 p_{T} [GeV]";
-variablenames[8]="subjet 3 p_{T} [GeV]";
-variablenames[9]="subjet 4 p_{T} [GeV]";
-variablenames[10]="subjet 5 p_{T} [GeV]";
+variablenames[6]="subjet 2 p_{T} [GeV]";
+variablenames[7]="subjet 3 p_{T} [GeV]";
+variablenames[8]="subjet 4 p_{T} [GeV]";
+variablenames[9]="subjet 5 p_{T} [GeV]";
+variablenames[10]="subjet 1 p_{T} [GeV]";
 variablenames[11]="sum subjets p_{T} [GeV]";
+variablenames[12]="subjet 2 dR";
+variablenames[13]="subjet 3 dR";
+variablenames[14]="subjet 4 dR";
+variablenames[15]="subjet 5 dR";
+variablenames[16]="subjet 1 dR";
 
 TString ptbins[nptmin];
 ptbins[0]="";
@@ -130,23 +152,23 @@ hist_QCD_SD->Draw("H same");
 
 TH1F* hist_ttbar;
 TH1F* hist_QCD;
-if (k<6 && i== 0) { // if possible, include old HOTVR jets to the plot
-hist_ttbar = (TH1F*)input_ttbar->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+ "/"+variables[k]);
-hist_QCD = (TH1F*)input_QCD->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+"/"+variables[k]);
-
-double n_ttbar = hist_ttbar->Integral();
-double n_qcd = hist_QCD->Integral();
-
-hist_ttbar->Scale(1/n_ttbar);
-hist_ttbar->SetLineColor(kBlack);
-hist_ttbar->SetLineWidth(2);
-hist_ttbar->Draw("H same");
-hist_QCD->Scale(1/n_qcd);
-hist_QCD->SetLineColor(kBlack);
-hist_QCD->SetLineStyle(kDotted);
-hist_QCD->SetLineWidth(2);
-hist_QCD->Draw("H same");
-}
+// if (k<6 && i== 0) { // if possible, include old HOTVR jets to the plot
+// hist_ttbar = (TH1F*)input_ttbar->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+ "/"+variables[k]);
+// hist_QCD = (TH1F*)input_QCD->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+"/"+variables[k]);
+//
+// double n_ttbar = hist_ttbar->Integral();
+// double n_qcd = hist_QCD->Integral();
+//
+// hist_ttbar->Scale(1/n_ttbar);
+// hist_ttbar->SetLineColor(kBlack);
+// hist_ttbar->SetLineWidth(2);
+// hist_ttbar->Draw("H same");
+// hist_QCD->Scale(1/n_qcd);
+// hist_QCD->SetLineColor(kBlack);
+// hist_QCD->SetLineStyle(kDotted);
+// hist_QCD->SetLineWidth(2);
+// hist_QCD->Draw("H same");
+// }
 
 hist_ttbar_SD2->Scale(1/hist_ttbar_SD2->Integral());
 hist_ttbar_SD2->SetLineColor(kGreen+2);
@@ -159,73 +181,39 @@ hist_QCD_SD2->SetLineStyle(2);
 hist_QCD_SD2->SetLineWidth(2);
 hist_QCD_SD2->Draw("H same");
 
-hist_ttbar_SD->GetXaxis()->SetTitle(variablenames[k]);
+hist_ttbar_SD->GetXaxis()->SetTitle(variablenames[k] );
 hist_ttbar_SD->GetXaxis()->SetLabelSize(0.04);
 hist_ttbar_SD->GetXaxis()->SetTitleSize(0.06);
 hist_ttbar_SD->GetYaxis()->SetTitle("fraction of jets");
 hist_ttbar_SD->GetYaxis()->SetLabelSize(0.04);
 hist_ttbar_SD->GetYaxis()->SetTitleSize(0.06);
 
-  if(k==3){ // fpt
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.25);
-  }
-  else if(k==4){ // nsubjets
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,1.4);
-  //  hist_ttbar_SD->GetXaxis()->SetRangeUser(0,10);
-  }
-  else if(k==1&&j>2){ // mass
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.2);
-  }
-  else if(k==1&&j<3){ // mass low
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.08);
-  }
-  else if(k==2){ // mmin
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.16);
-  }
-  else if((k==6) && j<3){ // pt subjet 1  low
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.6);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,200);
-  }
-  else if((k==7) && j<3){ // pt subjet  2 low
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.8);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,150);
-  }
-  else if((k==6 ||k==7) && j>2){ // pt subjets 1, 2 high
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.4);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,400);
-  }
-  else if(k==8 && j<3){ // pt subjet 3 low
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.9);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,100);
-  }
-  else if(k>8 && j<3){ // pt subjet 45low
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.7);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,100);
-  }
-  else if(k>7 && j>2){ // pt subjets 345 high
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.6);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,150);
-  }
-  else if(k==0){ // pt
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.2);
-    hist_ttbar_SD->GetXaxis()->SetRangeUser(0,1000);
-  }
-  else{
-    hist_ttbar_SD->GetYaxis()->SetRangeUser(0,0.1);
-  }
+double ymax = hist_ttbar_SD->GetMaximum() > hist_QCD_SD->GetMaximum() ? hist_ttbar_SD->GetMaximum() : hist_QCD_SD->GetMaximum();
+
+hist_ttbar_SD->GetYaxis()->SetRangeUser(0,ymax*2);
+
+// if(k==4){ // nsubjets
+//   hist_ttbar_SD->GetXaxis()->SetRangeUser(0,8);
+// }
+// else if(k>5){ // pt subjets
+//   hist_ttbar_SD->GetXaxis()->SetRangeUser(0,400);
+// }
+// else if(k==2){ // mmin
+//   hist_ttbar_SD->GetXaxis()->SetRangeUser(0,160);
+// }
 
   auto legend = new TLegend(0.25, 0.6, 0.85, 0.85);
   legend->SetTextSize(.03);
   legend->SetHeader(jetnames[i]+" "+ptbins[j]);
   legend->SetNColumns(2);
-if (k<6) {
-  legend->AddEntry((TObject*)0,"HOTVR MJ ", "");
-  legend->AddEntry((TObject*)0,"" , "");
-  legend->AddEntry(hist_ttbar,"t#bar{t}", "l");
-  legend->AddEntry(hist_QCD,"QCD ", "l");
-  legend->AddEntry(hist_ttbar_SD," " , "");
-  legend->AddEntry(hist_ttbar_SD," " , "");
-}
+// if (k<6) {
+//   legend->AddEntry((TObject*)0,"HOTVR MJ ", "");
+//   legend->AddEntry((TObject*)0,"" , "");
+//   legend->AddEntry(hist_ttbar,"t#bar{t}", "l");
+//   legend->AddEntry(hist_QCD,"QCD ", "l");
+//   legend->AddEntry(hist_ttbar_SD," " , "");
+//   legend->AddEntry(hist_ttbar_SD," " , "");
+// }
   legend->AddEntry(hist_ttbar_SD," " + SD_param , "");
   legend->AddEntry(hist_ttbar_SD," " , "");
   legend->AddEntry(hist_ttbar_SD,"t#bar{t} "+label, "l");
@@ -234,7 +222,7 @@ if (k<6) {
   legend->AddEntry(hist_QCD_SD2,"QCD ", "l");
 
   legend->Draw();
-  canvas->SaveAs(outdir + jets[i] + ptmin[j] +"_"+ variables[k]+".eps");
+  canvas->SaveAs(outdir + jets[i] + ptmin[j] + variables[k] + ".pdf");
   }//end variables loop
   }//end pt loop
   }// end jets loop

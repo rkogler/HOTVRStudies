@@ -7,7 +7,7 @@
 
 vector<char*> get_filenames(const char* ext)
 {
-  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/alphascan_2106";
+  const char* inDir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HISTS_alphascan";
   char* dir = gSystem->ExpandPathName(inDir);
   void* dirp = gSystem->OpenDirectory(dir);
   const char* entry;
@@ -40,6 +40,8 @@ void signal_eff()
 
   TH1F* hists_tau_ttbar[5][nptmin];
   TH1F* hists_tau_qcd[5];
+  TH1F* hists_tau_ttbar_matched[5][nptmin];
+  TH1F* hists_tau_qcd_matched[5];
   TH1F* hists_tau_ttbar_tagged[5][nptmin];
   TH1F* hists_tau_qcd_tagged[5];
 
@@ -66,6 +68,8 @@ void signal_eff()
   TGraphErrors* signal_eff[n_alpha];
   TH1F* tau_ttbar;
   TH1F* tau_qcd;
+  TH1F* tau_ttbar_matched;
+  TH1F* tau_qcd_matched;
   TH1F* tau_ttbar_tagged;
   TH1F* tau_qcd_tagged;
 
@@ -79,10 +83,12 @@ void signal_eff()
       for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
         if (filename.Contains(alpha_values[k])) {
           for (size_t l = 0; l < nptmin; l++) {
+            tau_ttbar = ((TH1F*)f->Get("HOTVRJetsHists_hotvr_jets"+ptmin[l]+ "/tau32")); // get the tau 32 distr. for matched_jets
+            tau_ttbar_matched = ((TH1F*)f->Get("HOTVRJetsHists_matched_jets"+ptmin[l]+ "/tau32")); // get the tau 32 distr. for matched_jets
             tau_ttbar_tagged = ((TH1F*)f->Get("HOTVRJetsHists_tagged_jets"+ptmin[l]+ "/tau32")); // get the tau 32 distr.
-            tau_ttbar = ((TH1F*)f->Get("HOTVRJetsHists_matched_jets"+ptmin[l]+ "/tau32")); // get the tau 32 distr. for matched_jets
             //tau_ttbar = ((TH1F*)f->Get("HOTVRJetsHists_hotvr_jets_mass"+ptmin[l]+ "/tau32")); // get the tau 32 distr.
             hists_tau_ttbar[k][l] = tau_ttbar;
+            hists_tau_ttbar_matched[k][l] = tau_ttbar_matched;
             hists_tau_ttbar_tagged[k][l] = tau_ttbar_tagged;
           }
         }
@@ -92,10 +98,12 @@ void signal_eff()
     {
       for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
         if (filename.Contains(alpha_values[k])) {
+            tau_qcd = ((TH1F*)f->Get("HOTVRJetsHists_hotvr_jets/tau32")); // get the tau 32 distr.
+            tau_qcd_matched = ((TH1F*)f->Get("HOTVRJetsHists_matched_jets/tau32")); // get the tau 32 distr.
             tau_qcd_tagged = ((TH1F*)f->Get("HOTVRJetsHists_tagged_jets/tau32")); // get the tau 32 distr.
-            tau_qcd = ((TH1F*)f->Get("HOTVRJetsHists_matched_jets/tau32")); // get the tau 32 distr.
             //tau_qcd = ((TH1F*)f->Get("HOTVRJetsHists_hotvr_jets_mass/tau32")); // get the tau 32 distr.
             hists_tau_qcd[k] = tau_qcd;
+            hists_tau_qcd_matched[k] = tau_qcd_matched;
             hists_tau_qcd_tagged[k] = tau_qcd_tagged;
         }
       }
@@ -106,25 +114,45 @@ for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
   //find the correct tau cut for epsilon_B = 5
   for (size_t bin = 0; bin < 100; bin++) {  // loop over tau cuts
     // get bin content for pt gen and pt top mismatched
-    double gen = hists_tau_qcd[k]->Integral(); // total #QCD (inclusive integral)
+    // b
+    // double gen = hists_tau_qcd_matched[k]->Integral(); // total #QCD (inclusive integral)
+    // double top_mismatched = hists_tau_qcd_matched[k]->Integral(0, bin); // mismatched with certain cut on tau distr.
+    // d
+    double gen = hists_tau_qcd_matched[k]->Integral(); // total #QCD (inclusive integral)
     double top_mismatched = hists_tau_qcd_tagged[k]->Integral(0, bin); // mismatched with certain cut on tau distr.
+
     double epsilon_B = top_mismatched / gen;
-    // if (epsilon_B >= 0.04) {
-    //   tau_bin[k] = bin;
-    //   cout << " tau cut at bin: " << tau_bin[k] << endl;
-    //   cout << " tau value is " << hists_tau_qcd_tagged[k]->GetBinCenter(bin) << endl;
-    //   cout << "mistag rate" << epsilon_B << endl;
-    //   break;
-    // }
+    tau_bin[k] = 56;
+
+    if (epsilon_B >= 0.03) {
+      tau_bin[k] = bin;
+      cout << "mistag rate" << epsilon_B << endl;
+      break;
+    }
   }
-  tau_bin[k] = 100;
-  cout << " tau cut " << tau_bin[k] << endl;
+  cout << " --------tau cut at bin: " << tau_bin[k] << endl;
+  cout << " tau value is " << hists_tau_qcd_tagged[k]->GetBinCenter(tau_bin[k]) << endl;
 
   // draw final signal efficiency hist
   for (size_t l = 0; l < nptmin; l++) {
-      double gentop = hists_tau_ttbar[k][l]->Integral();
-      double top_matched = hists_tau_ttbar_tagged[k][l]->Integral(0, tau_bin[k]);
+      // a matched / HOTVR (no tau cut; no fix mistag rate )
+       double gentop = hists_tau_ttbar[k][l]->Integral();
+       double top_matched = hists_tau_ttbar_matched[k][l]->Integral();
+      // // b matched + tau / matched
+      // double gentop = hists_tau_ttbar_matched[k][l]->Integral();
+      // double top_matched = hists_tau_ttbar_matched[k][l]->Integral(0, tau_bin[k]);
+      // // c matched + tagged / tagged (no tau cut, no fix mistag rate)
+      // double gentop = hists_tau_ttbar_matched[k][l]->Integral();
+      // double top_matched = hists_tau_ttbar_tagged[k][l]->Integral(0, 100);
+      // // d matched + tagged + tau / matched
+      //double gentop = hists_tau_ttbar_matched[k][l]->Integral();
+      //double top_matched = hists_tau_ttbar_tagged[k][l]->Integral(0, tau_bin[k]);
+
       x = top_matched / gentop;
+
+      cout << "top matched= " << top_matched << "  gentop = "<< gentop << endl;
+
+      cout << "Signal efficiency " << x << endl;
 
       y_sig[k][l-1]=x;
       y_er[l-1]=0;
@@ -143,7 +171,7 @@ for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
   double ymax = signal_eff[0]->GetMaximum() > signal_eff[1]->GetMaximum() ? signal_eff[0]->GetMaximum() : signal_eff[1]->GetMaximum();
   double ymin = signal_eff[0]->GetMinimum() < signal_eff[1]->GetMinimum() ? signal_eff[0]->GetMinimum() : signal_eff[1]->GetMinimum();
   mg->SetMinimum(0.0);
-  mg->SetMaximum(0.6);
+  //mg->SetMaximum(0.6);
 
   mg->GetXaxis()->SetTitleOffset(1.5);
   mg->GetYaxis()->SetTitleOffset(1.5);
@@ -158,7 +186,11 @@ for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
   TLegend *leg = new TLegend(0.45,0.25,0.85,0.45);
   leg->SetTextSize(.03);
   //leg->SetHeader("HOTVR tagged/matched: #varepsilon_{B} = 4%");
-  leg->SetHeader("HOTVR matched+tagged / matched");
+  leg->SetHeader("HOTVR matched / HOTVR jets"); // a
+  //leg->SetHeader("HOTVR matched+tau / matched #varepsilon_{B} = 5%"); // b
+  //leg->SetHeader("HOTVR matched+tagged / matched"); // c
+  //leg->SetHeader("HOTVR tagged+tau32 / matched #varepsilon_{B} = 1%"); // d
+
   leg->AddEntry(signal_eff[0], "#alpha = 1, #rho = 600 GeV", "lep");
   leg->AddEntry(signal_eff[1], "#alpha = 0.92, #rho = 180 GeV", "lep");
   leg->AddEntry(signal_eff[2], "#alpha = 0.84, #rho = 190 GeV", "lep");
@@ -166,8 +198,11 @@ for (size_t k = 0; k < n_alpha; ++k) { // loop over alpha values
   leg->AddEntry(signal_eff[4], "#alpha = 0.815, #rho = 210 GeV", "lep");
   leg->Draw();
 
-  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/SD_with_Reff/eff_plots/";
-  canvas->SaveAs(outdir + "signal_eff_inclusive_tagging_cuts.pdf");
+  TString outdir = "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/plots/alphascan/SD_and_matching_with_Reff/eff_plots/";
+  canvas->SaveAs(outdir + "signal_eff_matching.pdf"); // a
+  //canvas->SaveAs(outdir + "signal_eff_tau_cut.pdf"); // b
+  //canvas->SaveAs(outdir + "signal_eff_tagging_cuts.pdf"); // c
+  //canvas->SaveAs(outdir + "signal_eff_inclusive_tagging_cuts.pdf"); // d
 
 
 }
