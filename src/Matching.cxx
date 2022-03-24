@@ -257,6 +257,61 @@ void Matching::set_partons(vector<GenParticle>* genparticles)
 	       _partons_to_cluster.push_back(pseudojet);
 	     }
 }
+//stores a list of final state W partons for the clustering (parton level)
+void Matching::set_W_partons(vector<GenParticle>* genparticles)
+{
+	//check for final state partons from top decay
+	    vector<GenParticle*> partons;
+	    // here is a list of partons that should be skipped (daughters from top decay)
+	    vector<bool> skip;
+	    int nparts = genparticles->size();
+	    skip.reserve(nparts);
+	    //set all skips to false
+	    for (int i=0; i<nparts; ++i) skip[i]=false;
+	    //loop over all particles
+	    for(int i=0; i<nparts; ++i){
+	      // check if this parton should be skipped
+	      if (skip[i]) continue; //the particle should be skipped
+	  	  GenParticle* p = &(genparticles->at(i));
+	  	  // is it a parton?
+	      if (!IsParton(p)) continue; //if it is a particle->continue with next particle
+	      // check if it's a top quark
+	      if (IsTop(p)){
+	  	     // is it the one that decays?
+	  	      if (BeforeTopDecay(p,genparticles)){
+							GenParticle* W_cand;
+							GenParticle* b_cand;
+									// get the W
+									W_cand = GetDaughter(p, genparticles, 1);
+									b_cand = GetDaughter(p, genparticles, 2);
+									if (!IsW(W_cand)) {
+										W_cand = GetDaughter(p, genparticles, 2);
+										b_cand = GetDaughter(p, genparticles, 1);
+									}
+	  	            // keep it
+	  	            partons.push_back(W_cand);
+	  	            // flag all daughter partons to be skipped
+	  	            UpdateSkipList(p, genparticles, skip);
+	                continue;
+	  	          }
+	              else {
+	  	            continue;
+	  	          }
+	      }
+	      if (FinalStateParton(p, genparticles)){ //add all final state partons to the partons list
+	  	     partons.push_back(p);
+	      }
+	    }
+
+	//save the partons that should be clustered
+	     for(unsigned i=0;i<partons.size();i++){
+	       GenParticle* p = partons[i];
+	       PseudoJet pseudojet=convert_particle(p);
+	      // if(IsW(p) && IsHadronic(p,genparticles)) pseudojet.set_user_index(6); //hadronically decaying W
+	      // else  pseudojet.set_user_index(0);
+	       _W_partons_to_cluster.push_back(pseudojet);
+	     }
+}
 /*
 ██████  ██    ██ ███    ██     ███    ███  █████  ████████  ██████ ██   ██ ██ ███    ██  ██████
 ██   ██ ██    ██ ████   ██     ████  ████ ██   ██    ██    ██      ██   ██ ██ ████   ██ ██
