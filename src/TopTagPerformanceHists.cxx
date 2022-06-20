@@ -19,6 +19,7 @@ h_matched_pairs(topjetcollection)
   pt_matched = book<TH1F>("pt_top_matched", "p_{T, topjet}", 5, pt_intervall);
   pt_mismatched = book<TH1F>("pt_top_mismatched", "p_{T, topjet}", 5, pt_intervall);
   pt_gen = book<TH1F>("pt_gen", "p_{T, gen}", 5, pt_intervall);
+  hist_njets = book<TH1F>("njets", "njets", 20, -0.5, 19.5);
 
 }
 
@@ -27,6 +28,8 @@ void TopTagPerformanceHists::fill(const Event & event){
   double weight = event.weight;
   //specific handle to get the matched jets
   const vector<pair<TopJet, TopJet>> topjets = event.get(h_matched_pairs);
+
+  hist_njets->Fill(topjets.size());
 
   if (b_is_qcd)
   {

@@ -54,6 +54,20 @@ private:
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_800;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_1000;
 
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_200;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_400;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_600;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_800;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_1000;
+
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_200;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_400;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_600;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_800;
+  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_1000;
+
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_200;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_400;
@@ -131,6 +145,8 @@ private:
   std::unique_ptr<HOTVRJetsHists> hist_tagged_jets_tau32_800;
   std::unique_ptr<HOTVRJetsHists> hist_tagged_jets_tau32_1000;
 
+  std::unique_ptr<HOTVRJetsHists> hist_njets_matched;
+
 // initialize event handle
   Event::Handle<vector<TopJet>> h_HOTVR_jets;
   Event::Handle<vector<TopJet>> h_parton_jets;
@@ -207,7 +223,6 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   is_mc = ctx.get("dataset_type") == "MC";
   is_qcd = (dataset_version.find("QCD") == 0);
 
-// TODO get the jets fom previous module??
   h_HOTVR_jets = ctx.get_handle<vector<TopJet>>("HOTVR_jets");
   h_parton_jets = ctx.get_handle<vector<TopJet>>("parton_jets");
 
@@ -223,6 +238,20 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   hist_hotvr_jets_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_600", is_qcd));
   hist_hotvr_jets_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_800", is_qcd));
   hist_hotvr_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_1000", is_qcd));
+
+  hist_hotvr_jets_mGr130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130", is_qcd));
+  hist_hotvr_jets_mGr130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_200", is_qcd));
+  hist_hotvr_jets_mGr130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_400", is_qcd));
+  hist_hotvr_jets_mGr130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_600", is_qcd));
+  hist_hotvr_jets_mGr130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_800", is_qcd));
+  hist_hotvr_jets_mGr130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_1000", is_qcd));
+
+  hist_hotvr_jets_mSm130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130", is_qcd));
+  hist_hotvr_jets_mSm130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_200", is_qcd));
+  hist_hotvr_jets_mSm130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_400", is_qcd));
+  hist_hotvr_jets_mSm130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_600", is_qcd));
+  hist_hotvr_jets_mSm130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_800", is_qcd));
+  hist_hotvr_jets_mSm130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_1000", is_qcd));
 
   hist_hotvr_jets_Nsub3.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3", is_qcd));
   hist_hotvr_jets_Nsub3_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_200", is_qcd));
@@ -301,6 +330,8 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   hist_tagged_jets_tau32_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_tagged_jets_tau32_800", is_qcd));
   hist_tagged_jets_tau32_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_tagged_jets_tau32_1000", is_qcd));
 
+  hist_njets_matched.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_njets_matched", is_qcd));
+
 //for ROC curves
   double top_pt_min = 0.0;
   double top_eta_max = 100000;
@@ -353,6 +384,24 @@ bool HOTVRStudiesModule::process(Event & event) {
     if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_600->fill_topjet(event, jet);
     if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_800->fill_topjet(event, jet);
     if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_1000->fill_topjet(event, jet);
+    // fill hists for m > 130 GeV and m < 130 GeV
+    if (jet.v4().M()>130) {
+      hist_hotvr_jets_mGr130->fill_topjet(event, jet);
+      if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mGr130_200->fill_topjet(event, jet);
+      if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mGr130_400->fill_topjet(event, jet);
+      if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mGr130_600->fill_topjet(event, jet);
+      if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mGr130_800->fill_topjet(event, jet);
+      if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mGr130_1000->fill_topjet(event, jet);
+    }
+    if (jet.v4().M()<130) {
+      hist_hotvr_jets_mSm130->fill_topjet(event, jet);
+      if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mSm130_200->fill_topjet(event, jet);
+      if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mSm130_400->fill_topjet(event, jet);
+      if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mSm130_600->fill_topjet(event, jet);
+      if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mSm130_800->fill_topjet(event, jet);
+      if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mSm130_1000->fill_topjet(event, jet);
+    }
+
 // fill hists after Nsub3 cut
 if (jet.subjets().size()>2) {
     hist_hotvr_jets_Nsub3->fill_topjet(event, jet);
@@ -419,6 +468,7 @@ matching = new Matching();
   matched_parton_jets = matching->get_matched_parton_jets();
   vector<pair<TopJet, TopJet>> matched_pair = matching->get_matched_pairs();
 
+  hist_njets_matched->fill_n_jets(event, matched_jets);
 //TopTagger for matched hotvr jets
   toptagger = new TopTagger();
   vector<TopJet> matched_jets_tagged;

@@ -220,21 +220,21 @@ bool HOTVRClusteringModule::process(Event & event) {
     }
   }
 
-//MATCHING -> class to filter the stable particles from the genparticles and create a pseudojet from them
-if (debug) {std::cout << "Start setting pseudojets from stable particles!" << '\n';}
-  matching = new Matching();
-  if (debug) {std::cout << "Genparticles size "<< genparticles->size() << '\n';}
-  matching->set_stable_particles(genparticles);
-  pseudojets = matching->get_stableParticles();
-  matching->set_partons(genparticles);
-  parton_pseudojets = matching->get_partons();
-
-//CLUSTERING -> clusters jets depending on the algorithm that is chosen
-if (debug) {std::cout << "Start Clustering!" << '\n';}
-  clustering = new Clustering(m_clustering);
+// //MATCHING -> class to filter the stable particles from the genparticles and create a pseudojet from them
+  if (debug) {std::cout << "Start setting pseudojets from stable particles!" << '\n';}
+   matching = new Matching();
+   if (debug) {std::cout << "Genparticles size "<< genparticles->size() << '\n';}
+   matching->set_stable_particles(genparticles);
+   pseudojets = matching->get_stableParticles();
+   matching->set_partons(genparticles);
+   parton_pseudojets = matching->get_partons();
+//
+// //CLUSTERING -> clusters jets depending on the algorithm that is chosen
+ if (debug) {std::cout << "Start Clustering!" << '\n';}
+   clustering = new Clustering(m_clustering);
   clustering->cluster_jets(pseudojets); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
   hotvr_jets = clustering->get_hotvr_jets();
-  hotvr_jets_constituents = clustering->get_hotvr_jet_constituents();
+  //hotvr_jets_constituents = clustering->get_hotvr_jet_constituents();
 
   // cluster and get the clustered parton jets (AK10 jets)
   clustering->cluster_parton_jets(parton_pseudojets, isTTbar);
@@ -266,7 +266,7 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
   }
   // fill hists for jets with 1 subjet
   if (_top_hotvr_jets[j].subjets().size()==1) {
-    if (_top_hotvr_jets[j].v4().M()>40) {
+    if (debug && _top_hotvr_jets[j].v4().M()>40) {
       std::cout << "WARNING: HOTVRClusteringModule - nsubjets == 1 but mjet > 40 " << '\n';
     }
       hist_hotvr_jets_Nsub1->fill_topjet(event, _top_hotvr_jets[j]);
@@ -299,9 +299,9 @@ if (_top_hotvr_jets[j].subjets().size()>2) {
 //set the event handle (store HOTVR jets and parton jets)
   event.set(h_HOTVR_jets, _top_hotvr_jets);
   event.set(h_parton_jets, _top_parton_jets);
-
-  // delete clustering infos
-  clustering->Reset();
+  //
+  // // delete clustering infos
+   clustering->Reset();
 // decide whether or not to keep the current event in the output:
   return true;
 }

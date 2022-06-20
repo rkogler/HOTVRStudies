@@ -62,17 +62,17 @@ void Clustering::cluster_HOTVR_jets(vector<PseudoJet> pseudojets)
 //  std::vector<PseudoJet> rejected_jets=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
 //  std::vector<PseudoJet> soft_jets=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
 
-std::cout << "---------We are in HOTVR MJ clustering!-------------" << '\n';
-cout << "Ran " << jet_def.description() << endl;
-cout << "Area: " << area_def.description() << endl << endl;
-// label the columns
-printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
-// print out the details for each jet
-for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
-  printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
-   _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
-   _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
-}
+// std::cout << "---------We are in HOTVR MJ clustering!-------------" << '\n';
+// cout << "Ran " << jet_def.description() << endl;
+// cout << "Area: " << area_def.description() << endl << endl;
+// // label the columns
+// printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
+// // print out the details for each jet
+// for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
+//   printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
+//    _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
+//    _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
+// }
   for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {
 
     // if (_hotvr_jets[i].pt()> 10) {
@@ -103,75 +103,75 @@ for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
 // --------------------HOTVR including Soft Drop Clustering-----------------------------
 void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
 {
-  vector<PseudoJet> pseudojets_to_cluster=pseudojets;
+   vector<PseudoJet> pseudojets_to_cluster=pseudojets;
 
-  bool ghost = false;
-  if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);}
+   bool ghost = false;
+   if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);}
 
-  HOTVR hotvr_plugin(_beta, _z_cut, _pt_threshold, _min_r, _max_r, _rho, _pt_cut, _mu, HOTVR::CALIKE, _alpha); // initialize plugin
-  JetDefinition jet_def(&hotvr_plugin); // set up jet definition and cluster sequence
+   HOTVR hotvr_plugin(_beta, _z_cut, _pt_threshold, _min_r, _max_r, _rho, _pt_cut, _mu, HOTVR::CALIKE, _alpha); // initialize plugin
+   JetDefinition jet_def(&hotvr_plugin); // set up jet definition and cluster sequence
 
-  //ClusterSequence _clust_seq(pseudojets_to_cluster, jet_def);
-  //_clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
+   //ClusterSequence _clust_seq(pseudojets_to_cluster, jet_def);
+   //_clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
 
-// cluster sequence with area
-  double ghost_maxrap = 5.0; // e.g. if particles go up to y=4
-  AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
-  _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
+ // cluster sequence with area
+   double ghost_maxrap = 5.0; // e.g. if particles go up to y=4
+   AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
+   _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
+//
+   _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
+   // _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
+   // _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());
+   // _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
+   // _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
 
-  // cout << endl << "Run " << jet_def.description() << endl;
-  // cout << "Area: " << area_def.description() << endl << endl;
-
-  _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
-  _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
-  _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());
-  _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
-  _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
-
-  _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
-  _rejected_cluster_constituents = save_constituents(_rejected_cluster);
-
-  _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
-  _soft_cluster_constituents = save_constituents(_soft_cluster);
-
-  _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
-  _rejected_subjets_constituents = save_constituents(_rejected_subjets);
+  // _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
+  // _rejected_cluster_constituents = save_constituents(_rejected_cluster);
+  //
+  // _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
+  // _soft_cluster_constituents = save_constituents(_soft_cluster);
+  //
+  // _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
+  // _rejected_subjets_constituents = save_constituents(_rejected_subjets);
 
   // convert rejected subjets into UHH2  jets
-  _top_rejected_subjets=convert_subjets(_rejected_subjets);
+//  _top_rejected_subjets=convert_subjets(_rejected_subjets);
   // convert rejected jets into topjets
-  for (size_t j = 0; j < _rejected_cluster.size(); j++) {
-    _top_rejected_cluster.push_back(convert_jet(_rejected_cluster[j]));
-  }
-  // convert soft jets into topjets
-  for (size_t j = 0; j < _soft_cluster.size(); j++) {
-    _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));
-  }
+  // for (size_t j = 0; j < _rejected_cluster.size(); j++) {
+  //   _top_rejected_cluster.push_back(convert_jet(_rejected_cluster[j]));
+  // }
+  // // convert soft jets into topjets
+  // for (size_t j = 0; j < _soft_cluster.size(); j++) {
+  //   _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));
+  // }
 
-  std::cout << "---------We are in HOTVR SD clustering!-------------" << '\n';
-  cout << "Ran " << jet_def.description() << endl;
-  cout << "Area: " << area_def.description() << endl << endl;
-  // label the columns
-  printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
-  // print out the details for each jet
-  for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
-    printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
-     _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
-     _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
-  }
+  // std::cout << "---------We are in HOTVR SD clustering!-------------" << '\n';
+  // cout << "Ran " << jet_def.description() << endl;
+  // cout << "Area: " << area_def.description() << endl << endl;
+  // // label the columns
+  // printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
+  // // print out the details for each jet
+  // for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
+  //   printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
+  //    _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
+  //    _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
+  // }
   for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {   // loop over hotvr jets
-    if (_hotvr_jets[i].pt()> 10) {
-      cout << "area of hotvr jet i: "<< i << endl;
-      cout << _hotvr_jets[i].has_area() << endl;
-    cout << _hotvr_jets[i].area() << endl;
-    cout << _clust_seq_area->area(_hotvr_jets[i]) << endl;
-
-    cout << "area of subjet 0: " << endl;
-    HOTVRinfo hi = _hotvr_jets.at(i).user_info<HOTVRinfo>();
-    std::vector<fastjet::PseudoJet> subjets;
-    subjets = hi.subjets();
-    cout << subjets[0].area() << endl;
-    }
+  //   if (_hotvr_jets[i].pt()> 10) {
+  //     cout << "Pseudojet structure " << _hotvr_jets[i].description() << endl;
+  //     cout << "has ghost?" << _hotvr_jets[i].constituents().size() << endl;
+  //
+  //   //  cout << "area of hotvr jet i: "<< i << endl;
+  //     //cout << _hotvr_jets[i].has_area() << endl;
+  // //  cout << _hotvr_jets[i].area() << endl;
+  // //  cout << _clust_seq_area->area(_hotvr_jets[i]) << endl;
+  //
+  //   //cout << "area of subjet 0: " << endl;
+  //   HOTVRinfo hi = _hotvr_jets.at(i).user_info<HOTVRinfo>();
+  //   std::vector<fastjet::PseudoJet> subjets;
+  //   subjets = hi.subjets();
+  //   //cout << subjets[0].area() << endl;
+  //   }
 
 
     double R = 1.5;
@@ -186,73 +186,94 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
     //convert into TopJet
     _top_hotvr_jets.push_back(convert_jet(_hotvr_jets[i], tau1, tau2, tau3));
   // save the jet constituents
-    _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
+  //  _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
  }// end loop over hotvr jets
 }
 
 //---------------------Variable R plus SoftDrop--------------------------------
 void Clustering::cluster_VR_SD_jets(vector<PseudoJet> pseudojets)
 {
-  // VariableRPlugin VR_plugin(_rho, _min_r, _max_r, VariableRPlugin::CALIKE);
-  // JetDefinition jet_def(&VR_plugin);
-  // _clust_seq = new ClusterSequence(pseudojets, jet_def);
-  //
-  // SoftDrop _sd(_beta, _z_cut);
-  //
-  // _vr_jets=sorted_by_pt(_clust_seq->inclusive_jets(_ptmin)); //VR Clustering
-  // for(unsigned i=0; i<_vr_jets.size(); i++) //groom jets with SoftDrop
-  // {
-  //   _vr_jet_constituents.push_back(_vr_jets[i].constituents());
-  //   _top_vr_jets.push_back(convert_jet(_vr_jets[i]));
-  // //  _vr_jets_SD.push_back(_sd(_vr_jets[i]));
-  // }
+  VariableRPlugin VR_plugin(_rho, _min_r, _max_r, VariableRPlugin::CALIKE);
+  JetDefinition jet_def(&VR_plugin);
+  //_clust_seq = new ClusterSequence(pseudojets, jet_def);
+  ClusterSequence clust_seq(pseudojets, jet_def);
+
+  SoftDrop _sd(_beta, _z_cut);
+
+  _vr_jets=sorted_by_pt(_clust_seq->inclusive_jets(_ptmin)); //VR Clustering
+  for(unsigned i=0; i<_vr_jets.size(); i++) //groom jets with SoftDrop
+  {
+    _vr_jet_constituents.push_back(_vr_jets[i].constituents());
+    _top_vr_jets.push_back(convert_jet(_vr_jets[i]));
+  //  _vr_jets_SD.push_back(_sd(_vr_jets[i]));
+  }
 }
 
 //---------------Variable R plus Iterative SoftDrop----------------------------
 void Clustering::cluster_VR_ISD_jets(vector<PseudoJet> pseudojets)
 {
-  // VariableRPlugin VR_plugin(_rho, _min_r, _max_r, VariableRPlugin::CALIKE);
-  // JetDefinition jet_def(&VR_plugin);
-  // _clust_seq = new ClusterSequence(pseudojets, jet_def);
-  // _vr_jets=sorted_by_pt(_clust_seq->inclusive_jets(_ptmin)); //VR Clustering
-  //
-  // //double R_VR = ? how do we get the variable radius from the VR plugin? instead of min_r
-  // double R=1;
-  // int n=10; // number of layers (-1 <> infinite)
-  // contrib::RecursiveSoftDrop rsd(_beta, _z_cut, n, R);
-  // // keep additional structure info (used below)
-  // rsd.set_verbose_structure(true);
-  // // Instead of recursing into both branches found by the previous
-  // // iteration, only keep recursing into the hardest one
-  // rsd.set_hardest_branch_only();
-  //
-  // for(unsigned i=0; i<_vr_jets.size(); i++) //groom jets with Iterative SoftDrop
-  // {
-  //   _vr_jets_ISD.push_back(rsd(_vr_jets[i]));
-  // }
+  VariableRPlugin VR_plugin(_rho, _min_r, _max_r, VariableRPlugin::CALIKE);
+  JetDefinition jet_def(&VR_plugin);
+  //_clust_seq = new ClusterSequence(pseudojets, jet_def);
+  ClusterSequence clust_seq(pseudojets, jet_def);
+  _vr_jets=sorted_by_pt(_clust_seq->inclusive_jets(_ptmin)); //VR Clustering
+
+  //double R_VR = ? how do we get the variable radius from the VR plugin? instead of min_r
+  double R=1;
+  int n=10; // number of layers (-1 <> infinite)
+  contrib::RecursiveSoftDrop rsd(_beta, _z_cut, n, R);
+  // keep additional structure info (used below)
+  rsd.set_verbose_structure(true);
+  // Instead of recursing into both branches found by the previous
+  // iteration, only keep recursing into the hardest one
+  rsd.set_hardest_branch_only();
+
+  for(unsigned i=0; i<_vr_jets.size(); i++) //groom jets with Iterative SoftDrop
+  {
+    _vr_jets_ISD.push_back(rsd(_vr_jets[i]));
+  }
  }
 
 //-------------cluster parton jets and throw away top daughters-----------------
 void Clustering::cluster_parton_jets(vector<PseudoJet> pseudojets, bool ttbar)
 {
-  // JetDefinition jet_def(antikt_algorithm,1.0);
-  // vector<PseudoJet> parton_jets;
-  // ClusterSequence clust_seq(pseudojets, jet_def);
-  // parton_jets = sorted_by_pt(_clust_seq->inclusive_jets(100.));
-  // // parton_jets = sorted_by_pt(clust_seq.inclusive_jets(100.));
-  //
-  // if(!ttbar) _parton_fatjets = parton_jets; //in case of a qcd sample keep all parton jets
-  // else{ //in case of a ttbar sample keep only jets that contain a top
-  //   for(unsigned i=0; i<parton_jets.size(); i++){
-  //     bool candidate=false;
-  //     for(unsigned j=0;j<parton_jets[i].constituents().size(); j++) if(parton_jets[i].constituents().at(j).user_index()==6) candidate=true;
-  //     if(candidate){ _parton_fatjets.push_back(parton_jets[i]);}
-  //   }
-  // }
-  // for (unsigned int i = 0; i < _parton_fatjets.size(); ++i) {
-  //   //convert into TopJet
-  //   _top_parton_jets.push_back(convert_jet(_parton_fatjets[i]));
-  // }
+  JetDefinition jet_def(antikt_algorithm,1.0);
+  vector<PseudoJet> parton_jets;
+  ClusterSequence clust_seq(pseudojets, jet_def);
+  parton_jets = sorted_by_pt(clust_seq.inclusive_jets(100.));
+
+  if(!ttbar) _parton_fatjets = parton_jets; //in case of a qcd sample keep all parton jets
+  else{ //in case of a ttbar sample keep only jets that contain a top
+    for(unsigned i=0; i<parton_jets.size(); i++){
+      bool candidate=false;
+      for(unsigned j=0;j<parton_jets[i].constituents().size(); j++) if(parton_jets[i].constituents().at(j).user_index()==6) candidate=true;
+      if(candidate){ _parton_fatjets.push_back(parton_jets[i]);}
+    }
+  }
+  for (unsigned int i = 0; i < _parton_fatjets.size(); ++i) {
+    //convert into TopJet
+    _top_parton_jets.push_back(convert_jet(_parton_fatjets[i]));
+  }
+}
+
+//-------------cluster parton jets for W genparticles-----------------
+void Clustering::cluster_W_parton_jets(vector<PseudoJet> pseudojets)
+{
+  JetDefinition jet_def(antikt_algorithm,1.0);
+  vector<PseudoJet> parton_jets;
+  ClusterSequence clust_seq(pseudojets, jet_def);
+  parton_jets = sorted_by_pt(clust_seq.inclusive_jets(100.));
+
+   //in case of a W sample keep only jets that contain a W (index 6)
+    for(unsigned i=0; i<parton_jets.size(); i++){
+      bool candidate=false;
+      for(unsigned j=0;j<parton_jets[i].constituents().size(); j++) if(parton_jets[i].constituents().at(j).user_index()==6) candidate=true;
+      if(candidate){ _W_parton_fatjets.push_back(parton_jets[i]);}
+    }
+  for (unsigned int i = 0; i < _W_parton_fatjets.size(); ++i) {
+    //convert into TopJet
+    _W_parton_jets.push_back(convert_jet(_W_parton_fatjets[i]));
+  }
 }
 
 //----------converts a pseudojet into a topjet----------------------------
@@ -269,6 +290,8 @@ TopJet Clustering::convert_jet(PseudoJet pseudojet, double tau1, double tau2, do
     topjet.set_hotvr_fpt1(hi.ptfraction(0));
     topjet.set_max_distance(hi.max_distance());
   }
+  // include jet area
+  if (pseudojet.has_area()){topjet.set_area(pseudojet.area());}
 	topjet.set_tau1_groomed(tau1);
 	topjet.set_tau2_groomed(tau2);
 	topjet.set_tau3_groomed(tau3);
@@ -299,6 +322,9 @@ vector<Jet> Clustering::convert_subjets(vector<PseudoJet> subjets)
     LorentzVector v4(pseudojet.pt(), pseudojet.eta(), pseudojet.phi(), pseudojet.E());
   	Jet jet;
   	jet.set_v4(v4);
+    // include jet area
+    // if pseudojet.has_area()
+    // topjet.set_area(pseudojet.area()); // TODO geht das so ??
     jets.push_back(jet);
   }
 	return jets;

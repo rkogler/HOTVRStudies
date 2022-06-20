@@ -9,8 +9,8 @@ b_is_qcd(is_qcd)
 {
 // book all histograms here
 // processed events
-processed_events_ttbar = book<TH1F>("processed_events_ttbar", "processed events ttbar", 1,0,1);
-processed_events_qcd = book<TH1F>("processed_events_qcd", "processed events qcd", 1,0,1);
+processed_events_ttbar = book<TH1F>("processed_jets_signal", "processed jets signal", 1,0,1);
+processed_events_qcd = book<TH1F>("processed_jets_qcd", "processed jets qcd", 1,0,1);
 // general hists
 hist_pt = book<TH1F>("p_{T}", "p_{T} [GeV]", 200, 0, 2000);
 hist_pt_sum_subjets = book<TH1F>("sumsubjetsp_{T}", "sumsubjetsp_{T} [GeV]", 200, 0, 2000);
@@ -43,6 +43,9 @@ for (Int_t l = 1; l < 6; l++) {
 }
 
 hist_njets = book<TH1F>("njets", "njets", 20, -0.5, 19.5);
+hist_area = book<TH1F>("area", "area", 100, 0, 10);
+hist_weight = book<TH1F>("weight", "weight", 100, 0, 2);
+
 }
 
 void HOTVRJetsHists::fill(const Event & event){}
@@ -74,6 +77,9 @@ void HOTVRJetsHists::fill_topjet(const Event & event, TopJet & jet){
     hist_tau3->Fill(jet.tau3_groomed());
     hist_tau21->Fill(jet.tau2_groomed()/jet.tau1_groomed());
     hist_tau32->Fill(jet.tau3_groomed()/jet.tau2_groomed());
+
+    hist_area->Fill(jet.area()); // jet area
+    hist_weight->Fill(event.weight);
 
     double rho = 600;
     double pt = jet.pt();
