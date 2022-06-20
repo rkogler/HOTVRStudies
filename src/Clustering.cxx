@@ -76,64 +76,8 @@ void Clustering::cluster_HOTVR_jets(vector<PseudoJet> pseudojets)
  }
 }
 // --------------------HOTVR including Soft Drop Clustering-----------------------------
-<<<<<<< HEAD
  void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
  {
-//   vector<PseudoJet> pseudojets_to_cluster=pseudojets;
-//
-//   bool ghost = false;
-//   if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);}
-//
-//   HOTVR hotvr_plugin(_beta, _z_cut, _pt_threshold, _min_r, _max_r, _rho, _pt_cut, _mu, HOTVR::CALIKE, _alpha); // initialize plugin
-//   JetDefinition jet_def(&hotvr_plugin); // set up jet definition and cluster sequence
-//
-//   //ClusterSequence _clust_seq(pseudojets_to_cluster, jet_def);
-//   _clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
-//
-//   _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
-//   _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
-//   _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());
-//   _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
-//   _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
-//
-//   _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
-//   _rejected_cluster_constituents = save_constituents(_rejected_cluster);
-//
-//   _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
-//   _soft_cluster_constituents = save_constituents(_soft_cluster);
-//
-//   _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
-//   _rejected_subjets_constituents = save_constituents(_rejected_subjets);
-//
-//   // convert rejected subjets into UHH2  jets
-//   _top_rejected_subjets=convert_subjets(_rejected_subjets);
-//   // convert rejected jets into topjets
-//   for (size_t j = 0; j < _rejected_cluster.size(); j++) {
-//     _top_rejected_cluster.push_back(convert_jet(_rejected_cluster[j]));
-//   }
-//   // convert soft jets into topjets
-//   for (size_t j = 0; j < _soft_cluster.size(); j++) {
-//     _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));
-//   }
-//   for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {   // loop over hotvr jets
-//     double R = 1.5;
-//     double b = 1.0;
-//     // calculate Nsubjettiness
-//     Nsubjettiness nSub1(1, OnePass_KT_Axes(), NormalizedMeasure(b, R));
-//     Nsubjettiness nSub2(2, OnePass_KT_Axes(), NormalizedMeasure(b, R));
-//     Nsubjettiness nSub3(3, OnePass_KT_Axes(), NormalizedMeasure(b, R));
-//     double tau1 = nSub1(_hotvr_jets[i]);
-//     double tau2 = nSub2(_hotvr_jets[i]);
-//     double tau3 = nSub3(_hotvr_jets[i]);
-//     //convert into TopJet
-//     _top_hotvr_jets.push_back(convert_jet(_hotvr_jets[i], tau1, tau2, tau3));
-//   // save the jet constituents
-//     _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
-//  }// end loop over hotvr jets
- }
-=======
-void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
-{
   vector<PseudoJet> pseudojets_to_cluster=pseudojets;
 
   bool ghost = false;
@@ -143,30 +87,22 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
   JetDefinition jet_def(&hotvr_plugin); // set up jet definition and cluster sequence
 
   //ClusterSequence _clust_seq(pseudojets_to_cluster, jet_def);
-  //_clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
-
-// cluster sequence with area
-  double ghost_maxrap = 5.0; // e.g. if particles go up to y=4
-  AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
-  _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
-
-  // cout << endl << "Run " << jet_def.description() << endl;
-  // cout << "Area: " << area_def.description() << endl << endl;
+  _clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
 
   _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
-  _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
-  _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());
-  _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
-  _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
+  // _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
+  // _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());
+  // _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
+  // _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
 
   _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
-  _rejected_cluster_constituents = save_constituents(_rejected_cluster);
+//  _rejected_cluster_constituents = save_constituents(_rejected_cluster);
 
   _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
-  _soft_cluster_constituents = save_constituents(_soft_cluster);
+//  _soft_cluster_constituents = save_constituents(_soft_cluster);
 
   _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
-  _rejected_subjets_constituents = save_constituents(_rejected_subjets);
+//  _rejected_subjets_constituents = save_constituents(_rejected_subjets);
 
   // convert rejected subjets into UHH2  jets
   _top_rejected_subjets=convert_subjets(_rejected_subjets);
@@ -178,33 +114,7 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
   for (size_t j = 0; j < _soft_cluster.size(); j++) {
     _top_soft_cluster.push_back(convert_jet(_soft_cluster[j]));
   }
-
-  std::cout << "---------We are in HOTVR SD clustering!-------------" << '\n';
-  cout << "Ran " << jet_def.description() << endl;
-  cout << "Area: " << area_def.description() << endl << endl;
-  // label the columns
-  printf("%5s %15s %15s %15s %15s %15s\n","jet #", "rapidity", "phi", "pt", "area", "area error");
-  // print out the details for each jet
-  for (unsigned int i = 0; i < _hotvr_jets.size(); i++) {
-    printf("%5u %15.8f %15.8f %15.8f %15.8f %15.8f\n", i,
-     _hotvr_jets[i].rap(), _hotvr_jets[i].phi(), _hotvr_jets[i].perp(),
-     _hotvr_jets[i].area(), _hotvr_jets[i].area_error());
-  }
   for (unsigned int i = 0; i < _hotvr_jets.size(); ++i) {   // loop over hotvr jets
-    if (_hotvr_jets[i].pt()> 10) {
-      cout << "area of hotvr jet i: "<< i << endl;
-      cout << _hotvr_jets[i].has_area() << endl;
-    cout << _hotvr_jets[i].area() << endl;
-    cout << _clust_seq_area->area(_hotvr_jets[i]) << endl;
-
-    cout << "area of subjet 0: " << endl;
-    HOTVRinfo hi = _hotvr_jets.at(i).user_info<HOTVRinfo>();
-    std::vector<fastjet::PseudoJet> subjets;
-    subjets = hi.subjets();
-    cout << subjets[0].area() << endl;
-    }
-
-
     double R = 1.5;
     double b = 1.0;
     // calculate Nsubjettiness
@@ -217,10 +127,10 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
     //convert into TopJet
     _top_hotvr_jets.push_back(convert_jet(_hotvr_jets[i], tau1, tau2, tau3));
   // save the jet constituents
-    _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
+  //  _hotvr_jet_constituents.push_back(_hotvr_jets[i].constituents());
  }// end loop over hotvr jets
-}
->>>>>>> d626529... Jet Area Calculation
+ }
+
 
 //---------------------Variable R plus SoftDrop--------------------------------
 void Clustering::cluster_VR_SD_jets(vector<PseudoJet> pseudojets)
