@@ -54,19 +54,19 @@ private:
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_800;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_1000;
 
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_200;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_400;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_600;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_800;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_1000;
-
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_200;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_400;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_600;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_800;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_1000;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_200;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_400;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_600;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_800;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mGr130_1000;
+  //
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_200;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_400;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_600;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_800;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_mSm130_1000;
 
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_200;
@@ -75,26 +75,26 @@ private:
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_800;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub3_1000;
 
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_200;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_400;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_600;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_800;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_1000;
-
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_200;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_400;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_600;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_800;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_1000;
-
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_200;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_400;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_600;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_800;
-  std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_1000;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_200;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_400;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_600;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_800;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq2_1000;
+  //
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_200;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_400;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_600;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_800;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsubeq3_1000;
+  //
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_200;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_400;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_600;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_800;
+  // std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_Nsub4_1000;
 
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_fpt;
   std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_fpt_200;
@@ -162,12 +162,12 @@ private:
   std::unique_ptr<Selection> sel_toptag_hotvr, sel_toptag_softdrop;
 
   // --- Scans --- //
-  std::unique_ptr<Hists> hist_hotvr_pre, hist_softdrop_pre;
-  std::vector<std::unique_ptr<Selection>> sel_hotvr, sel_softdrop;
-  std::vector<std::unique_ptr<Hists>> hist_hotvr, hist_softdrop;
+  // std::unique_ptr<Hists> hist_hotvr_pre, hist_softdrop_pre;
+  // std::vector<std::unique_ptr<Selection>> sel_hotvr, sel_softdrop;
+  // std::vector<std::unique_ptr<Hists>> hist_hotvr, hist_softdrop;
   int n_points = 100;
   //----EfficiencyHists----
-  std::unique_ptr<EfficiencyHists> hist_eff_hotvr;
+//  std::unique_ptr<EfficiencyHists> hist_eff_hotvr;
 
 // initialize classes
   string m_clustering;
@@ -239,19 +239,19 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   hist_hotvr_jets_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_800", is_qcd));
   hist_hotvr_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_1000", is_qcd));
 
-  hist_hotvr_jets_mGr130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130", is_qcd));
-  hist_hotvr_jets_mGr130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_200", is_qcd));
-  hist_hotvr_jets_mGr130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_400", is_qcd));
-  hist_hotvr_jets_mGr130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_600", is_qcd));
-  hist_hotvr_jets_mGr130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_800", is_qcd));
-  hist_hotvr_jets_mGr130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_1000", is_qcd));
-
-  hist_hotvr_jets_mSm130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130", is_qcd));
-  hist_hotvr_jets_mSm130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_200", is_qcd));
-  hist_hotvr_jets_mSm130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_400", is_qcd));
-  hist_hotvr_jets_mSm130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_600", is_qcd));
-  hist_hotvr_jets_mSm130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_800", is_qcd));
-  hist_hotvr_jets_mSm130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_1000", is_qcd));
+  // hist_hotvr_jets_mGr130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130", is_qcd));
+  // hist_hotvr_jets_mGr130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_200", is_qcd));
+  // hist_hotvr_jets_mGr130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_400", is_qcd));
+  // hist_hotvr_jets_mGr130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_600", is_qcd));
+  // hist_hotvr_jets_mGr130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_800", is_qcd));
+  // hist_hotvr_jets_mGr130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mGr130_1000", is_qcd));
+  //
+  // hist_hotvr_jets_mSm130.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130", is_qcd));
+  // hist_hotvr_jets_mSm130_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_200", is_qcd));
+  // hist_hotvr_jets_mSm130_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_400", is_qcd));
+  // hist_hotvr_jets_mSm130_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_600", is_qcd));
+  // hist_hotvr_jets_mSm130_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_800", is_qcd));
+  // hist_hotvr_jets_mSm130_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_mSm130_1000", is_qcd));
 
   hist_hotvr_jets_Nsub3.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3", is_qcd));
   hist_hotvr_jets_Nsub3_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_200", is_qcd));
@@ -260,26 +260,26 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   hist_hotvr_jets_Nsub3_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_800", is_qcd));
   hist_hotvr_jets_Nsub3_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub3_1000", is_qcd));
 
-  hist_hotvr_jets_Nsubeq2.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2", is_qcd));
-  hist_hotvr_jets_Nsubeq2_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_200", is_qcd));
-  hist_hotvr_jets_Nsubeq2_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_400", is_qcd));
-  hist_hotvr_jets_Nsubeq2_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_600", is_qcd));
-  hist_hotvr_jets_Nsubeq2_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_800", is_qcd));
-  hist_hotvr_jets_Nsubeq2_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_1000", is_qcd));
-
-  hist_hotvr_jets_Nsubeq3.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3", is_qcd));
-  hist_hotvr_jets_Nsubeq3_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_200", is_qcd));
-  hist_hotvr_jets_Nsubeq3_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_400", is_qcd));
-  hist_hotvr_jets_Nsubeq3_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_600", is_qcd));
-  hist_hotvr_jets_Nsubeq3_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_800", is_qcd));
-  hist_hotvr_jets_Nsubeq3_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_1000", is_qcd));
-
-  hist_hotvr_jets_Nsub4.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4", is_qcd));
-  hist_hotvr_jets_Nsub4_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_200", is_qcd));
-  hist_hotvr_jets_Nsub4_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_400", is_qcd));
-  hist_hotvr_jets_Nsub4_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_600", is_qcd));
-  hist_hotvr_jets_Nsub4_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_800", is_qcd));
-  hist_hotvr_jets_Nsub4_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_1000", is_qcd));
+  // hist_hotvr_jets_Nsubeq2.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2", is_qcd));
+  // hist_hotvr_jets_Nsubeq2_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_200", is_qcd));
+  // hist_hotvr_jets_Nsubeq2_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_400", is_qcd));
+  // hist_hotvr_jets_Nsubeq2_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_600", is_qcd));
+  // hist_hotvr_jets_Nsubeq2_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_800", is_qcd));
+  // hist_hotvr_jets_Nsubeq2_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq2_1000", is_qcd));
+  //
+  // hist_hotvr_jets_Nsubeq3.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3", is_qcd));
+  // hist_hotvr_jets_Nsubeq3_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_200", is_qcd));
+  // hist_hotvr_jets_Nsubeq3_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_400", is_qcd));
+  // hist_hotvr_jets_Nsubeq3_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_600", is_qcd));
+  // hist_hotvr_jets_Nsubeq3_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_800", is_qcd));
+  // hist_hotvr_jets_Nsubeq3_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsubeq3_1000", is_qcd));
+  //
+  // hist_hotvr_jets_Nsub4.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4", is_qcd));
+  // hist_hotvr_jets_Nsub4_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_200", is_qcd));
+  // hist_hotvr_jets_Nsub4_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_400", is_qcd));
+  // hist_hotvr_jets_Nsub4_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_600", is_qcd));
+  // hist_hotvr_jets_Nsub4_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_800", is_qcd));
+  // hist_hotvr_jets_Nsub4_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_Nsub4_1000", is_qcd));
 
   hist_hotvr_jets_fpt.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_fpt", is_qcd));
   hist_hotvr_jets_fpt_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_fpt_200", is_qcd));
@@ -338,25 +338,25 @@ HOTVRStudiesModule::HOTVRStudiesModule(Context & ctx){
   TopJetId id_topjet =  PtEtaCut(top_pt_min, top_eta_max);
   TopJetId id_hotvr = AndId<TopJet>(id_topjet, Tau32Groomed(0.47));  // definition of hotvr id (HOTVR SD WP 0.47)
 
-  for (int i = 0; i < n_points; ++i) //loop over working points and create hists
-  {
-    std::unique_ptr<Selection> sel;
-    std::unique_ptr<Hists> hist;
-    TopJetId id;
-    double tau32 = 1 - (i * 1./n_points);
-    // - HOTVR - //
-    id = AndId<TopJet>(id_topjet, Tau32Groomed(tau32)); // define id on specific tau
-    sel.reset(new NTopJetSelection(1, -1, id, h_matched_jets)); // selection on specific tau
-    sel_hotvr.push_back(std::move(sel)); // fill vector with selection bool
-
-    hist.reset(new TopTagPerformanceHists(ctx, "HOTVR_Performance_" + to_string(i), is_qcd,  id, h_matched_pairs)); // reserve hist for sp. tau
-    hist_hotvr.push_back(std::move(hist)); // fill vector with hists
-  }
-
-  hist_hotvr_pre.reset(new TopTagPerformanceHists(ctx, "HOTVR_Pre", is_qcd, id_topjet, h_matched_pairs)); // reserve preselection hist
-
-  //efficiency hists -> give hotvr id
-  hist_eff_hotvr.reset(new EfficiencyHists(ctx, "HOTVR_Eff", is_qcd, id_hotvr, h_matched_pairs));
+  // for (int i = 0; i < n_points; ++i) //loop over working points and create hists
+  // {
+  //   std::unique_ptr<Selection> sel;
+  //   std::unique_ptr<Hists> hist;
+  //   TopJetId id;
+  //   double tau32 = 1 - (i * 1./n_points);
+  //   // - HOTVR - //
+  //   id = AndId<TopJet>(id_topjet, Tau32Groomed(tau32)); // define id on specific tau
+  //   sel.reset(new NTopJetSelection(1, -1, id, h_matched_jets)); // selection on specific tau
+  //   sel_hotvr.push_back(std::move(sel)); // fill vector with selection bool
+  //
+  //   hist.reset(new TopTagPerformanceHists(ctx, "HOTVR_Performance_" + to_string(i), is_qcd,  id, h_matched_pairs)); // reserve hist for sp. tau
+  //   hist_hotvr.push_back(std::move(hist)); // fill vector with hists
+  // }
+  //
+  // hist_hotvr_pre.reset(new TopTagPerformanceHists(ctx, "HOTVR_Pre", is_qcd, id_topjet, h_matched_pairs)); // reserve preselection hist
+  //
+  // //efficiency hists -> give hotvr id
+  // hist_eff_hotvr.reset(new EfficiencyHists(ctx, "HOTVR_Eff", is_qcd, id_hotvr, h_matched_pairs));
 
 }
 /*
@@ -385,22 +385,22 @@ bool HOTVRStudiesModule::process(Event & event) {
     if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_800->fill_topjet(event, jet);
     if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_1000->fill_topjet(event, jet);
     // fill hists for m > 130 GeV and m < 130 GeV
-    if (jet.v4().M()>130) {
-      hist_hotvr_jets_mGr130->fill_topjet(event, jet);
-      if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mGr130_200->fill_topjet(event, jet);
-      if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mGr130_400->fill_topjet(event, jet);
-      if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mGr130_600->fill_topjet(event, jet);
-      if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mGr130_800->fill_topjet(event, jet);
-      if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mGr130_1000->fill_topjet(event, jet);
-    }
-    if (jet.v4().M()<130) {
-      hist_hotvr_jets_mSm130->fill_topjet(event, jet);
-      if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mSm130_200->fill_topjet(event, jet);
-      if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mSm130_400->fill_topjet(event, jet);
-      if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mSm130_600->fill_topjet(event, jet);
-      if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mSm130_800->fill_topjet(event, jet);
-      if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mSm130_1000->fill_topjet(event, jet);
-    }
+    // if (jet.v4().M()>130) {
+    //   hist_hotvr_jets_mGr130->fill_topjet(event, jet);
+    //   if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mGr130_200->fill_topjet(event, jet);
+    //   if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mGr130_400->fill_topjet(event, jet);
+    //   if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mGr130_600->fill_topjet(event, jet);
+    //   if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mGr130_800->fill_topjet(event, jet);
+    //   if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mGr130_1000->fill_topjet(event, jet);
+    // }
+    // if (jet.v4().M()<130) {
+    //   hist_hotvr_jets_mSm130->fill_topjet(event, jet);
+    //   if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_mSm130_200->fill_topjet(event, jet);
+    //   if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_mSm130_400->fill_topjet(event, jet);
+    //   if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_mSm130_600->fill_topjet(event, jet);
+    //   if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_mSm130_800->fill_topjet(event, jet);
+    //   if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_mSm130_1000->fill_topjet(event, jet);
+    // }
 
 // fill hists after Nsub3 cut
 if (jet.subjets().size()>2) {
@@ -412,32 +412,32 @@ if (jet.subjets().size()>2) {
     if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsub3_1000->fill_topjet(event, jet);
   }
   // fill hists for jets with == 2 subjets
-  if (jet.subjets().size()==2) {
-      hist_hotvr_jets_Nsubeq2->fill_topjet(event, jet);
-      if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsubeq2_200->fill_topjet(event, jet);
-      if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsubeq2_400->fill_topjet(event, jet);
-      if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsubeq2_600->fill_topjet(event, jet);
-      if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsubeq2_800->fill_topjet(event, jet);
-      if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsubeq2_1000->fill_topjet(event, jet);
-    }
-    // fill hists after Nsub3 cut
-    if (jet.subjets().size()==3) {
-        hist_hotvr_jets_Nsubeq3->fill_topjet(event, jet);
-        if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsubeq3_200->fill_topjet(event, jet);
-        if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsubeq3_400->fill_topjet(event, jet);
-        if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsubeq3_600->fill_topjet(event, jet);
-        if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsubeq3_800->fill_topjet(event, jet);
-        if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsubeq3_1000->fill_topjet(event, jet);
-      }
-      // fill hists after Nsub3 cut
-      if (jet.subjets().size()>3) {
-          hist_hotvr_jets_Nsub4->fill_topjet(event, jet);
-          if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsub4_200->fill_topjet(event, jet);
-          if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsub4_400->fill_topjet(event, jet);
-          if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsub4_600->fill_topjet(event, jet);
-          if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsub4_800->fill_topjet(event, jet);
-          if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsub4_1000->fill_topjet(event, jet);
-        }
+  // if (jet.subjets().size()==2) {
+  //     hist_hotvr_jets_Nsubeq2->fill_topjet(event, jet);
+  //     if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsubeq2_200->fill_topjet(event, jet);
+  //     if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsubeq2_400->fill_topjet(event, jet);
+  //     if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsubeq2_600->fill_topjet(event, jet);
+  //     if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsubeq2_800->fill_topjet(event, jet);
+  //     if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsubeq2_1000->fill_topjet(event, jet);
+  //   }
+  //   // fill hists after Nsub3 cut
+  //   if (jet.subjets().size()==3) {
+  //       hist_hotvr_jets_Nsubeq3->fill_topjet(event, jet);
+  //       if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsubeq3_200->fill_topjet(event, jet);
+  //       if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsubeq3_400->fill_topjet(event, jet);
+  //       if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsubeq3_600->fill_topjet(event, jet);
+  //       if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsubeq3_800->fill_topjet(event, jet);
+  //       if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsubeq3_1000->fill_topjet(event, jet);
+  //     }
+  //     // fill hists after Nsub3 cut
+  //     if (jet.subjets().size()>3) {
+  //         hist_hotvr_jets_Nsub4->fill_topjet(event, jet);
+  //         if(jet.pt()>200 &&jet.pt()<400)  hist_hotvr_jets_Nsub4_200->fill_topjet(event, jet);
+  //         if(jet.pt()>400 &&jet.pt()<600)  hist_hotvr_jets_Nsub4_400->fill_topjet(event, jet);
+  //         if(jet.pt()>600 &&jet.pt()<800)  hist_hotvr_jets_Nsub4_600->fill_topjet(event, jet);
+  //         if(jet.pt()>800 &&jet.pt()<1000)  hist_hotvr_jets_Nsub4_800->fill_topjet(event, jet);
+  //         if(jet.pt()>1000 &&jet.pt()<1200)  hist_hotvr_jets_Nsub4_1000->fill_topjet(event, jet);
+  //       }
 // fill hists after fpt cut
   if (jet.subjets().size()>2 &&jet.hotvr_fpt1()<0.8) {
     hist_hotvr_jets_fpt->fill_topjet(event, jet);
@@ -540,21 +540,21 @@ matching = new Matching();
   } // end loop over matched jets
 
  //set the event handle  these jets are the matched TopJets
-  event.set(h_matched_parton_jets, matched_parton_jets);
-  event.set(h_matched_jets, matched_jets);
+//  event.set(h_matched_parton_jets, matched_parton_jets);
+//  event.set(h_matched_jets, matched_jets);
 
 //for ROC curves
   //set the event handle for the denominator
-  event.set(h_matched_pairs, matched_pair);
-  hist_hotvr_pre->fill(event);   // fill hists before tau selection (all parton jets)
-  hist_eff_hotvr->fill(event);   // fill hists for efficiency plots
-  //set the event handle for the numerator
-  event.set(h_matched_pairs, matched_pair_tagged);
-  for (int i = 0; i < n_points; ++i){ //loop over working points
-    if (sel_hotvr.at(i)->passes(event)){
-      hist_hotvr.at(i)->fill(event); //fill hist if at least one jet of the event passes the sel
-    }
-  }
+  // event.set(h_matched_pairs, matched_pair);
+  // hist_hotvr_pre->fill(event);   // fill hists before tau selection (all parton jets)
+  // hist_eff_hotvr->fill(event);   // fill hists for efficiency plots
+  // //set the event handle for the numerator
+  // event.set(h_matched_pairs, matched_pair_tagged);
+  // for (int i = 0; i < n_points; ++i){ //loop over working points
+  //   if (sel_hotvr.at(i)->passes(event)){
+  //     hist_hotvr.at(i)->fill(event); //fill hist if at least one jet of the event passes the sel
+  //   }
+  // }
 
 // decide whether or not to keep the current event in the output:
   return true;
