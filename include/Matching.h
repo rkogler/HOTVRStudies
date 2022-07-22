@@ -18,6 +18,8 @@ class Matching{
  private:
   std::vector<fastjet::PseudoJet> _stableParticles;
   std::vector<fastjet::PseudoJet> _partons_to_cluster;
+  std::vector<fastjet::PseudoJet> _W_partons_to_cluster;
+
   std::vector<TopJet> _matched_jets;
   std::vector<TopJet> _matched_parton_jets;
   std::vector<std::pair<TopJet, TopJet>> _matched_pairs;
@@ -44,6 +46,7 @@ class Matching{
  public:
   Matching();
   void run_matching(std::vector<TopJet> particle_jets, std::vector<TopJet> parton_jets);
+  void run_matching_W_top(std::vector<TopJet> particle_jets, std::vector<TopJet> parton_jets_top, std::vector<TopJet> parton_jets_W);
   void run_matching(std::vector<fastjet::PseudoJet> jets, std::vector<fastjet::PseudoJet> denominator_jets);
   void run_matching(std::vector<fastjet::PseudoJet> jets, std::vector<std::vector<fastjet::PseudoJet>> constituents, std::vector<fastjet::PseudoJet> denominator_jets);
   void set_stable_particles(std::vector<GenParticle>* genparticles);

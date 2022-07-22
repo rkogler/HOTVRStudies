@@ -363,7 +363,9 @@ _matched_pairs.clear();
 		// double pt = matched_jet.pt();
 		// double matching_radius = rho/pt;
 
-		double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
+    double matching_radius= 10; // take max distance of the HOTVR jet as the matching radius
+
+	//	double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
 		// if(matching_radius<0.1){matching_radius=0.1;};
 		// if(matching_radius>1.5){matching_radius=1.5;};
 
@@ -402,10 +404,6 @@ _matched_pairs.clear();
 				jets.erase(jets.begin()+i);
 	    }
 	  }
-		// set the matching radius
-		// double rho = 600;
-		// double pt = matched_jet.pt();
-		// double matching_radius = rho/pt;
 
 		double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
 		// if(matching_radius<0.1){matching_radius=0.1;};

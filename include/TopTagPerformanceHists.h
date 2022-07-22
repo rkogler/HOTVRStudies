@@ -25,6 +25,7 @@ protected:
 
   TH1F *N_evt, *N_mat;
   TH1F *pt_top, *pt_matched, *pt_mismatched, *pt_gen;
+  TH1F *hist_njets;
   bool b_is_qcd;
   TopJetId m_id;
   uhh2::Event::Handle<std::vector<std::pair<TopJet, TopJet> > > h_matched_pairs;
