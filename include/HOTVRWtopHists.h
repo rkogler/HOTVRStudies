@@ -33,4 +33,5 @@ public:
     TH1F *hist_pt, *hist_mass,  *hist_eta, *hist_phi, *hist_energy; // Definition of hists for generel studies
     TH1F *hist_distance, *hist_mmin, *hist_fpt1, *hist_nsubjets; // HOTVR specific hists
     TH1F *hist_tau1, *hist_tau2, *hist_tau3, *hist_tau21, *hist_tau32; // N-subjettiness hist
+    TH1F *hist_pt_ratio;
 };

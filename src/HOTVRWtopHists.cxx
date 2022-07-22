@@ -28,6 +28,7 @@ hist_tau2 = book<TH1F>("tau2", "tau2", 100, 0, 1);
 hist_tau3 = book<TH1F>("tau3", "tau3", 100, 0, 1);
 hist_tau21 = book<TH1F>("tau21", "tau21", 100, 0, 1);
 hist_tau32 = book<TH1F>("tau32", "tau32", 100, 0, 1);
+hist_pt_ratio = book<TH1F>("pt_ratio", "p_{T} (W jet)/ p_{T} (top jet)", 100, 0, 2);
 
 }
 
@@ -54,6 +55,7 @@ void HOTVRWtopHists::fill_topjet(const Event & event, TopJet & jet, TopJet & par
     hist_tau32->Fill(jet.tau3_groomed()/jet.tau2_groomed());
 
     hist_distance->Fill(deltaR(parton_jet, jet));
+    hist_pt_ratio->Fill(jet.pt()/parton_jet.pt());
 }
 
 

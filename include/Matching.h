@@ -56,6 +56,8 @@ class Matching{
   void set_W_partons(std::vector<GenParticle>* genparticles);
   void set_b_partons(std::vector<GenParticle>* genparticles);
 
+  TopJet get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets);
+
   std::vector<fastjet::PseudoJet> get_stableParticles() { return _stableParticles; };
   std::vector<fastjet::PseudoJet> get_partons() { return _partons_to_cluster; };
   std::vector<fastjet::PseudoJet> get_W_partons() { return _W_partons_to_cluster; };

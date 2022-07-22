@@ -431,7 +431,7 @@ _matched_pairs.clear();
 		// double pt = matched_jet.pt();
 		// double matching_radius = rho/pt;
 
-    double matching_radius= 1; // take max distance of the HOTVR jet as the matching radius
+    double matching_radius= 2; // take max distance of the HOTVR jet as the matching radius
 
 	//	double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
 		// if(matching_radius<0.1){matching_radius=0.1;};
@@ -545,6 +545,23 @@ double minDeltaR=1000;
 		}
 	}// end loop denominator_jets
 }
+
+TopJet get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets)
+{
+   TopJet matched_jet;
+//   double minDeltaR=radius;
+//   double delta_R;
+// //loop over particle jets, find closest
+//   for(uint i=0; i<parton_jets.size(); i++){
+//     delta_R=deltaR(jet,parton_jets[i]);
+//     if(delta_R<minDeltaR){
+//       minDeltaR=delta_R;
+//       matched_jet=parton_jets[i];
+//     }
+//   }
+   return matched_jet;
+}
+
 
 //is the matched jet close enough?
 bool Matching::IsMatched(TopJet jet, double matching_radius, TopJet denominator_jet)
