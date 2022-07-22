@@ -276,6 +276,25 @@ void Clustering::cluster_W_parton_jets(vector<PseudoJet> pseudojets)
   }
 }
 
+//-------------cluster parton jets for b genparticles-----------------
+void Clustering::cluster_b_parton_jets(vector<PseudoJet> pseudojets)
+{
+  JetDefinition jet_def(antikt_algorithm,1.0);
+  vector<PseudoJet> parton_jets;
+  ClusterSequence clust_seq(pseudojets, jet_def);
+  parton_jets = sorted_by_pt(clust_seq.inclusive_jets(100.));
+
+    for(unsigned i=0; i<parton_jets.size(); i++){
+      bool candidate=false;
+      for(unsigned j=0;j<parton_jets[i].constituents().size(); j++) if(parton_jets[i].constituents().at(j).user_index()==6) candidate=true;
+      if(candidate){ _b_parton_fatjets.push_back(parton_jets[i]);}
+    }
+  for (unsigned int i = 0; i < _b_parton_fatjets.size(); ++i) {
+    //convert into TopJet
+    _b_parton_jets.push_back(convert_jet(_b_parton_fatjets[i]));
+  }
+}
+
 //----------converts a pseudojet into a topjet----------------------------
 //----------the values for the groomed tau are set------------------------
 TopJet Clustering::convert_jet(PseudoJet pseudojet, double tau1, double tau2, double tau3)

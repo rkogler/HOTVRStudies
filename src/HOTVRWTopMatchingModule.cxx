@@ -55,12 +55,26 @@ std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_600;
 std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_800;
 std::unique_ptr<HOTVRJetsHists> hist_hotvr_jets_1000;
 
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets;
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets_200;
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets_400;
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets_600;
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets_800;
-std::unique_ptr<HOTVRWtopHists> hist_W_parton_jets_1000;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_200;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_400;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_600;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_800;
+std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_1000;
+
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets;
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_200;
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_400;
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_600;
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_800;
+std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_1000;
+
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets;
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets_200;
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets_400;
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets_600;
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets_800;
+std::unique_ptr<HOTVRJetsHists> hist_b_parton_jets_1000;
 
 std::unique_ptr<HOTVRJetsHists> hist_top_parton_jets;
 std::unique_ptr<HOTVRJetsHists> hist_top_parton_jets_200;
@@ -98,12 +112,16 @@ std::unique_ptr<HOTVRJetsHists> hist_top_parton_jets_1000;
   vector<fastjet::PseudoJet> hotvr_jets;
   vector<fastjet::PseudoJet> parton_pseudojets;
   vector<fastjet::PseudoJet> W_parton_pseudojets;
+  vector<fastjet::PseudoJet> b_parton_pseudojets;
+
   vector<fastjet::PseudoJet> parton_jets;
   vector<fastjet::PseudoJet> W_parton_jets;
+  vector<fastjet::PseudoJet> b_parton_jets;
 
   vector<TopJet> _top_hotvr_jets;
   vector<TopJet> _top_parton_jets;
   vector<TopJet> _top_parton_jets_W;
+  vector<TopJet> _top_parton_jets_b;
 
   string dataset_version;
 
@@ -163,12 +181,26 @@ hist_hotvr_jets_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_600
 hist_hotvr_jets_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_800", is_qcd));
 hist_hotvr_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_hotvr_jets_1000", is_qcd));
 
-hist_W_parton_jets.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets", is_qcd));
-hist_W_parton_jets_200.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets_200", is_qcd));
-hist_W_parton_jets_400.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets_400", is_qcd));
-hist_W_parton_jets_600.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets_600", is_qcd));
-hist_W_parton_jets_800.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets_800", is_qcd));
-hist_W_parton_jets_1000.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_parton_jets_1000", is_qcd));
+hist_W_top_parton_jets.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets", is_qcd));
+hist_W_top_parton_jets_200.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_200", is_qcd));
+hist_W_top_parton_jets_400.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_400", is_qcd));
+hist_W_top_parton_jets_600.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_600", is_qcd));
+hist_W_top_parton_jets_800.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_800", is_qcd));
+hist_W_top_parton_jets_1000.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_1000", is_qcd));
+
+hist_W_parton_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets", is_qcd));
+hist_W_parton_jets_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_200", is_qcd));
+hist_W_parton_jets_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_400", is_qcd));
+hist_W_parton_jets_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_600", is_qcd));
+hist_W_parton_jets_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_800", is_qcd));
+hist_W_parton_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_1000", is_qcd));
+
+hist_b_parton_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets", is_qcd));
+hist_b_parton_jets_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets_200", is_qcd));
+hist_b_parton_jets_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets_400", is_qcd));
+hist_b_parton_jets_600.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets_600", is_qcd));
+hist_b_parton_jets_800.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets_800", is_qcd));
+hist_b_parton_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_b_parton_jets_1000", is_qcd));
 
 hist_top_parton_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_top_parton_jets", is_qcd));
 hist_top_parton_jets_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_top_parton_jets_200", is_qcd));
@@ -215,20 +247,15 @@ bool HOTVRWTopMatchingModule::process(Event & event) {
 
     matching->set_partons(genparticles); // Input for top parton jet clustering
     matching->set_W_partons(genparticles); // INput for W parton jets
+    matching->set_b_partons(genparticles); // INput for W parton jets
 
     parton_pseudojets = matching->get_partons();
     W_parton_pseudojets = matching->get_W_partons();
-    if (debug) {std::cout << "Set and get partons" << '\n';}
-  //   if (debug)
-  //   {std::cout << "parton_pseudojets size " << parton_pseudojets.size() << '\n';
-  // std::cout << "W_parton_pseudojets size " << W_parton_pseudojets.size() << '\n';
-  // for (size_t i = 0; i < 5 ; i++) {
-  //  std::cout << "parton_pseudojets jets pt " << parton_pseudojets[i].pt() << '\n';
-  // }
-  // for (size_t i = 0; i < 5 ; i++) {
-  //  std::cout << "W_parton_pseudojets pt " << W_parton_pseudojets[i].pt() << '\n';
-  // }
-  // }
+    b_parton_pseudojets = matching->get_b_partons();
+
+    if (debug) {std::cout << "Set and get partons" << '\n';
+      std::cout << "b partons size "<< b_parton_pseudojets.size() << '\n';
+  }
     // -----CLUSTERING -----
     clustering = new Clustering(m_clustering);
    clustering->cluster_jets(pseudojets); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
@@ -250,11 +277,47 @@ bool HOTVRWTopMatchingModule::process(Event & event) {
    W_parton_jets = clustering->get_W_parton_jets();
    _top_parton_jets_W = clustering->get_top_W_parton_jets();
    if (debug) {std::cout << "Cluster W jets " << '\n';}
+   // // cluster b GENJETS
+   clustering->cluster_b_parton_jets(b_parton_pseudojets);
+   b_parton_jets = clustering->get_b_parton_jets();
+   _top_parton_jets_b = clustering->get_top_b_parton_jets();
+   if (debug) {std::cout << "Cluster b jets " << '\n';
+    std::cout << b_parton_jets.size() << '\n';
+    }
 
    clustering->cluster_parton_jets(parton_pseudojets, isTTbar);
    parton_jets = clustering->get_parton_jets();
    _top_parton_jets = clustering->get_top_parton_jets();
    if (debug) {std::cout << "Cluster top jets " << '\n';}
+   // Plot control hists for the 3 collections of parton jets
+    for (size_t i = 0; i < _top_parton_jets_W.size(); i++) {
+      TopJet jet = _top_parton_jets_W[i];
+      hist_W_parton_jets->fill_topjet(event, jet);
+      if(jet.pt()>200 &&jet.pt()<400)  hist_W_parton_jets_200->fill_topjet(event, jet);
+      if(jet.pt()>400 &&jet.pt()<600)  hist_W_parton_jets_400->fill_topjet(event, jet);
+      if(jet.pt()>600 &&jet.pt()<800)  hist_W_parton_jets_600->fill_topjet(event, jet);
+      if(jet.pt()>800 &&jet.pt()<1000)  hist_W_parton_jets_800->fill_topjet(event, jet);
+      if(jet.pt()>1000 &&jet.pt()<1200)  hist_W_parton_jets_1000->fill_topjet(event, jet);
+    }
+    for (size_t i = 0; i < _top_parton_jets_b.size(); i++) {
+      TopJet jet = _top_parton_jets_b[i];
+      hist_b_parton_jets->fill_topjet(event, jet);
+      if(jet.pt()>200 &&jet.pt()<400)  hist_b_parton_jets_200->fill_topjet(event, jet);
+      if(jet.pt()>400 &&jet.pt()<600)  hist_b_parton_jets_400->fill_topjet(event, jet);
+      if(jet.pt()>600 &&jet.pt()<800)  hist_b_parton_jets_600->fill_topjet(event, jet);
+      if(jet.pt()>800 &&jet.pt()<1000)  hist_b_parton_jets_800->fill_topjet(event, jet);
+      if(jet.pt()>1000 &&jet.pt()<1200)  hist_b_parton_jets_1000->fill_topjet(event, jet);
+    }
+    for (size_t i = 0; i < _top_parton_jets.size(); i++) {
+      TopJet jet = _top_parton_jets[i];
+      hist_top_parton_jets->fill_topjet(event, jet);
+      if(jet.pt()>200 &&jet.pt()<400)  hist_top_parton_jets_200->fill_topjet(event, jet);
+      if(jet.pt()>400 &&jet.pt()<600)  hist_top_parton_jets_400->fill_topjet(event, jet);
+      if(jet.pt()>600 &&jet.pt()<800)  hist_top_parton_jets_600->fill_topjet(event, jet);
+      if(jet.pt()>800 &&jet.pt()<1000)  hist_top_parton_jets_800->fill_topjet(event, jet);
+      if(jet.pt()>1000 &&jet.pt()<1200)  hist_top_parton_jets_1000->fill_topjet(event, jet);
+    }
+
 
    // match top genjets to W and plot distance
    matching->run_matching(_top_parton_jets_W, _top_parton_jets);
@@ -264,44 +327,13 @@ bool HOTVRWTopMatchingModule::process(Event & event) {
   for(uint i=0; i<matched_W_top_pair.size(); ++i){ // loop over matched W jets
     TopJet top_parton_jet=matched_W_top_pair[i].second;
     TopJet jet=matched_W_top_pair[i].first;
-   //for (size_t i = 0; i < _top_parton_jets_W.size(); i++) {
-     hist_W_parton_jets->fill_topjet(event, jet, top_parton_jet);   // kleinsten Abstand W und top genjet plotten
-     if(jet.pt()>200 &&jet.pt()<400)  hist_W_parton_jets_200->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>400 &&jet.pt()<600)  hist_W_parton_jets_400->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>600 &&jet.pt()<800)  hist_W_parton_jets_600->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>800 &&jet.pt()<1000)  hist_W_parton_jets_800->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>1000 &&jet.pt()<1200)  hist_W_parton_jets_1000->fill_topjet(event, jet, top_parton_jet);
+     hist_W_top_parton_jets->fill_topjet(event, jet, top_parton_jet);   // kleinsten Abstand W und top genjet plotten
+     if(jet.pt()>200 &&jet.pt()<400)  hist_W_top_parton_jets_200->fill_topjet(event, jet, top_parton_jet);
+     if(jet.pt()>400 &&jet.pt()<600)  hist_W_top_parton_jets_400->fill_topjet(event, jet, top_parton_jet);
+     if(jet.pt()>600 &&jet.pt()<800)  hist_W_top_parton_jets_600->fill_topjet(event, jet, top_parton_jet);
+     if(jet.pt()>800 &&jet.pt()<1000)  hist_W_top_parton_jets_800->fill_topjet(event, jet, top_parton_jet);
+     if(jet.pt()>1000 &&jet.pt()<1200)  hist_W_top_parton_jets_1000->fill_topjet(event, jet, top_parton_jet);
    }
-   for (size_t i = 0; i < _top_parton_jets.size(); i++) {
-     TopJet jet = _top_parton_jets[i];
-     hist_top_parton_jets->fill_topjet(event, jet);
-     if(jet.pt()>200 &&jet.pt()<400)  hist_top_parton_jets_200->fill_topjet(event, jet);
-     if(jet.pt()>400 &&jet.pt()<600)  hist_top_parton_jets_400->fill_topjet(event, jet);
-     if(jet.pt()>600 &&jet.pt()<800)  hist_top_parton_jets_600->fill_topjet(event, jet);
-     if(jet.pt()>800 &&jet.pt()<1000)  hist_top_parton_jets_800->fill_topjet(event, jet);
-     if(jet.pt()>1000 &&jet.pt()<1200)  hist_top_parton_jets_1000->fill_topjet(event, jet);
-   }
-
-//// // ------MATCHING zum top--------
-
-// matching->run_matching_W_top(_top_hotvr_jets, _top_parton_jets, _top_parton_jets_W); // TODO does this work? TODO wenn W dicht, dann zum W matchen, sonst top
-//  matched_jets = matching->get_matched_jets();
-//  matched_parton_jets = matching->get_matched_parton_jets();
-//  vector<pair<TopJet, TopJet>> matched_pair_HOTVR_top = matching->get_matched_pairs();
-// if (debug) {std::cout << "Match jets " << '\n';}
-//
-// for(uint j=0; j<matched_pair_HOTVR_top.size(); ++j){ // loop over matched jets
-//   TopJet parton_jet=matched_pair_HOTVR_top[j].second;
-//   TopJet matched_jet=matched_pair_HOTVR_top[j].first;
-//
-//   //fill hists with matched jets
-//   hist_matched_jets->fill_topjet(event, matched_jet, parton_jet);
-//   if(parton_jet.pt()>200 && parton_jet.pt()<400)  hist_matched_jets_200->fill_topjet(event, matched_jet, parton_jet);
-//   if(parton_jet.pt()>400 && parton_jet.pt()<600)  hist_matched_jets_400->fill_topjet(event, matched_jet, parton_jet);
-//   if(parton_jet.pt()>600 && parton_jet.pt()<800)  hist_matched_jets_600->fill_topjet(event, matched_jet, parton_jet);
-//   if(parton_jet.pt()>800 && parton_jet.pt()<1000)  hist_matched_jets_800->fill_topjet(event, matched_jet, parton_jet);
-//   if(parton_jet.pt()>1000 && parton_jet.pt()<1200)  hist_matched_jets_1000->fill_topjet(event, matched_jet, parton_jet);
-// }
 // // ------MATCHING zum W--------
 // //run_matching: loop over the parton jets and match them to the hotvr jets
    vector<TopJet> matched_jets;

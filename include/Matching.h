@@ -19,6 +19,7 @@ class Matching{
   std::vector<fastjet::PseudoJet> _stableParticles;
   std::vector<fastjet::PseudoJet> _partons_to_cluster;
   std::vector<fastjet::PseudoJet> _W_partons_to_cluster;
+  std::vector<fastjet::PseudoJet> _b_partons_to_cluster;
 
   std::vector<TopJet> _matched_jets;
   std::vector<TopJet> _matched_parton_jets;
@@ -31,6 +32,7 @@ class Matching{
   bool IsNeutrino(GenParticle* p);
   bool IsTop(GenParticle* p);
   bool IsW(GenParticle* p);
+  bool Isb(GenParticle* p);
   bool IsParton(GenParticle* p);
   bool IsStableParticle(GenParticle* p);
   bool BeforeTopDecay(GenParticle* p, std::vector<GenParticle>* genparticles);
@@ -52,10 +54,12 @@ class Matching{
   void set_stable_particles(std::vector<GenParticle>* genparticles);
   void set_partons(std::vector<GenParticle>* genparticles);
   void set_W_partons(std::vector<GenParticle>* genparticles);
+  void set_b_partons(std::vector<GenParticle>* genparticles);
 
   std::vector<fastjet::PseudoJet> get_stableParticles() { return _stableParticles; };
   std::vector<fastjet::PseudoJet> get_partons() { return _partons_to_cluster; };
   std::vector<fastjet::PseudoJet> get_W_partons() { return _W_partons_to_cluster; };
+  std::vector<fastjet::PseudoJet> get_b_partons() { return _b_partons_to_cluster; };
 
   std::vector<TopJet> get_matched_jets() { return _matched_jets; };
   std::vector<TopJet> get_matched_parton_jets() { return _matched_parton_jets; };

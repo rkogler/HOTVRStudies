@@ -43,6 +43,13 @@ bool Matching::IsW(GenParticle* p)
   if (abs(id)==24) return true;
   else return false;
 }
+// keep all b quarks
+bool Matching::Isb(GenParticle* p)
+{
+  int id = p->pdgId();
+  if (abs(id)==5) return true;
+  else return false;
+}
 // keep all quarks, gluons, W, Z bosons
 bool Matching::IsParton(GenParticle* p)
 {
@@ -325,6 +332,67 @@ void Matching::set_W_partons(vector<GenParticle>* genparticles)
 	       _W_partons_to_cluster.push_back(pseudojet);
 	     }
 }
+//stores a list of final state b partons for the clustering (parton level)
+void Matching::set_b_partons(vector<GenParticle>* genparticles)
+{
+	//check for final state partons from top decay
+	    vector<GenParticle*> partons;
+	    // here is a list of partons that should be skipped (daughters from top decay)
+	    vector<bool> skip;
+	    int nparts = genparticles->size();
+	    skip.reserve(nparts);
+	    //set all skips to false
+	    for (int i=0; i<nparts; ++i) skip[i]=false;
+	    //loop over all particles
+	    for(int i=0; i<nparts; ++i){
+	      // check if this parton should be skipped
+	      if (skip[i]) continue; //the particle should be skipped
+	  	  GenParticle* p = &(genparticles->at(i));
+	  	  // is it a parton?
+	      if (!IsParton(p)) continue; //if it is a particle->continue with next particle
+	      // check if it's a top quark
+	      if (IsTop(p)){
+	  	     // is it the one that decays?
+	  	      if (BeforeTopDecay(p,genparticles)){
+							GenParticle* W_cand;
+							GenParticle* b_cand;
+									// get the W
+									W_cand = GetDaughter(p, genparticles, 1);
+                  b_cand = GetDaughter(p, genparticles, 2);
+									if (!IsW(W_cand)) {
+										W_cand = GetDaughter(p, genparticles, 2);
+										b_cand = GetDaughter(p, genparticles, 1);
+									}
+									// std::cout << "----------Matching----------" << '\n';
+									// std::cout << "top pt = " << p->pt() << '\n';
+									// std::cout << "W pt = " << W_cand->pt() << '\n';
+									// std::cout << "b pt = " << b_cand->pt() << '\n';
+
+									//remove all final state partons from the b decay
+									UpdateSkipList(W_cand, genparticles, skip);
+                    // keep it
+                   partons.push_back(b_cand);
+                   // flag all daughter partons to be skipped
+                   UpdateSkipList(b_cand, genparticles, skip);
+                   continue;
+	  	          } // end top that decays
+	              else {
+	  	            continue;
+	  	          }
+	      }
+	      if (FinalStateParton(p, genparticles)){ //add all final state partons to the partons list
+	  	     partons.push_back(p);
+	      }
+	    }
+	//save the partons that should be clustered
+	     for(unsigned i=0;i<partons.size();i++){
+	       GenParticle* p = partons[i];
+	       PseudoJet pseudojet=convert_particle(p);
+				 if(Isb(p)) pseudojet.set_user_index(6); //b particle
+		 		else  pseudojet.set_user_index(0);
+				_b_partons_to_cluster.push_back(pseudojet);
+	     }
+}
 /*
 ██████  ██    ██ ███    ██     ███    ███  █████  ████████  ██████ ██   ██ ██ ███    ██  ██████
 ██   ██ ██    ██ ████   ██     ████  ████ ██   ██    ██    ██      ██   ██ ██ ████   ██ ██
@@ -363,7 +431,7 @@ _matched_pairs.clear();
 		// double pt = matched_jet.pt();
 		// double matching_radius = rho/pt;
 
-    double matching_radius= 10; // take max distance of the HOTVR jet as the matching radius
+    double matching_radius= 1; // take max distance of the HOTVR jet as the matching radius
 
 	//	double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
 		// if(matching_radius<0.1){matching_radius=0.1;};
