@@ -180,8 +180,8 @@ bool JetDisplayModule::process(Event & event) {
   uint hotvr_jets_with_subjets=0;
 
   for (size_t k = 0; k < hotvr_jets.size(); k++) {
-    if (toptagger->Is_tagged("sd", hotvr_jets[k]) && hotvr_jets[k].pt()>600) {
-      //if (hotvr_jets[k].pt()>600) {
+    //if (toptagger->Is_tagged("sd", hotvr_jets[k]) && hotvr_jets[k].pt()>600) {
+      if (hotvr_jets[k].pt()>600) {
       select_event=true;
     }
     if (hotvr_jets[k].user_info<HOTVRinfo>().nsubjets() > 1){++hotvr_jets_with_subjets;}

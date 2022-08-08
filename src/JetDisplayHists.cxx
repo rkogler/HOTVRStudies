@@ -19,7 +19,7 @@ Hists(ctx, dirname)
     book<TH2F>(hname3,hname3,10,0,9,300,0,300);
     hname3 = TString::Format("JetDisplay_jet%i_subjetpT",o);
     book<TH2F>(hname3,hname3,10,0,9,300,0,3000);
-    for(int p=0;p<20;p++) { // loop over 20 possible subjets
+    for(int p=0;p<25;p++) { // loop over 20 possible subjets // TODO do this more elegant
       TString hname2 = TString::Format("JetDisplay_jet%i_subjet%i", o,p);
       book<TH2F>(hname2,"Jet event display",bins,-PI,PI,bins,-PI,PI);
     } // end loop over subjets
