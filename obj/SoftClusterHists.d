@@ -178,6 +178,9 @@ obj/SoftClusterHists.o: src/SoftClusterHists.cxx \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/PFParticle.h \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/L1EGamma.h \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/L1Jet.h \
+ /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/L1Muon.h \
+ /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/L1EtSum.h \
+ /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/L1Tau.h \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/common/include/CommonModules.h \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/Selection.h \
  /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/core/include/Utils.h \
