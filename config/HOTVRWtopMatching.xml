@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
-	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/WtopMatching">
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/WtopMatching/fixmass">
 	  <!ENTITY b_Cacheable     "False">
-	  <!ENTITY NEVT            "1">
+	  <!ENTITY NEVT            "1000">
+		<!ENTITY NSkip           "0">
+		<!-- Interesting events: 36, 66 (but low pt or low mass jets) 328 -->
 
 	  <!--ttbar files-->
 	  <!ENTITY ttbar_pythia8_flat_nnpdf23 SYSTEM "/nfs/dust/cms/user/albrecha/ntuples/ttbar_pythia8_flat_nnpdf23_.xml">
@@ -25,7 +27,7 @@
 
    <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="1" >
 
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
+	      <InputData Lumi="1" NEventsMax="&NEVT;" NEventsSkip="&NSkip;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23;
 		<InputTree Name="AnalysisTree" />
 		<OutputTree Name="AnalysisTree" />

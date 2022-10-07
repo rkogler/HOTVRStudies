@@ -22,7 +22,7 @@ public:
     // use the same constructor arguments as Hists for forwarding:
     HOTVRWtopHists(uhh2::Context & ctx, const std::string & dirname, bool is_qcd);
     virtual void fill(const uhh2::Event & ev) override;
-    virtual void fill_topjet(const uhh2::Event & ev, TopJet & jet, TopJet & parton_jet);
+    virtual void fill_topjet(const uhh2::Event & ev, TopJet & jet, TopJet & parton_jet_W, TopJet & parton_jet_b, TopJet & parton_jet_top);
 
     virtual ~HOTVRWtopHists();
 
@@ -31,6 +31,9 @@ public:
     TH1F *processed_events_ttbar, *processed_events_qcd;
 
     TH1F *hist_pt, *hist_mass,  *hist_eta, *hist_phi, *hist_energy; // Definition of hists for generel studies
+    TH1F *hist_pt_W, *hist_pt_b, *hist_pt_top;
+    TH1F *hist_distance_top_W, *hist_distance_top_b, *hist_distance_W_b;
+    TH1F *hist_pt_ratio_HOTVR_top, *hist_pt_sum_W_b;
     TH1F *hist_distance, *hist_mmin, *hist_fpt1, *hist_nsubjets; // HOTVR specific hists
     TH1F *hist_tau1, *hist_tau2, *hist_tau3, *hist_tau21, *hist_tau32; // N-subjettiness hist
     TH1F *hist_pt_ratio;

@@ -546,20 +546,20 @@ double minDeltaR=1000;
 	}// end loop denominator_jets
 }
 
-TopJet get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets)
+TopJet Matching::get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets)
 {
-   TopJet matched_jet;
-//   double minDeltaR=radius;
-//   double delta_R;
-// //loop over particle jets, find closest
-//   for(uint i=0; i<parton_jets.size(); i++){
-//     delta_R=deltaR(jet,parton_jets[i]);
-//     if(delta_R<minDeltaR){
-//       minDeltaR=delta_R;
-//       matched_jet=parton_jets[i];
-//     }
-//   }
-   return matched_jet;
+   TopJet closest_jet;
+  double minDeltaR=radius;
+  double delta_R;
+//loop over particle jets, find closest
+  for(uint i=0; i<parton_jets.size(); i++){
+    delta_R=deltaR(jet,parton_jets[i]);
+    if(delta_R<minDeltaR){
+      minDeltaR=delta_R;
+      closest_jet=parton_jets[i];
+    }
+  }
+   return closest_jet;
 }
 
 

@@ -62,6 +62,9 @@ std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_600;
 std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_800;
 std::unique_ptr<HOTVRWtopHists> hist_W_top_parton_jets_1000;
 
+std::unique_ptr<HOTVRWtopHists> hist_W_b_matched_parton_jets;
+std::unique_ptr<HOTVRWtopHists> hist_W_matched_parton_jets;
+
 std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets;
 std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_200;
 std::unique_ptr<HOTVRJetsHists> hist_W_parton_jets_400;
@@ -188,6 +191,9 @@ hist_W_top_parton_jets_600.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_p
 hist_W_top_parton_jets_800.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_800", is_qcd));
 hist_W_top_parton_jets_1000.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_top_parton_jets_1000", is_qcd));
 
+hist_W_b_matched_parton_jets.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_b_matched_parton_jets", is_qcd));
+hist_W_matched_parton_jets.reset(new HOTVRWtopHists(ctx, "HOTVRWtopHists_W_matched_parton_jets", is_qcd));
+
 hist_W_parton_jets.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets", is_qcd));
 hist_W_parton_jets_200.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_200", is_qcd));
 hist_W_parton_jets_400.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_W_parton_jets_400", is_qcd));
@@ -225,8 +231,8 @@ hist_top_parton_jets_1000.reset(new HOTVRJetsHists(ctx, "HOTVRJetsHists_top_part
 ██      ██   ██  ██████   ██████ ███████ ███████ ███████
 */
 bool HOTVRWTopMatchingModule::process(Event & event) {
-  if(debug){std::cout << "Begin process...!!" << '\n';}
-
+  if(debug){std::cout << "Begin process...!! event " << nevent << '\n';}
+  ++nevent;
   auto genparticles = event.genparticles;
 
   if(isTTbar){
@@ -317,80 +323,56 @@ bool HOTVRWTopMatchingModule::process(Event & event) {
       if(jet.pt()>800 &&jet.pt()<1000)  hist_top_parton_jets_800->fill_topjet(event, jet);
       if(jet.pt()>1000 &&jet.pt()<1200)  hist_top_parton_jets_1000->fill_topjet(event, jet);
     }
-
-
-   // match top genjets to W and plot distance
-   matching->run_matching(_top_parton_jets_W, _top_parton_jets);
-   vector<pair<TopJet, TopJet>> matched_W_top_pair = matching->get_matched_pairs();
-  if (debug) {std::cout << "Match W top jets " << matched_W_top_pair.size() << '\n';}
-
-  for(uint i=0; i<matched_W_top_pair.size(); ++i){ // loop over matched W jets
-    TopJet top_parton_jet=matched_W_top_pair[i].second;
-    TopJet jet=matched_W_top_pair[i].first;
-     hist_W_top_parton_jets->fill_topjet(event, jet, top_parton_jet);   // kleinsten Abstand W und top genjet plotten
-     if(jet.pt()>200 &&jet.pt()<400)  hist_W_top_parton_jets_200->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>400 &&jet.pt()<600)  hist_W_top_parton_jets_400->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>600 &&jet.pt()<800)  hist_W_top_parton_jets_600->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>800 &&jet.pt()<1000)  hist_W_top_parton_jets_800->fill_topjet(event, jet, top_parton_jet);
-     if(jet.pt()>1000 &&jet.pt()<1200)  hist_W_top_parton_jets_1000->fill_topjet(event, jet, top_parton_jet);
-   }
 // // ------MATCHING zum W--------
 // //run_matching: loop over the parton jets and match them to the hotvr jets
-   vector<TopJet> matched_jets;
-   vector<TopJet> matched_parton_jets;
-   // categories
-   vector<TopJet> matched_jets_only_W;
-   vector<TopJet> matched_jets_b_and_W;
-   // // 1. match HOTVR jets to W jets.
-   //    matching->run_matching_W_top(_top_hotvr_jets, _top_parton_jets, _top_parton_jets_W); // TODO does this work?
-   //     matched_jets = matching->get_matched_jets();
-   //     matched_parton_jets = matching->get_matched_parton_jets();
-   //     vector<pair<TopJet, TopJet>> matched_pair = matching->get_matched_pairs();
-   //    if (debug) {std::cout << "Match HOTVR jets to W" << '\n';}
-   //    for(uint j=0; j<matched_pair.size(); ++j){ // loop over matched jets
-   //      TopJet parton_jet=matched_pair[j].second;
-   //      TopJet matched_jet=matched_pair[j].first;
-   //      //fill hists with matched jets
-   //      hist_matched_jets->fill_topjet(event, matched_jet, parton_jet);
-   //      if(parton_jet.pt()>200 && parton_jet.pt()<400)  hist_matched_jets_200->fill_topjet(event, matched_jet, parton_jet);
-   //      if(parton_jet.pt()>400 && parton_jet.pt()<600)  hist_matched_jets_400->fill_topjet(event, matched_jet, parton_jet);
-   //      if(parton_jet.pt()>600 && parton_jet.pt()<800)  hist_matched_jets_600->fill_topjet(event, matched_jet, parton_jet);
-   //      if(parton_jet.pt()>800 && parton_jet.pt()<1000)  hist_matched_jets_800->fill_topjet(event, matched_jet, parton_jet);
-   //      if(parton_jet.pt()>1000 && parton_jet.pt()<1200)  hist_matched_jets_1000->fill_topjet(event, matched_jet, parton_jet);
-   //    }
-   // // 2. match these (already matched to W) HOTVR jets to b parton jets
-   //    matching->run_matching(matched_jets, _top_parton_jets_b);
-   //    matched_jets_b_and_W = matching->get_matched_jets();
-   //    vector<pair<TopJet, TopJet>> matched_pair_HOTVR_b = matching->get_matched_pairs();
+   TopJet closest_top_jet;
 
-   // plot hists for two categories
-   // Category 1: matched only to w
-   // Category 2: matched to W and b
-
-   TopJet closest_W_jet, closest_top_jet, closest_b_jet;
    // for HOTVR jets
    for (size_t i = 0; i < _top_hotvr_jets.size(); i++) {
      // for each jet
      TopJet jet = _top_hotvr_jets[i];
+     if (jet.pt()>30) {
      // // get closest W jet
-     closest_W_jet = matching->get_closest_jet(1, jet, _top_parton_jets_W);
+     TopJet closest_W_jet = matching->get_closest_jet(1, jet, _top_parton_jets_W);
      // // get closest top jet
-    // closest_top_jet = matching->get_closest_jet(1, jet, _top_parton_jets);
+     closest_top_jet = matching->get_closest_jet(1, jet, _top_parton_jets);
      // // if matched to W jet -> find closest b jet
-     // if (closest_W_jet != TopJet{}) {
-     //   closest_b_jet = matching->get_closest_jet(1, jet, _top_parton_jets_b);
-     //   // if no b jet -> fill hists
-     //   if (closest_b_jet == TopJet{}) {
-     //     // TODO fill hists
-     //     // fill hist for W and top parton jet
-     //     hist_W_top_parton_jets->fill_topjet(event, closest_W_jet, closest_top_jet);   // kleinsten Abstand W und top genjet plotten, pt ratio plotten
-     //   }
-     //   // if b jet -> fill hists
-     //   else if(closest_b_jet != TopJet{}){
-     //     // TODO fill hists
-     //   }
-     // }
+     if (debug) {
+       std::cout << " ------- HOTVR jet pt = " << jet.pt() << '\n';
+       std::cout << " ------- HOTVR jet mass = " << jet.v4().mass() << '\n';
 
+       std::cout << "closest W jet pt = " << closest_W_jet.pt() << '\n';
+       std::cout << "closest top jet pt = " << closest_top_jet.pt() << '\n';
+     }
+
+     if (closest_W_jet.pt() > 0) {
+         TopJet closest_b_jet = matching->get_closest_jet(10, jet, _top_parton_jets_b);
+         if(debug){
+           std::cout << "closest b jet pt = " << closest_b_jet.pt() << '\n';
+           std::cout << "Delta R between top and b " << deltaR(closest_top_jet, closest_b_jet) << '\n';
+
+       }
+    //  //   // if no b jet -> fill hists
+         if (deltaR(jet, closest_b_jet)<1) { // distance(jet, b) < 1 ??
+           if(debug){std::cout << "matched to b jet" << '\n';}
+    //  //     // fill hist for W and top parton jet
+           hist_W_b_matched_parton_jets->fill_topjet(event, jet, closest_W_jet, closest_b_jet, closest_top_jet);   // kleinsten Abstand W und HOTVR plotten, pt ratio plotten
+         }
+    //  //   // if b jet -> fill hists
+         else{
+           if(debug){
+             std::cout << "NOT matched to b jet" << '\n';
+             if (deltaR(closest_top_jet, closest_b_jet)<1) {
+               std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << '\n';
+               std::cout << "Not matched to b, but dR(top,b)<1. Event number: " << nevent << '\n';
+               std::cout << "HOTVR jet mass=" << jet.v4().mass() << '\n';
+               std::cout << "Abstand W b " << deltaR(closest_W_jet, closest_b_jet) << '\n';
+             }
+           }
+          hist_W_matched_parton_jets->fill_topjet(event, jet, closest_W_jet, closest_b_jet, closest_top_jet);   // kleinsten Abstand W und HOTVR jet plotten, pt ratio plotten
+         }
+       }// end if matched to W
+    }// jet pt > 30
    }
 
 

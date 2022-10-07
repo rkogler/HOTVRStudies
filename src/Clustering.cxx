@@ -105,8 +105,10 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
 {
    vector<PseudoJet> pseudojets_to_cluster=pseudojets;
 
-   bool ghost = false;
-   if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);}
+   bool ghost = true;
+   if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);
+     std::cout << "set ghosts == true" << '\n';
+   }
 
    HOTVR hotvr_plugin(_beta, _z_cut, _pt_threshold, _min_r, _max_r, _rho, _pt_cut, _mu, HOTVR::CALIKE, _alpha); // initialize plugin
    JetDefinition jet_def(&hotvr_plugin); // set up jet definition and cluster sequence
@@ -115,7 +117,7 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
    //_clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
 
  // cluster sequence with area
-   double ghost_maxrap = 5.0; // e.g. if particles go up to y=4
+   double ghost_maxrap = 0.0; // e.g. if particles go up to y=4
    AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
    _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
 //
@@ -125,13 +127,13 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
    // _jet2_subjets_constituents = save_constituents(_hotvr_jets[2].user_info<HOTVRinfo>().subjets());
    // _jet3_subjets_constituents = save_constituents(_hotvr_jets[3].user_info<HOTVRinfo>().subjets());
 
-  // _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
+   _rejected_cluster=hotvr_plugin.get_rejected_cluster(); // get the rejected clusters below the pt threshold (CLUSTER)
   // _rejected_cluster_constituents = save_constituents(_rejected_cluster);
   //
-  // _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
+   _soft_cluster=hotvr_plugin.get_soft_cluster(); // removed via Soft Drop Condition (NOVETO)
   // _soft_cluster_constituents = save_constituents(_soft_cluster);
   //
-  // _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
+   _rejected_subjets=hotvr_plugin.get_rejected_subjets(); // get the rejected subjets with ptsub
   // _rejected_subjets_constituents = save_constituents(_rejected_subjets);
 
   // convert rejected subjets into UHH2  jets
@@ -392,10 +394,10 @@ vector<PseudoJet> Clustering::add_ghosts(vector<PseudoJet> gen_in){
       mt19937 rng( random_device{}() );
       uniform_real_distribution<> dist(0.1, 1);
       double randnr = dist(rng);
-      E = randnr*0.00001;
-      p = sqrt(E*E);
+      p = randnr*10e-100;
+    //  p = sqrt(E*E); // massless appr. E=p
       pt = p/cosh(eta);
-      ghost_v4.SetPtEtaPhiE(pt, eta, phi, E);
+      ghost_v4.SetPtEtaPhiE(pt, eta, phi, p);
       PseudoJet ghost( ghost_v4.Px(), ghost_v4.Py(), ghost_v4.Pz(), ghost_v4.E() );
       gen_in.push_back(ghost);
     }
