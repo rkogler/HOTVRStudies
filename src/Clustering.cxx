@@ -105,7 +105,7 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
 {
    vector<PseudoJet> pseudojets_to_cluster=pseudojets;
 
-   bool ghost = true;
+   bool ghost = false;
    if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);
      std::cout << "set ghosts == true" << '\n';
    }
@@ -117,7 +117,7 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
    //_clust_seq = new ClusterSequence(pseudojets_to_cluster, jet_def);
 
  // cluster sequence with area
-   double ghost_maxrap = 0.0; // e.g. if particles go up to y=4
+   double ghost_maxrap = 5.0; // e.g. if particles go up to y=4
    AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
    _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
 //
