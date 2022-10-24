@@ -154,7 +154,8 @@ void JetDisplayHists::fill(const Event & event){
                pt_const=0.999;
              }
              ((TH2D*)hist(hname2))->Fill(SortedSubJets.at(p).constituents().at(h).phi_std(),SortedSubJets.at(p).constituents().at(h).eta(),pt_const );
-          std::cout << "constituents pt " <<SortedSubJets.at(p).constituents().at(h).perp() << '\n';
+          std::cout << "constituents pt = " <<SortedSubJets.at(p).constituents().at(h).perp() << '\n';
+          std::cout << "set to pt = " << pt_const << '\n';
           }
         } // end loop over subjets
       }
