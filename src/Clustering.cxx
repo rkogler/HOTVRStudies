@@ -36,13 +36,12 @@ Clustering::Clustering(std::string clustering)
     }
     else  std::cout<<"file not found"<<std::endl;
     //if(_settings_not_shown){show_settings();}
-
 }
 // cluster all
-void Clustering::cluster_jets(vector<PseudoJet> pseudojets)
+void Clustering::cluster_jets(vector<PseudoJet> pseudojets, int nevent)
 {
   if(_clustering_algorithmus=="HOTVR" || _clustering_algorithmus=="HOTVR_MJ"){cluster_HOTVR_jets(pseudojets);}
-  else if(_clustering_algorithmus=="HOTVR_SD" || _clustering_algorithmus=="hotvr_sd"){cluster_HOTVR_SD_jets(pseudojets);}
+  else if(_clustering_algorithmus=="HOTVR_SD" || _clustering_algorithmus=="hotvr_sd"){cluster_HOTVR_SD_jets(pseudojets, nevent);}
   else if(_clustering_algorithmus=="VR" || _clustering_algorithmus=="VR_SD"){cluster_VR_SD_jets(pseudojets);}
   else if(_clustering_algorithmus=="VR_ISD"){cluster_VR_ISD_jets(pseudojets);}
   else{std::cout << "clustering mode not found" << '\n';}
@@ -101,11 +100,11 @@ void Clustering::cluster_HOTVR_jets(vector<PseudoJet> pseudojets)
  }
 }
 // --------------------HOTVR including Soft Drop Clustering-----------------------------
-void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
+void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets, int nevent)
 {
    vector<PseudoJet> pseudojets_to_cluster=pseudojets;
 
-   bool ghost = true;
+   bool ghost = false;
    if(ghost){pseudojets_to_cluster = add_ghosts(pseudojets);
      std::cout << "set ghosts == true" << '\n';
    }
@@ -120,7 +119,33 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets)
    double ghost_maxrap = 0.0; // e.g. if particles go up to y=4
    AreaDefinition area_def(active_area_explicit_ghosts, GhostedAreaSpec(ghost_maxrap));
    _clust_seq_area = new ClusterSequenceArea(pseudojets_to_cluster, jet_def, area_def);
-//
+  //
+
+  std::cout << "event nummer "<< nevent << '\n';
+
+  string string, string_history;
+
+  string = "pseudojets_input_"+ to_string(nevent) +".txt";
+  string_history = "history_"+ to_string(nevent) +".txt";
+
+  ofstream outfile(string);
+  ofstream history_file(string_history);
+  //outfile.open(string);
+  outfile << "##Input pseudojets size "<< pseudojets_to_cluster.size() << " of event "<< to_string(nevent) << '\n';
+  outfile << "## pseudojet_index pt eta phi" << '\n';
+  for (size_t i = 0; i < pseudojets_to_cluster.size(); i++) {
+    outfile << i << " "<< pseudojets_to_cluster.at(i).pt() << " "<< pseudojets_to_cluster.at(i).eta() << " "<< pseudojets_to_cluster.at(i).phi()<< '\n';
+  }
+  outfile.close();
+
+  auto history = _clust_seq_area->history();
+  history_file << "## Clustering history of event "<< to_string(nevent) << '\n';
+  history_file << "## history_index parent1 parent2 child" << '\n';
+  for (size_t i = 0; i < history.size(); i++) {
+    history_file << i << " " << history.at(i).parent1 << " "<< history.at(i).parent2 << " "<< history.at(i).child << '\n';
+  }
+  history_file.close();
+
    _hotvr_jets=hotvr_plugin.get_jets(); //HOTVR Clustering
    // _jet0_subjets_constituents = save_constituents(_hotvr_jets[0].user_info<HOTVRinfo>().subjets());
    // _jet1_subjets_constituents = save_constituents(_hotvr_jets[1].user_info<HOTVRinfo>().subjets());

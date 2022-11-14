@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <memory>
 
 #include "UHH2/common/include/CommonModules.h"
@@ -82,10 +83,11 @@ public:
   Clustering(std::string clustering);
   void Reset();
 // clustering method called in the HOTVRStudiesModule
-  void cluster_jets(std::vector<fastjet::PseudoJet>);
+  void cluster_jets(std::vector<fastjet::PseudoJet>, int nevent=0);
+
 // specific clustering methods for HOTVR; HOTVR with SD; VR SD; AK10
   void cluster_HOTVR_jets(std::vector<fastjet::PseudoJet>);
-  void cluster_HOTVR_SD_jets(std::vector<fastjet::PseudoJet>);
+  void cluster_HOTVR_SD_jets(std::vector<fastjet::PseudoJet>, int nevent=0);
   void cluster_VR_SD_jets(std::vector<fastjet::PseudoJet>);
   void cluster_VR_ISD_jets(std::vector<fastjet::PseudoJet>);
   void cluster_parton_jets(std::vector<fastjet::PseudoJet>, bool);

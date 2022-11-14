@@ -47,8 +47,11 @@ Hists(ctx, dirname)
   b_antitop = book<TH2F>("JetDisplay_b_antitop","Jet event display",bins,-PI,PI,bins,-PI,PI);
   W_antitop = book<TH2F>("JetDisplay_W_antitop","Jet event display",bins,-PI,PI,bins,-PI,PI);
 
-  jetmass = book<TH2F>("Jetmass","jetmass",10,0,9,300,0,300);
-  jetpt = book<TH2F>("JetpT","jet p_{T}",10,0,9,300,0,3000);
+  jetpt = book<TH1F>("p_{T}", "p_{T} [GeV]", 200, 0, 2000);
+  jetmass = book<TH1F>("mass", "mass [GeV]", 100, 0, 300);
+  jeteta = book<TH1F>("eta", "#eta", 100, -6, 6);
+  jetphi = book<TH1F>("phi", "#phi", 40, -4, 4);
+
 
   h_ttbargen=ctx.get_handle<TTbarGen>("ttbargen");
   h_parts=ctx.get_handle<std::vector<PseudoJet>>("parts");
@@ -91,7 +94,7 @@ void JetDisplayHists::fill(const Event & event){
     b_Top=ttbargen.bTop();
     W_Top.push_back(ttbargen.Wdecay1());
     W_Top.push_back(ttbargen.Wdecay2());
-    std::cout << " top "<<ttbargen.Top().pt() << '\n';
+  //  std::cout << " top "<<ttbargen.Top().pt() << '\n';
 
   }
   if(ttbargen.IsAntiTopHadronicDecay()){
@@ -103,7 +106,7 @@ void JetDisplayHists::fill(const Event & event){
     b_AntiTop=ttbargen.bAntitop();
     W_AntiTop.push_back(ttbargen.WMinusdecay1());
     W_AntiTop.push_back(ttbargen.WMinusdecay2());
-    std::cout << "anti top "<< ttbargen.Antitop().pt() << '\n';
+  //  std::cout << "anti top "<< ttbargen.Antitop().pt() << '\n';
 
   }
   else if(!(ttbargen.IsTopHadronicDecay() || ttbargen.IsAntiTopHadronicDecay())){
@@ -129,15 +132,19 @@ void JetDisplayHists::fill(const Event & event){
     }
   }
 
-  std::cout << "NUmber of jets "<< jets.size() << '\n';
+//  std::cout << "NUmber of jets "<< jets.size() << '\n';
   for(uint o=0;o<jets.size();o++) { // loop over jets
     if(jets[o].has_user_info<HOTVRinfo>()) {
       std::vector<fastjet::PseudoJet> SortedSubJets=jets[o].user_info<HOTVRinfo>().subjets();
       fatjet->Fill(jets[o].phi_std(),jets[o].eta(),jets[o].perp());
       double mass=sqrt(jets[o].m2());
 
-      jetmass->Fill(o,mass);
-      jetpt->Fill(o,jets[o].pt());
+      //jetmass->Fill(o,mass);
+    //  jetpt->Fill(o,jets[o].pt());
+      jetpt->Fill(jets[o].pt());
+      jetmass->Fill(mass);
+      jeteta->Fill(jets[o].eta());
+      jetphi->Fill(jets[o].phi_std());
 
       if (SortedSubJets.size()>1) { // select only jets with more than one subjet
         for(uint p=0;p<SortedSubJets.size();p++) { // loop over subjets
@@ -146,7 +153,7 @@ void JetDisplayHists::fill(const Event & event){
           hname3 = TString::Format("JetDisplay_jet%i_subjetpT",o);
           hist(hname3)->Fill(p,SortedSubJets.at(p).pt());
           TString hname2 = TString::Format("JetDisplay_jet%i_subjet%i", o,p);
-          std::cout << "const size = " << SortedSubJets.at(p).constituents().size() << '\n';
+        //  std::cout << "const size = " << SortedSubJets.at(p).constituents().size() << '\n';
           for(uint h=0;h<SortedSubJets.at(p).constituents().size();h++)
            {
              double pt_const = SortedSubJets.at(p).constituents().at(h).perp();
@@ -154,8 +161,8 @@ void JetDisplayHists::fill(const Event & event){
                pt_const=0.999;
              }
              ((TH2D*)hist(hname2))->Fill(SortedSubJets.at(p).constituents().at(h).phi_std(),SortedSubJets.at(p).constituents().at(h).eta(),pt_const );
-          std::cout << "constituents pt = " <<SortedSubJets.at(p).constituents().at(h).perp() << '\n';
-          std::cout << "set to pt = " << pt_const << '\n';
+        //  std::cout << "constituents pt = " <<SortedSubJets.at(p).constituents().at(h).perp() << '\n';
+        //  std::cout << "set to pt = " << pt_const << '\n';
           }
         } // end loop over subjets
       }

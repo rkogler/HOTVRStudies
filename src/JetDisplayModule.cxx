@@ -162,7 +162,7 @@ bool JetDisplayModule::process(Event & event) {
   parts = matching->get_stableParticles();
 
 //CLUSTERING -> clusters jets depending on the algorithm that is chosen
-  clustering->cluster_jets(parts); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
+  clustering->cluster_jets(parts, nevent); // cluster the pseudojets, possible modes defined in hotvr.config: "HOTVR, HOTVR_SD, VR"
 
   hotvr_jets = clustering->get_hotvr_jets();
   // get the rejected subjets
@@ -176,21 +176,21 @@ bool JetDisplayModule::process(Event & event) {
   event.set(h_soft_cluster, soft_cluster);
   event.set(h_rejected_subjets, rejected_subjets);
 
-  bool select_event = false;
+  bool select_event = true;
   uint hotvr_jets_with_subjets=0;
 
-  for (size_t k = 0; k < hotvr_jets.size(); k++) {
-    if (toptagger->Is_tagged("sd", hotvr_jets[k]) && hotvr_jets[k].pt()>200) {
-    //  if (hotvr_jets[k].pt()>600) {
-      select_event=true;
-    }
-    //if (hotvr_jets[k].user_info<HOTVRinfo>().nsubjets() > 1){++hotvr_jets_with_subjets;}
-  }
+  // for (size_t k = 0; k < hotvr_jets.size(); k++) {
+  // //  if (toptagger->Is_tagged("sd", hotvr_jets[k]) && hotvr_jets[k].pt()>200) {
+  //   if (hotvr_jets[k].pt()>200) {
+  //     select_event=true;
+  //   }
+  //   //if (hotvr_jets[k].user_info<HOTVRinfo>().nsubjets() > 1){++hotvr_jets_with_subjets;}
+  // }
   // if (hotvr_jets_with_subjets>9) {
   //   select_event=false;
   // }
 
-  if(isTTbar && nevent < _event_max && select_event && hotvr_jets.size()<50){
+  if(isTTbar && nevent < _event_max && select_event){
     std::cout << "Select event "<< nevent << '\n';
     if (nevent==0) { hist_jet_display_00->fill(event);}
     else if (nevent==1) { hist_jet_display_01->fill(event);}

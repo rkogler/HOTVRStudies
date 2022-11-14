@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
-	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_with_turnon_beta0">
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancy_R_pt_protection_for_ghosts">
 		<!--
 		/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_with_turnon
 /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_wo_turnon_fix_mass
 /nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_with_turnon_no_grooming
 -->
 	  <!ENTITY b_Cacheable     "False">
-		<!ENTITY NEVT            "30">
+		<!ENTITY NEVT            "20">
 		<!ENTITY NSkip           "30">
 
           <!--QCD files-->
