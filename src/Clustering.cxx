@@ -149,8 +149,8 @@ void Clustering::cluster_HOTVR_SD_jets(vector<PseudoJet> pseudojets, int nevent)
 
   string string, string_history;
 
-  string = "pseudojets_input_"+ to_string(nevent) +".txt";
-  string_history = "history_"+ to_string(nevent) +".txt";
+  string = "output/pseudojets_input_"+ to_string(nevent) +".txt";
+  string_history = "output/history_"+ to_string(nevent) +".txt";
 
   ofstream outfile(string);
   ofstream history_file(string_history);
