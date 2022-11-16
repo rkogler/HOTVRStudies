@@ -10,9 +10,11 @@
 #include <TPad.h>
 #include <TGraph.h>
 #include <TGraphErrors.h>
+#include <TMultiGraph.h>
 
 using namespace std;
 
+// style function
 void SetStyle(){
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);

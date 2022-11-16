@@ -53,6 +53,10 @@ class Matching{
   void run_matching(std::vector<fastjet::PseudoJet> jets, std::vector<std::vector<fastjet::PseudoJet>> constituents, std::vector<fastjet::PseudoJet> denominator_jets);
   void set_stable_particles(std::vector<GenParticle>* genparticles);
   void set_partons(std::vector<GenParticle>* genparticles);
+  void set_W_partons(std::vector<GenParticle>* genparticles);
+  void set_b_partons(std::vector<GenParticle>* genparticles);
+
+  TopJet get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets);
 
   void set_W_partons(std::vector<GenParticle>* genparticles);
   void set_b_partons(std::vector<GenParticle>* genparticles);

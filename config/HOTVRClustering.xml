@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
-	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/HOTVR_jets_alphascan">
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/">
 	  <!ENTITY b_Cacheable     "False">
 	  <!ENTITY NEVT            "1">
 
@@ -26,7 +26,7 @@
 	  ]>
  <!--
 	     <ConfigParse NEventsBreak="0" FileSplit="4" AutoResubmit="5"/>
-	     <ConfigSGE RAM ="4" DISK ="3" Mail="anna.albrecht@desy.de" Notification="as" Workdir="workdir_HOTVRStudies"/>
+	     <ConfigSGE RAM ="4" DISK ="3" Mail="anna.albrecht@desy.de" Notification="as" Workdir="workdir_HOTVRClustering"/>
 	     -->
 
 
@@ -42,63 +42,79 @@
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod1" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod1;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
+				<!--
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod2" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod2;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod3" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod3;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod4" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod4;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod5" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod5;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod6" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod6;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod7" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod7;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod8" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod8;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod9" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod9;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod10" Cacheable="&b_Cacheable;">
 		&QCD_flat_prod10;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
-
+			-->
 
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
-
+				<!--
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_s1" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23_s1;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
-
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_s2" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23_s2;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
+			-->
+
 <!--
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_nnpdf23" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_nnpdf23;
 		<InputTree Name="AnalysisTree" />
+		<OutputTree Name="AnalysisTree" />
 	      </InputData>
 			-->
 
@@ -107,7 +123,7 @@
 	    <Item Name="GenParticleCollection" Value="GenParticles" />
 
       <!-- the class name of the AnalysisModule subclasses to run: -->
-      <Item Name="AnalysisModule" Value="HOTVRStudiesModule" />
+      <Item Name="AnalysisModule" Value="HOTVRClusteringModule" />
 
       <!-- 	tell AnalysisModuleRunner NOT to use the MC event weight from SFrame; rather let
           	MCLumiWeight (called via CommonModules) calculate the MC event weight. The MC

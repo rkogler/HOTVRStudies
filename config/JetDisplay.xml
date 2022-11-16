@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
 
-	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays">
+	  <!ENTITY PRESELdir       "/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancy_R_pt_protection_for_ghosts">
+		<!--
+		/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_with_turnon
+/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_wo_turnon_fix_mass
+/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/macros/jet_displays/root_files/debug_fancyR/fancyR_with_turnon_no_grooming
+-->
 	  <!ENTITY b_Cacheable     "False">
-	  <!ENTITY NEVT            "1">
+		<!ENTITY NEVT            "20">
+		<!ENTITY NSkip           "30">
 
           <!--QCD files-->
 	  <!ENTITY QCD_flat_prod1 SYSTEM "/nfs/dust/cms/user/albrecha/ntuples/qcd_pythia8_flat_nnpdf23_prod1_f.xml">
@@ -23,6 +29,10 @@
 	  <!ENTITY ttbar_pythia8_flat_nnpdf23_s2 SYSTEM "/nfs/dust/cms/user/albrecha/ntuples/ttbar_pythia8_flat_nnpdf23_s2_.xml">
 	  <!ENTITY ttbar_pythia8_nnpdf23 SYSTEM "/nfs/dust/cms/user/albrecha/ntuples/ttbar_pythia8_nnpdf23_.xml">
 
+		<!--graviton files-->
+		<!ENTITY graviton_to_HH SYSTEM "/nfs/dust/cms/user/kogler/Pythia8/sframe_xmls/graviton_to_HH.xml">
+		<!ENTITY graviton_to_WW SYSTEM "/nfs/dust/cms/user/kogler/Pythia8/sframe_xmls/graviton_to_WW.xml">
+		<!ENTITY graviton_to_ZZ SYSTEM "/nfs/dust/cms/user/kogler/Pythia8/sframe_xmls/graviton_to_ZZ.xml">
 	  ]>
  <!--
 	     <ConfigParse NEventsBreak="0" FileSplit="4" AutoResubmit="5"/>
@@ -43,48 +53,16 @@
 		&QCD_flat_prod1;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod2" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod2;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod3" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod3;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod4" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod4;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod5" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod5;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod6" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod6;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod7" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod7;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod8" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod8;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod9" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod9;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="QCD_flat_prod10" Cacheable="&b_Cacheable;">
-		&QCD_flat_prod10;
-		<InputTree Name="AnalysisTree" />
-	      </InputData>
 -->
 
-	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
+
+	      <InputData Lumi="1" NEventsMax="&NEVT;" NEventsSkip="&NSkip;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
+
+
+
 <!--
 	      <InputData Lumi="1" NEventsMax="&NEVT;" Type="MC" Version="ttbar_pythia8_flat_nnpdf23_s1" Cacheable="&b_Cacheable;">
 		&ttbar_pythia8_flat_nnpdf23_s1;
@@ -100,9 +78,25 @@
 		&ttbar_pythia8_nnpdf23;
 		<InputTree Name="AnalysisTree" />
 	      </InputData>
--->
+
+					 <InputData Lumi="1" NEventsMax="&NEVT;" NEventsSkip="&NSkip;" Type="MC" Version="graviton_to_HH" Cacheable="&b_Cacheable;">
+			 &graviton_to_HH;
+			 <InputTree Name="AnalysisTree" />
+					 </InputData>
+
+					 <InputData Lumi="1" NEventsMax="&NEVT;" NEventsSkip="&NSkip;" Type="MC" Version="graviton_to_WW" Cacheable="&b_Cacheable;">
+			 &graviton_to_WW;
+			 <InputTree Name="AnalysisTree" />
+					 </InputData>
+
+					 <InputData Lumi="1" NEventsMax="&NEVT;" NEventsSkip="&NSkip;" Type="MC" Version="graviton_to_ZZ" Cacheable="&b_Cacheable;">
+			 &graviton_to_ZZ;
+			 <InputTree Name="AnalysisTree" />
+		 </InputData>
+ -->
+
         <UserConfig>
-			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr.config" />
+			<Item Name="Clustering" Value="/nfs/dust/cms/user/albrecha/uhh2_102X_v2/CMSSW_10_2_17/src/UHH2/HOTVRStudies/config/hotvr_all_particles.config" />
 	    <Item Name="GenParticleCollection" Value="GenParticles" />
 
       <!-- the class name of the AnalysisModule subclasses to run: -->

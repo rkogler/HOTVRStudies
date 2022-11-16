@@ -21,14 +21,12 @@ vector<char*> get_filenames(const char* ext)
 }
 
 int main(){
-  std::cout << "start main" << '\n';
   SetStyle();
-  // get root files with HOTVR MJ jets 
-    //TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ROC_09_06_AK10.root", "READ"); // old path
-    // TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/paper_jet_collections/HOTVR_MJ/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");
-    //
-    // TFile *input_QCD = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/paper_jet_collections/HOTVR_MJ/uhh2.AnalysisModuleRunner.MC.QCD_flat_prod1.root", "READ");
+// my study
+  //TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/root_09_06_AK10/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_ROC_09_06_AK10.root", "READ"); // old path
+  TFile *input_ttbar = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/paper_jet_collections/HOTVR_MJ/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");
 
+  TFile *input_QCD = new TFile(" /nfs/dust/cms/user/albrecha/uhh2_102X_v2/HOTVRStudiesOutput/root/paper_jet_collections/HOTVR_MJ/uhh2.AnalysisModuleRunner.MC.QCD_flat_prod1.root", "READ");
 
     //parameter
   uint njets = 1;
@@ -151,23 +149,23 @@ ptbins[5]=", 1000 < p_{T} [GeV] < 1200";
 
         TH1F* hist_ttbar;
         TH1F* hist_QCD;
-        // if (k<6) {
-        // hist_ttbar = (TH1F*)input_ttbar->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+ "/"+variables[k]);
-        // hist_QCD = (TH1F*)input_QCD->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+"/"+variables[k]);
-        //
-        // double n_ttbar = hist_ttbar->Integral();
-        // double n_qcd = hist_QCD->Integral();
-        //
-        // hist_ttbar->Scale(1/n_ttbar);
-        // hist_ttbar->SetLineColor(kBlack);
-        // hist_ttbar->SetLineWidth(2);
-        // hist_ttbar->Draw("H same");
-        // hist_QCD->Scale(1/n_qcd);
-        // hist_QCD->SetLineColor(kBlack);
-        // hist_QCD->SetLineStyle(kDotted);
-        // hist_QCD->SetLineWidth(2);
-        // hist_QCD->Draw("H same");
-        // }
+        if (k<6) {
+        hist_ttbar = (TH1F*)input_ttbar->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+ "/"+variables[k]);
+        hist_QCD = (TH1F*)input_QCD->Get("HOTVRJetsHists_"+jets[i]+ptmin[j]+"/"+variables[k]);
+
+        double n_ttbar = hist_ttbar->Integral();
+        double n_qcd = hist_QCD->Integral();
+
+        hist_ttbar->Scale(1/n_ttbar);
+        hist_ttbar->SetLineColor(kBlack);
+        hist_ttbar->SetLineWidth(2);
+        hist_ttbar->Draw("H same");
+        hist_QCD->Scale(1/n_qcd);
+        hist_QCD->SetLineColor(kBlack);
+        hist_QCD->SetLineStyle(kDotted);
+        hist_QCD->SetLineWidth(2);
+        hist_QCD->Draw("H same");
+        }
 
   hist_ttbar_SD1->Scale(1/hist_ttbar_SD1->Integral());
   hist_ttbar_SD1->SetLineColor(kRed);
@@ -238,10 +236,10 @@ ptbins[5]=", 1000 < p_{T} [GeV] < 1200";
   legend->SetHeader(jetnames[i]+" "+ptbins[j]);
   legend->SetNColumns(2);
 
-  // if (k<6) {
-  //   legend->AddEntry(hist_ttbar,"t#bar{t} HOTVR MJ", "l");
-  //   legend->AddEntry(hist_QCD,"QCD HOTVR MJ", "l");
-  // }
+  if (k<6) {
+    legend->AddEntry(hist_ttbar,"t#bar{t} HOTVR MJ", "l");
+    legend->AddEntry(hist_QCD,"QCD HOTVR MJ", "l");
+  }
   legend->AddEntry((TObject*)0, "", "");
   legend->AddEntry((TObject*)0, "", "");
   legend->AddEntry(hist_ttbar_SD,"HOTVR SD, #beta=1", "");
