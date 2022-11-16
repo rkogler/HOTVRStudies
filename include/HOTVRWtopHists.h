@@ -17,32 +17,24 @@
  * many histograms. Therefore, it is recommended to use histogram
  * pointers as member data instead, like in 'common/include/ElectronHists.h'.
  */
-class HOTVRJetsHists: public uhh2::Hists {
+class HOTVRWtopHists: public uhh2::Hists {
 public:
     // use the same constructor arguments as Hists for forwarding:
-    HOTVRJetsHists(uhh2::Context & ctx, const std::string & dirname, bool is_qcd);
+    HOTVRWtopHists(uhh2::Context & ctx, const std::string & dirname, bool is_qcd);
     virtual void fill(const uhh2::Event & ev) override;
-    virtual void fill_topjet(const uhh2::Event & ev, TopJet & jet);
-    virtual void fill_n_jets(const uhh2::Event & ev, std::vector<TopJet> & jets);
+    virtual void fill_topjet(const uhh2::Event & ev, TopJet & jet, TopJet & parton_jet_W, TopJet & parton_jet_b, TopJet & parton_jet_top);
 
-    virtual ~HOTVRJetsHists();
+    virtual ~HOTVRWtopHists();
 
  private:
     bool b_is_qcd;
     TH1F *processed_events_ttbar, *processed_events_qcd;
 
     TH1F *hist_pt, *hist_mass,  *hist_eta, *hist_phi, *hist_energy; // Definition of hists for generel studies
-    TH1F *hist_pt_sum_subjets, *hist_mass_sum_subjets; // sum subjets -> pt and mass
-    TH1F *hist_max_distance, *hist_mmin, *hist_fpt1, *hist_nsubjets; // HOTVR specific hists
+    TH1F *hist_pt_W, *hist_pt_b, *hist_pt_top;
+    TH1F *hist_distance_top_W, *hist_distance_top_b, *hist_distance_W_b;
+    TH1F *hist_pt_ratio_HOTVR_top, *hist_pt_sum_W_b;
+    TH1F *hist_distance, *hist_mmin, *hist_fpt1, *hist_nsubjets; // HOTVR specific hists
     TH1F *hist_tau1, *hist_tau2, *hist_tau3, *hist_tau21, *hist_tau32; // N-subjettiness hist
-
-    TH1F *hist_matching_radius, *hist_max_distance_minus_matching_radius;
-
-    TH1F *hist_pt_subjet[5];
-    TH1F *hist_const_subjet[5];
-    TH1F *hist_dR_subjet[5];
-
-    TH1F *hist_njets;
-    TH1F *hist_area;
-    TH1F *hist_weight;
+    TH1F *hist_pt_ratio;
 };

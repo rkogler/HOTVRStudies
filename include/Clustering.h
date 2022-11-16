@@ -25,7 +25,7 @@ private:
   fastjet::ClusterSequence* _clust_seq;
   bool _settings_not_shown=true;
 
-  double _mu, _theta, _max_r, _min_r, _rho, _pt_cut, _ptmin, _alpha;
+  double _mu, _theta, _max_r, _min_r, _rho, _subjetptmin, _jetptmin, _alpha;
   double _z_cut, _beta, _pt_threshold;
   string _clustering_algorithmus;
 
@@ -34,6 +34,9 @@ private:
   std::vector<fastjet::PseudoJet> _vr_jets_SD;
   std::vector<fastjet::PseudoJet> _vr_jets_ISD;  // Variable R plus iterative SD
   std::vector<fastjet::PseudoJet> _parton_fatjets;
+  std::vector<fastjet::PseudoJet> _W_parton_fatjets;
+  std::vector<fastjet::PseudoJet> _b_parton_fatjets;
+
 // save jet constituents
   std::vector<std::vector<fastjet::PseudoJet>> _vr_jet_constituents;
   std::vector<std::vector<fastjet::PseudoJet>> _hotvr_jet_constituents;
@@ -54,6 +57,9 @@ private:
   std::vector<TopJet> _top_hotvr_jets;
   std::vector<TopJet> _top_vr_jets;
   std::vector<TopJet> _top_parton_jets;
+  std::vector<TopJet> _W_parton_jets;
+  std::vector<TopJet> _b_parton_jets;
+
   std::vector<TopJet> _top_rejected_cluster;
   std::vector<TopJet> _top_soft_cluster;
   std::vector<Jet> _top_rejected_subjets;
@@ -72,13 +78,15 @@ public:
   Clustering(std::string clustering);
   void Reset();
 // clustering method called in the HOTVRStudiesModule
-  void cluster_jets(std::vector<fastjet::PseudoJet>);
+  void cluster_jets(std::vector<fastjet::PseudoJet>, int nevent=0);
 // specific clustering methods for HOTVR; HOTVR with SD; VR SD; AK10
   void cluster_HOTVR_jets(std::vector<fastjet::PseudoJet>);
-  void cluster_HOTVR_SD_jets(std::vector<fastjet::PseudoJet>);
+  void cluster_HOTVR_SD_jets(std::vector<fastjet::PseudoJet>, int nevent=0);
   void cluster_VR_SD_jets(std::vector<fastjet::PseudoJet>);
   void cluster_VR_ISD_jets(std::vector<fastjet::PseudoJet>);
   void cluster_parton_jets(std::vector<fastjet::PseudoJet>, bool);
+  void cluster_W_parton_jets(std::vector<fastjet::PseudoJet>);
+  void cluster_b_parton_jets(std::vector<fastjet::PseudoJet>);
 
 // Getter for pseudojets
 std::vector<fastjet::PseudoJet> get_clustered_jets(); // depending on clustering mode in config file
@@ -91,6 +99,9 @@ std::vector<std::vector<fastjet::PseudoJet>> get_clustered_jet_constituents();
   std::vector<fastjet::PseudoJet> get_vr_jets_ISD(){return _vr_jets_ISD;};
 // clustering on parton level
   std::vector<fastjet::PseudoJet> get_parton_jets(){return _parton_fatjets;};
+  std::vector<fastjet::PseudoJet> get_W_parton_jets(){return _W_parton_fatjets;};
+  std::vector<fastjet::PseudoJet> get_b_parton_jets(){return _b_parton_fatjets;};
+
 
 // Getter for jet constituents
 std::vector<std::vector<fastjet::PseudoJet>> get_vr_jet_constituents(){return _vr_jet_constituents;};
@@ -100,6 +111,9 @@ std::vector<std::vector<fastjet::PseudoJet>> get_hotvr_jet_constituents(){return
   std::vector<TopJet> get_top_hotvr_jets(){return _top_hotvr_jets;};
   std::vector<TopJet> get_top_vr_jets(){return _top_vr_jets;};
   std::vector<TopJet> get_top_parton_jets(){return _top_parton_jets;};
+  std::vector<TopJet> get_top_W_parton_jets(){return _W_parton_jets;};
+  std::vector<TopJet> get_top_b_parton_jets(){return _b_parton_jets;};
+  
 // Getter for rejected jets or subjets or soft jets
   std::vector<fastjet::PseudoJet> get_rejected_cluster(){return _rejected_cluster;};
   std::vector<fastjet::PseudoJet> get_soft_cluster(){return _soft_cluster;};

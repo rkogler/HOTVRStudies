@@ -30,7 +30,9 @@ public:
     virtual ~JetDisplayHists();
 
 protected:
-    TH2F *beam, *radiation, *hist_rejected_subjets, *fatjet, *pf0, *pf1, *pf2, *pf_all, *top, *decay, *jetmass, *jetpt;
+    TH2F *beam, *radiation, *hist_rejected_subjets, *fatjet, *pf0, *pf1, *pf2, *pf_all, *top, *decay;
+    TH1F *jetmass, *jetpt, *jetphi, *jeteta;
+    TH2F *b_top, *W_top, *b_antitop, *W_antitop, *antitop;
 
     uhh2::Event::Handle<TTbarGen>h_ttbargen;
     uhh2::Event::Handle<std::vector<fastjet::PseudoJet>>h_parts;

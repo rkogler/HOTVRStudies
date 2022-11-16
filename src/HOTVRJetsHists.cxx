@@ -9,13 +9,15 @@ b_is_qcd(is_qcd)
 {
 // book all histograms here
 // processed events
-processed_events_ttbar = book<TH1F>("processed_events_ttbar", "processed events ttbar", 1,0,1);
-processed_events_qcd = book<TH1F>("processed_events_qcd", "processed events qcd", 1,0,1);
+processed_events_ttbar = book<TH1F>("processed_jets_signal", "processed jets signal", 1,0,1);
+processed_events_qcd = book<TH1F>("processed_jets_qcd", "processed jets qcd", 1,0,1);
 // general hists
 hist_pt = book<TH1F>("p_{T}", "p_{T} [GeV]", 200, 0, 2000);
 hist_pt_sum_subjets = book<TH1F>("sumsubjetsp_{T}", "sumsubjetsp_{T} [GeV]", 200, 0, 2000);
 
 hist_mass = book<TH1F>("mass", "mass [GeV]", 100, 0, 300);
+hist_mass_sum_subjets = book<TH1F>("sumsubjetsmass", "mass sum subjets [GeV]", 100, 0, 300);
+
 hist_eta = book<TH1F>("eta", "#eta", 100, -6, 6);
 hist_phi = book<TH1F>("phi", "#phi", 40, -4, 4);
 hist_energy = book<TH1F>("energy", "energy [GeV]", 100, 0, 2200);
@@ -34,18 +36,21 @@ hist_tau32 = book<TH1F>("tau32", "tau32", 100, 0, 1);
 hist_matching_radius = book<TH1F>("matching_radius", "matching_radius", 100, 0, 2);
 hist_max_distance_minus_matching_radius = book<TH1F>("max_distance_minus_matching_radius", "max_distance minus matching_radius", 100, 0, 2);
 
-hist_pt_subjet1 = book<TH1F>("subjet1_p_{T}", "subjet1 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet2 = book<TH1F>("subjet2_p_{T}", "subjet2 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet3 = book<TH1F>("subjet3_p_{T}", "subjet3 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet4 = book<TH1F>("subjet4_p_{T}", "subjet4 p_{T} [GeV]", 200, 0, 1000);
-hist_pt_subjet5 = book<TH1F>("subjet5_p_{T}", "subjet5 p_{T} [GeV]", 200, 0, 1000);
+for (Int_t l = 1; l < 6; l++) {
+  hist_pt_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_p_{T}",l), TString::Format("subjet%i p_{T} [GeV]",l), 200, 0, 2000);
+  hist_const_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_const",l), TString::Format("subjet%i constituents",l), 200, 0, 1000);
+  hist_dR_subjet[l-1] = book<TH1F>(TString::Format("subjet%i_dR",l), TString::Format("subjet%i dR",l), 200, 0, 3);
+}
 
 hist_njets = book<TH1F>("njets", "njets", 20, -0.5, 19.5);
+hist_area = book<TH1F>("area", "area", 100, 0, 10);
+hist_weight = book<TH1F>("weight", "weight", 100, 0, 2);
+
 }
 
 void HOTVRJetsHists::fill(const Event & event){}
 
-void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
+void HOTVRJetsHists::fill_topjet(const Event & event, TopJet & jet){
   if (b_is_qcd) {processed_events_qcd->Fill(0);}
   else{processed_events_ttbar->Fill(0);}
 
@@ -55,7 +60,8 @@ void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
     for (const auto s : jet.subjets()) {
     subjet_sum += s.v4();
     }
-    hist_mass->Fill(subjet_sum.M());
+    hist_mass->Fill(jet.v4().M());
+    hist_mass_sum_subjets->Fill(subjet_sum.M());
     hist_pt_sum_subjets->Fill(subjet_sum.pt());
 
     hist_eta->Fill(jet.eta());
@@ -72,6 +78,9 @@ void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
     hist_tau21->Fill(jet.tau2_groomed()/jet.tau1_groomed());
     hist_tau32->Fill(jet.tau3_groomed()/jet.tau2_groomed());
 
+    hist_area->Fill(jet.area()); // jet area
+    hist_weight->Fill(event.weight);
+
     double rho = 600;
     double pt = jet.pt();
     double matching_radius = rho/pt;
@@ -85,15 +94,22 @@ void HOTVRJetsHists::fill_topjet(const Event & event, const TopJet & jet){
 
     // fill pt of subjets
     std::vector<Jet> subjets = jet.subjets();
-    if (subjets.size()>0) {hist_pt_subjet1->Fill(subjets[1].pt());}
-    if (subjets.size()>1) {hist_pt_subjet2->Fill(subjets[2].pt());}
-    if (subjets.size()>2) {hist_pt_subjet3->Fill(subjets[3].pt());}
-    if (subjets.size()>3) {hist_pt_subjet4->Fill(subjets[4].pt());}
-    if (subjets.size()>4) {hist_pt_subjet5->Fill(subjets[5].pt());}
+    for (size_t i = 0; i < 5; i++) {
+      if (subjets.size()>i) {
+        hist_pt_subjet[i]->Fill(subjets[i].pt());
+      //  hist_const_subjet[i]->Fill(subjets[i].constituents().size()); // TODO find a way to plot this
+        hist_dR_subjet[i]->Fill(deltaR(subjets[i],jet)); // distance between subjet and jet axis
+      }
+    }
+
+    // if (subjets.size()>1) {hist_pt_subjet2->Fill(subjets[2].pt());}
+    // if (subjets.size()>2) {hist_pt_subjet3->Fill(subjets[3].pt());}
+    // if (subjets.size()>3) {hist_pt_subjet4->Fill(subjets[4].pt());}
+    // if (subjets.size()>4) {hist_pt_subjet5->Fill(subjets[5].pt());}
 
 }
 
-void HOTVRJetsHists::fill_n_jets(const Event & event, const vector<TopJet> & jets){
+void HOTVRJetsHists::fill_n_jets(const Event & event, vector<TopJet>& jets){
   hist_njets->Fill(jets.size());
 }
 

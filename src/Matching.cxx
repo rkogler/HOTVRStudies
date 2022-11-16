@@ -43,6 +43,13 @@ bool Matching::IsW(GenParticle* p)
   if (abs(id)==24) return true;
   else return false;
 }
+// keep all b quarks
+bool Matching::Isb(GenParticle* p)
+{
+  int id = p->pdgId();
+  if (abs(id)==5) return true;
+  else return false;
+}
 // keep all quarks, gluons, W, Z bosons
 bool Matching::IsParton(GenParticle* p)
 {
@@ -207,7 +214,7 @@ void Matching::set_stable_particles(vector<GenParticle>* genparticles)
 	    {
 	      GenParticle* part = &(genparticles->at(i));
 	      if (IsStableParticle(part) && !IsNeutrino(part)){
-		_stableParticles.push_back(convert_particle(part));
+		      _stableParticles.push_back(convert_particle(part));
 	      }
 	    }
 }
@@ -257,6 +264,135 @@ void Matching::set_partons(vector<GenParticle>* genparticles)
 	       _partons_to_cluster.push_back(pseudojet);
 	     }
 }
+//stores a list of final state W partons for the clustering (parton level)
+void Matching::set_W_partons(vector<GenParticle>* genparticles)
+{
+	//check for final state partons from top decay
+	    vector<GenParticle*> partons;
+	    // here is a list of partons that should be skipped (daughters from top decay)
+	    vector<bool> skip;
+	    int nparts = genparticles->size();
+	    skip.reserve(nparts);
+	    //set all skips to false
+	    for (int i=0; i<nparts; ++i) skip[i]=false;
+	    //loop over all particles
+	    for(int i=0; i<nparts; ++i){
+	      // check if this parton should be skipped
+	      if (skip[i]) continue; //the particle should be skipped
+	  	  GenParticle* p = &(genparticles->at(i));
+	  	  // is it a parton?
+	      if (!IsParton(p)) continue; //if it is a particle->continue with next particle
+	      // check if it's a top quark
+	      if (IsTop(p)){
+	  	     // is it the one that decays?
+	  	      if (BeforeTopDecay(p,genparticles)){
+							GenParticle* W_cand;
+							GenParticle* b_cand;
+									// get the W
+									W_cand = GetDaughter(p, genparticles, 1);
+                  b_cand = GetDaughter(p, genparticles, 2);
+									if (!IsW(W_cand)) {
+										W_cand = GetDaughter(p, genparticles, 2);
+										b_cand = GetDaughter(p, genparticles, 1);
+									}
+									// std::cout << "----------Matching----------" << '\n';
+									// std::cout << "top pt = " << p->pt() << '\n';
+									// std::cout << "W pt = " << W_cand->pt() << '\n';
+									// std::cout << "b pt = " << b_cand->pt() << '\n';
+
+									//remove all final state partons from the b decay
+									UpdateSkipList(b_cand, genparticles, skip);
+                //  if (BeforeWDecay(W_cand, genparticles)) { // is it the W that decays? // TODO implement this method
+                    // keep it
+                   partons.push_back(W_cand);
+                   // flag all daughter partons to be skipped
+                   UpdateSkipList(W_cand, genparticles, skip);
+                   continue;
+								// } // end W that decays
+                  // else {
+									// 	// TODO take the daughter of the W (again check if this is the one that decays)
+                  //   continue;
+                  // }
+	  	          } // end top that decays
+	              else {
+	  	            continue;
+	  	          }
+	      }
+	      if (FinalStateParton(p, genparticles)){ //add all final state partons to the partons list
+	  	     partons.push_back(p);
+	      }
+	    }
+
+	//save the partons that should be clustered
+	     for(unsigned i=0;i<partons.size();i++){
+	       GenParticle* p = partons[i];
+	       PseudoJet pseudojet=convert_particle(p);
+	       if(IsW(p) && IsHadronic(p,genparticles)) pseudojet.set_user_index(6); //hadronically decaying W
+	       else  pseudojet.set_user_index(0);
+	       _W_partons_to_cluster.push_back(pseudojet);
+	     }
+}
+//stores a list of final state b partons for the clustering (parton level)
+void Matching::set_b_partons(vector<GenParticle>* genparticles)
+{
+	//check for final state partons from top decay
+	    vector<GenParticle*> partons;
+	    // here is a list of partons that should be skipped (daughters from top decay)
+	    vector<bool> skip;
+	    int nparts = genparticles->size();
+	    skip.reserve(nparts);
+	    //set all skips to false
+	    for (int i=0; i<nparts; ++i) skip[i]=false;
+	    //loop over all particles
+	    for(int i=0; i<nparts; ++i){
+	      // check if this parton should be skipped
+	      if (skip[i]) continue; //the particle should be skipped
+	  	  GenParticle* p = &(genparticles->at(i));
+	  	  // is it a parton?
+	      if (!IsParton(p)) continue; //if it is a particle->continue with next particle
+	      // check if it's a top quark
+	      if (IsTop(p)){
+	  	     // is it the one that decays?
+	  	      if (BeforeTopDecay(p,genparticles)){
+							GenParticle* W_cand;
+							GenParticle* b_cand;
+									// get the W
+									W_cand = GetDaughter(p, genparticles, 1);
+                  b_cand = GetDaughter(p, genparticles, 2);
+									if (!IsW(W_cand)) {
+										W_cand = GetDaughter(p, genparticles, 2);
+										b_cand = GetDaughter(p, genparticles, 1);
+									}
+									// std::cout << "----------Matching----------" << '\n';
+									// std::cout << "top pt = " << p->pt() << '\n';
+									// std::cout << "W pt = " << W_cand->pt() << '\n';
+									// std::cout << "b pt = " << b_cand->pt() << '\n';
+
+									//remove all final state partons from the b decay
+									UpdateSkipList(W_cand, genparticles, skip);
+                    // keep it
+                   partons.push_back(b_cand);
+                   // flag all daughter partons to be skipped
+                   UpdateSkipList(b_cand, genparticles, skip);
+                   continue;
+	  	          } // end top that decays
+	              else {
+	  	            continue;
+	  	          }
+	      }
+	      if (FinalStateParton(p, genparticles)){ //add all final state partons to the partons list
+	  	     partons.push_back(p);
+	      }
+	    }
+	//save the partons that should be clustered
+	     for(unsigned i=0;i<partons.size();i++){
+	       GenParticle* p = partons[i];
+	       PseudoJet pseudojet=convert_particle(p);
+				 if(Isb(p)) pseudojet.set_user_index(6); //b particle
+		 		else  pseudojet.set_user_index(0);
+				_b_partons_to_cluster.push_back(pseudojet);
+	     }
+}
 /*
 ██████  ██    ██ ███    ██     ███    ███  █████  ████████  ██████ ██   ██ ██ ███    ██  ██████
 ██   ██ ██    ██ ████   ██     ████  ████ ██   ██    ██    ██      ██   ██ ██ ████   ██ ██
@@ -264,7 +400,7 @@ void Matching::set_partons(vector<GenParticle>* genparticles)
 ██   ██ ██    ██ ██  ██ ██     ██  ██  ██ ██   ██    ██    ██      ██   ██ ██ ██  ██ ██ ██    ██
 ██   ██  ██████  ██   ████     ██      ██ ██   ██    ██     ██████ ██   ██ ██ ██   ████  ██████
 */
-// match the parton level jets containing a top to the closest partcle level jet
+// match the parton level jets containing a top to the closest particle level jet
 void Matching::run_matching(vector<TopJet> particle_jets, vector<TopJet> parton_jets)
 {
   // clear all used vectors
@@ -273,6 +409,7 @@ _matched_parton_jets.clear();
 _matched_pairs.clear();
 
 	std::vector<TopJet> jets = particle_jets;
+
 //loop over parton jets
 	for(uint j=0; j<parton_jets.size(); j++){
     if(jets.size()==0) continue; // skip empty jets
@@ -290,12 +427,16 @@ _matched_pairs.clear();
 	    }
 	  }
 		// set the matching radius
-		double rho = 600;
-		double pt = matched_jet.pt();
-		double matching_radius = rho/pt;
-		if(matching_radius<0.1){matching_radius=0.1;};
-		if(matching_radius>1.5){matching_radius=1.5;};
-	//	double matching_radius= matched_jet.max_distance();
+		// double rho = 600;
+		// double pt = matched_jet.pt();
+		// double matching_radius = rho/pt;
+
+    double matching_radius= 2; // take max distance of the HOTVR jet as the matching radius
+
+	//	double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
+		// if(matching_radius<0.1){matching_radius=0.1;};
+		// if(matching_radius>1.5){matching_radius=1.5;};
+
 	//store the matched jets if it is close enough
 		if (IsMatched(matched_jet,matching_radius,parton_jets[j])){
       _matched_jets.push_back(matched_jet);
@@ -304,6 +445,47 @@ _matched_pairs.clear();
     }
   }
 }
+
+// match the parton level jets containing a top to the closest particle level jet
+void Matching::run_matching_W_top(vector<TopJet> particle_jets, vector<TopJet> parton_jets_top, vector<TopJet> parton_jets_W)
+{
+  // clear all used vectors
+_matched_jets.clear();
+_matched_parton_jets.clear();
+_matched_pairs.clear();
+
+	std::vector<TopJet> jets = particle_jets;
+
+//loop over parton jets
+	for(uint j=0; j<parton_jets_W.size(); j++){
+    if(jets.size()==0) continue; // skip empty jets
+
+		TopJet matched_jet;
+	  double minDeltaR=1000;
+	  double delta_R;
+//loop over particle jets, find closest
+	  for(uint i=0; i<jets.size(); i++){
+	    delta_R=deltaR(jets[i],parton_jets_W[j]);
+	    if(delta_R<minDeltaR){
+	      minDeltaR=delta_R;
+	      matched_jet=jets[i];
+				jets.erase(jets.begin()+i);
+	    }
+	  }
+
+		double matching_radius= matched_jet.max_distance(); // take max distance of the HOTVR jet as the matching radius
+		// if(matching_radius<0.1){matching_radius=0.1;};
+		// if(matching_radius>1.5){matching_radius=1.5;};
+
+	//store the matched jets if it is close enough
+		if (IsMatched(matched_jet,matching_radius,parton_jets_W[j])){
+      _matched_jets.push_back(matched_jet);
+			_matched_parton_jets.push_back(parton_jets_W[j]);
+			_matched_pairs.push_back(make_pair(matched_jet, parton_jets_W[j]));
+    }
+  }
+}
+
 
 // run matching for pseudojets (match to parton level AK4 jets)
 void Matching::run_matching(std::vector<fastjet::PseudoJet> jets,std::vector<fastjet::PseudoJet> denominator_jets){
@@ -364,6 +546,23 @@ double minDeltaR=1000;
 	}// end loop denominator_jets
 }
 
+TopJet Matching::get_closest_jet(double radius, TopJet jet, std::vector<TopJet> parton_jets)
+{
+   TopJet closest_jet;
+  double minDeltaR=radius;
+  double delta_R;
+//loop over particle jets, find closest
+  for(uint i=0; i<parton_jets.size(); i++){
+    delta_R=deltaR(jet,parton_jets[i]);
+    if(delta_R<minDeltaR){
+      minDeltaR=delta_R;
+      closest_jet=parton_jets[i];
+    }
+  }
+   return closest_jet;
+}
+
+
 //is the matched jet close enough?
 bool Matching::IsMatched(TopJet jet, double matching_radius, TopJet denominator_jet)
 {
@@ -380,4 +579,14 @@ bool Matching::IsMatched(fastjet::PseudoJet jet, double matching_radius, fastjet
   delta_R=jet.delta_R(denominator_jet);
   if(delta_R<matching_radius) return true;
   else return false;
+}
+// reset all the info, clear vectors
+void Matching::Reset(){
+  _stableParticles.clear();
+  _partons_to_cluster.clear();
+  _matched_jets.clear();
+  _matched_parton_jets.clear();
+  _matched_pairs.clear();
+  _matched_pseudojets.clear();
+  _matched_pseudojets_and_constituents.clear();
 }
