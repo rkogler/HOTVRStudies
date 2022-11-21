@@ -1,13 +1,17 @@
+#include "jet_display_hotvr.h"
+#include "jet_display_helpers.h"
+#include "style.h"
+#include <TSystem.h>
+#include <iostream>
 #include <vector>
 
 //TString gdir = "NoCutsHistosGen_mass/"; // use this for HOTVR display
 //TString gdir = "NoCutsHistos3Gen/";       // anti-kt jets
 
-void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=-1, Bool_t bLargeJetsOnly = false)
+void jet_display_hotvr(TFile* file, TString dir, TString prefix, Int_t num, Bool_t bLargeJetsOnly)
 { 
 
-  cout << "making jet display for HOTVR" << endl;
-  gdir = dir;
+  std::cout << "making jet display for HOTVR" << std::endl;
 
   SetupGlobalStyle(); 
 
@@ -16,14 +20,14 @@ void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=
   
   // store all jets with their subjets in this vector
   std::vector< std::vector<TH2F*> > subjets;
-  subjets = GetSubjets(file);
+  subjets = GetSubjets(file, dir);
   for (int i=0; i<subjets.size(); ++i){
     CreateContours(subjets[i]);
   }
 
   // store all large jets
   std::vector<TH2F*> jets;
-  jets = GetJets(file);
+  jets = GetJets(file, dir);
   CreateContours(jets);  
 
   TString canname = TString::Format("canvas_%d", num);
@@ -34,15 +38,13 @@ void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=
   cols = GetColours(); 
 
   // gray hues for rejected jets
-  //int lgray = TColor::GetColor( "#e6e6e6");
   int lgray = TColor::GetColor( "#e6e6e6");
   int mgray = TColor::GetColor( "#dedede");
-  //int dgray = TColor::GetColor( "#d7d7d7");
   int dgray = TColor::GetColor( "#808080");
 
   // here are the jets without subjets - ie the ones that have never fulfilled softdrop
   TH2F* jets_rejected;
-  jets_rejected = GetJetsWithoutSubjets(file);
+  jets_rejected = GetJetsWithoutSubjets(file, dir);
   jets_rejected->GetXaxis()->SetTitle("#phi");
   jets_rejected->GetYaxis()->SetTitle("#eta");
   jets_rejected->SetTitle("");
@@ -52,11 +54,11 @@ void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=
 
   // here are the subjets (and jets) with low pT
   //TH2F* subjets_rejected;
-  //subjets_rejected = GetJetsWithLowPt(file);
+  //subjets_rejected = GetJetsWithLowPt(file, dir);
 
   // here are the rejected subjets/clusters by the SD criterion
   TH2F* subjets_rejected_sd;
-  subjets_rejected_sd = GetSubjetsRejectedBySD(file);
+  subjets_rejected_sd = GetSubjetsRejectedBySD(file, dir);
   if (subjets_rejected_sd){
     Cosmetics2d(subjets_rejected_sd);
     FixHistForContour(subjets_rejected_sd);
@@ -81,14 +83,14 @@ void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=
   }
   
   // draw all stable particles
-  DrawStableParts(file);
+  DrawStableParts(file, dir);
 
   // draw top's decay partons
   //DrawTopDecay(file);
 
-  DrawTopDecay_withb(file);
-  DrawAntiTopDecay_withb(file);
-  DrawTops(file);
+  DrawTopDecay_withb(file, dir);
+  DrawAntiTopDecay_withb(file, dir);
+  DrawTops(file, dir);
 
   HOTVR_label_jetdisplay();
 
@@ -101,7 +103,7 @@ void jet_display_hotvr(TFile* file, TString dir, TString prefix = "", Int_t num=
   gSystem->Exec(cmd.Data()); 
 
   TString outname = plot_dir + "/" + dir + "_hotvr"; 
-  PrintInfo(file, outname);
+  PrintInfo(file, outname, dir);
 
   //c->SaveAs("plots/" + prefix + dir + "_hotvr.pdf");
   c->SaveAs(outname + ".pdf");
