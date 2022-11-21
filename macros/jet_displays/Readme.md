@@ -14,3 +14,5 @@ Create the executable with
 make make_history
 ```
 The input and output files have to be provided in make_history.C. The code needs a file with the jet clustering history and a file with the input particles. Examples are given in files/example. In addition, the user can provide a file with jet display histograms from the make_displays program. These will be used to color the final jets in the same color to have matching pictures. An example is given in files/example/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root
+
+Have fun!
