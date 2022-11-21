@@ -1,27 +1,32 @@
-TString gdir = "";       // anti-kt jets
-#include "style.C"
-#include "jet_display_helpers.C"
-#include "jet_display_hotvr.C"
-#include "jet_display_akt.C"
+#include <TString.h>
+#include <TSystem.h>
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+#include "style.h"
+#include "jet_display_helpers.h"
+#include "jet_display_hotvr.h"
+#include "jet_display_akt.h"
 
 void do_displays(TString prefix);
 
 //TString gdir = "NoCutsHistosGen_mass/"; // use this for HOTVR display
 //TString gdir = "NoCutsHistos3Gen/";       // anti-kt jets
 
-void make_displays()
+int main()
 {
     gROOT->SetBatch(true);
 
-    std::vector<TString> prefixes; 
-    prefixes.push_back(TString("mytests2"));
+    std::vector<TString> prefixes;
+    prefixes.push_back(TString("example"));
     //prefixes.push_back(TString("fancy_R_pt_protection_for_ghosts"));
     //prefixes.push_back(TString("fancyR_wo_turnon_fix_mass"));
     //prefixes.push_back(TString("fancyR_with_turnon_beta0"));
     //prefixes.push_back(TString("fancyR_with_turnon_grooming_fix_mass"));
     //prefixes.push_back(TString("fancyR_with_turnon"));
     //prefixes.push_back(TString("fancyR_with_turnon_R0_1"));
-    //prefixes.push_back(TString("fancyR_with_turnon_no_grooming"));    
+    //prefixes.push_back(TString("fancyR_with_turnon_no_grooming"));
 
     for (int i=0; i<prefixes.size(); ++i){
       do_displays(prefixes[i]);
@@ -40,16 +45,16 @@ void do_displays(TString prefix)
     // high resolution, high pt
     //   TFile* file = new TFile("JetDisplayCycle.MC.TTbarEff_gen_tight_selection_highres_highpt.root", "READ");
     //TFile* file = new TFile("JetDisplayCycle.MC.TTbarEff_gen_softdrop.root", "READ");
-    
+
     //TFile* file = new TFile("files/HOTVR_SD_fancy_R/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");
 
-    TString fname = TString("files/debug_fancyR/") + prefix + TString("/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root");
-    cout << "file name = " << fname << endl;
+    TString fname = TString("files/") + prefix + TString("/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root");
+    std::cout << "file name = " << fname << std::endl;
     TFile* file = new TFile(fname, "READ");
-    //TFile* file = new TFile("files/debug_fancyR/fancyR_with_turnon_no_grooming/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");    
+    //TFile* file = new TFile("files/debug_fancyR/fancyR_with_turnon_no_grooming/uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");
     //TFile* file = new TFile("files/new_uhh2.AnalysisModuleRunner.MC.ttbar_pythia8_flat_nnpdf23.root", "READ");
     // high resolution, low pt
-    //TFile* file = new TFile("JetDisplayCycle.MC.TTbarEff_gen_tight_selection_highres2.root", "READ");    
+    //TFile* file = new TFile("JetDisplayCycle.MC.TTbarEff_gen_tight_selection_highres2.root", "READ");
 
   	// loop over directories in file and plot jets for each directory
   	// (each holds one event)
@@ -67,7 +72,7 @@ void do_displays(TString prefix)
         if (name.Contains("JetDisplay")) dirs.push_back(name);
       }
     }
-	
+
     // before plotting: delete ROOT's random number generator
     gRandom = NULL;
 	  for (Int_t i=0; i<dirs.size(); ++i){
@@ -82,14 +87,13 @@ void do_displays(TString prefix)
       } else {
         TString fname = file->GetName();
         if (fname.Contains("no_grooming")){
-          cout << "\nPlot only large jets without subjets (no grooming case)." << endl;
-          jet_display_hotvr(file, dirs[i], prefix, num, true); 
+          std::cout << "\nPlot only large jets without subjets (no grooming case)." << std::endl;
+          jet_display_hotvr(file, dirs[i], prefix, num, true);
         } else {
-          cout << "\nPlot large jets with subjets (grooming case)" << endl;
-          jet_display_hotvr(file, dirs[i], prefix, num, false); 
+          std::cout << "\nPlot large jets with subjets (grooming case)" << std::endl;
+          jet_display_hotvr(file, dirs[i], prefix, num, false);
         }
       }
 	  }
 
 }
-
