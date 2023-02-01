@@ -369,6 +369,7 @@ bool HOTVRStudiesModule::process(Event & event)
     for (auto jet : matched_jets){
       std::cout << "pt = " << jet.pt() << " m = " << jet.v4().mass() << std::endl;
     }
+    std::cout << "Number of matched pairs: " << matched_pair.size() << std::endl;
   }
 
   hist_njets_matched->fill_n_jets(event, matched_jets);
@@ -382,6 +383,11 @@ bool HOTVRStudiesModule::process(Event & event)
 
     //fill hists with matched jets
     fill_histograms(event, matched_jet, parton_jet, "matched","");
+    if (debug){
+      std::cout << "Matched pair " << j << ":" << std::endl;
+      std::cout << "parton pt = " << parton_jet.pt() << ", matched HOTVR jet pt = " << matched_jet.pt() << std::endl;
+
+    }
 
     // if(matched_jet.subjets().size()>2){ fill_histograms(event, matched_jet, parton_jet, "matched","_Nsub3");}
     // if(matched_jet.hotvr_fpt1()<0.8){ fill_histograms(event, matched_jet, parton_jet, "matched","_fpt");}
